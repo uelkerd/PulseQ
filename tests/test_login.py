@@ -4,8 +4,8 @@ import pytest
 import os
 import tempfile
 from selenium.webdriver.common.by import By
-from framework.utilities.driver_manager import initialize_driver, quit_driver
-from framework.page_objects.login_page import LoginPage
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
+from pulseq.page_objects.login_page import LoginPage
 
 
 @pytest.fixture(scope="function")

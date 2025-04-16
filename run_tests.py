@@ -4,8 +4,8 @@ import sys
 import pytest
 import argparse
 import logging
-from framework.utilities.logger import setup_logger
-from framework.config import load_config
+from pulseq.utilities.logger import setup_logger
+from pulseq.config import load_config
 
 def main():
     """Run tests with enhanced debugging and reporting."""
@@ -57,7 +57,7 @@ def main():
     if args.allure:
         try:
             logger.info("Generating Allure report...")
-            from framework.reporting import generate_allure_report
+            from pulseq.reporting import generate_allure_report
             generate_allure_report()
         except Exception as e:
             logger.error(f"Failed to generate Allure report: {e}")

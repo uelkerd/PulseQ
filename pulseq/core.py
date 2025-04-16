@@ -8,9 +8,9 @@ import logging
 from pathlib import Path
 from datetime import datetime
 
-from framework.config import load_config
-from framework.utilities.logger import setup_logger
-from framework.reporting import generate_allure_report
+from pulseq.config import load_config
+from pulseq.utilities.logger import setup_logger
+from pulseq.reporting import generate_allure_report
 
 # Set up module logger
 logger = setup_logger("core")

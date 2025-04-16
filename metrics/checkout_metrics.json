@@ -1,0 +1,55 @@
+{
+  "timestamp": "2025-04-17T01:33:53.274048",
+  "test_execution_time": 4.906607151031494,
+  "tests_executed": 2,
+  "performance_by_test": {
+    "test_complete_checkout_flow": {
+      "start_time": 1744846421.84051,
+      "end_time": 1744846423.554513,
+      "duration": 1.714003086090088,
+      "result": true,
+      "resource_usage_start": {
+        "cpu_percent": 0.0,
+        "memory_usage": 40.59375,
+        "memory_percent": 0.24776458740234375,
+        "thread_count": 2,
+        "open_files": 7,
+        "total_cpu_percent": 61.2,
+        "total_memory_percent": 83.3
+      },
+      "resource_usage_end": {
+        "cpu_percent": 0.0,
+        "memory_usage": 38.1875,
+        "memory_percent": 0.2330780029296875,
+        "thread_count": 2,
+        "open_files": 7,
+        "total_cpu_percent": 47.1,
+        "total_memory_percent": 83.3
+      }
+    },
+    "test_different_shipping_methods": {
+      "start_time": 1744846425.068794,
+      "end_time": 1744846433.1680052,
+      "duration": 8.0992112159729,
+      "result": true,
+      "resource_usage_start": {
+        "cpu_percent": 0.0,
+        "memory_usage": 40.546875,
+        "memory_percent": 0.24747848510742188,
+        "thread_count": 2,
+        "open_files": 7,
+        "total_cpu_percent": 47.6,
+        "total_memory_percent": 83.2
+      },
+      "resource_usage_end": {
+        "cpu_percent": 0.0,
+        "memory_usage": 40.03125,
+        "memory_percent": 0.24433135986328125,
+        "thread_count": 2,
+        "open_files": 7,
+        "total_cpu_percent": 59.3,
+        "total_memory_percent": 83.5
+      }
+    }
+  }
+}
