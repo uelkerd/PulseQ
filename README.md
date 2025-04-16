@@ -23,6 +23,7 @@ This project is a modular test automation framework for web applications, design
 
    ```python3 -m venv venv
    source venv/bin/activate
+
    ```
 
 3. **Install dependencies:**
