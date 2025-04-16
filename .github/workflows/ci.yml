@@ -91,7 +91,7 @@ jobs:
           pytest tests/test_login.py -v
       - name: Upload screenshots on failure
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: screenshots-${{ matrix.browser }}
           path: screenshots/
@@ -112,7 +112,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
       - name: Set up Allure
@@ -123,7 +123,7 @@ jobs:
           allure_history: allure-history
           keep_reports: 20
       - name: Publish Allure Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report/
