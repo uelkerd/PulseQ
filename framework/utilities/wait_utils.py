@@ -1,9 +1,11 @@
 # framework/utilities/wait_utils.py
 
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 import logging
+
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from framework.utilities.logger import setup_logger
 
 # Set up module logger
@@ -168,20 +170,19 @@ class WaitUtils:
             logger.error(error_message)
             raise TimeoutException(error_message)
 
-
     def wait_for_element_visible(self, locator, timeout=None, message=None):
         """
         Enhanced wait for an element to be visible on the page.
         First waits for presence, then for visibility for a more robust approach.
-        
+
         Args:
             locator: Element locator tuple (By.XX, "value")
             timeout: Custom timeout in seconds (overrides default)
             message: Custom error message for TimeoutException
-            
+
         Returns:
             WebElement: The element once visible
-            
+
         Raises:
             TimeoutException: If element doesn't become visible within timeout
         """
@@ -191,14 +192,14 @@ class WaitUtils:
             if message
             else f"Element {locator} not visible after {wait_timeout} seconds"
         )
-        
+
         try:
             # First, wait for the element to be present in the DOM
             logger.debug(f"Waiting for element {locator} to be present in DOM")
             WebDriverWait(self.driver, wait_timeout).until(
                 EC.presence_of_element_located(locator)
             )
-            
+
             # Then, wait for it to be visible
             logger.debug(f"Waiting for element {locator} to be visible")
             element = WebDriverWait(self.driver, wait_timeout).until(
@@ -208,23 +209,26 @@ class WaitUtils:
             return element
         except TimeoutException:
             logger.error(error_message)
-            
+
             # Take a screenshot to help with debugging
             from framework.utilities.misc_utils import take_screenshot
+
             timestamp = int(time.time())
             screenshot_path = take_screenshot(
                 self.driver, f"element_not_found_{timestamp}.png"
             )
             logger.error(f"Screenshot saved to: {screenshot_path}")
-            
+
             # Prepare a more informative error message with page source excerpt
             try:
                 page_source = self.driver.page_source
-                short_source = page_source[:500] + "..." if len(page_source) > 500 else page_source
+                short_source = (
+                    page_source[:500] + "..." if len(page_source) > 500 else page_source
+                )
                 logger.error(f"Page source excerpt: {short_source}")
             except:
                 logger.error("Could not retrieve page source")
-                
+
             raise TimeoutException(error_message)
 
     def wait_for_element_to_disappear(self, locator, timeout=None, message=None):
@@ -314,6 +318,7 @@ class WaitUtils:
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+
     from framework.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()
