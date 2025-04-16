@@ -33,9 +33,20 @@ jobs:
       - name: Lint with flake8
         run: |
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Format with black
+        run: |
+          black .
       - name: Check formatting with black
         run: |
           black --check .
+      - name: Commit changes if any
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || git commit -m "Apply automatic formatting with Black"
+          git push
 
   unit-tests:
     runs-on: ubuntu-latest
