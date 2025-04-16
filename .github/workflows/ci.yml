@@ -1,31 +1,129 @@
-name: Python Test Automation
+name: Test Automation Framework CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to run tests against"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - production
 
 jobs:
-  test:
+  linting:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Setup Python
+      - uses: actions/checkout@v3
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
-      - name: Install Dependencies
+          python-version: "3.10"
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Run Tests
-        run: pytest --maxfail=1 --disable-warnings -q
-      - name: Upload Allure Results
-        if: always()
+          pip install flake8 black
+          pip install -e .
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Check formatting with black
+        run: |
+          black --check .
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    needs: linting
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+          pip install -e .
+      - name: Test with pytest
+        run: |
+          pytest tests/test_example.py tests/test_retry.py -v
+
+  browser-matrix:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
+        include:
+          - browser: chrome
+            driver: chrome
+          - browser: firefox
+            driver: firefox
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      - name: Setup Chrome
+        if: matrix.browser == 'chrome'
+        uses: browser-actions/setup-chrome@v1
+      - name: Setup Firefox
+        if: matrix.browser == 'firefox'
+        uses: browser-actions/setup-firefox@v1
+      - name: Run Selenium tests
+        run: |
+          # Override browser selection based on matrix
+          export BROWSER=${{ matrix.browser }}
+          pytest tests/test_login.py -v
+      - name: Upload screenshots on failure
+        if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: allure-results
-          path: allure-results/
-      
+          name: screenshots-${{ matrix.browser }}
+          path: screenshots/
+          if-no-files-found: ignore
+
+  reporting:
+    needs: [unit-tests, browser-matrix]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+      - name: Set up Allure
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+          allure_history: allure-history
+          keep_reports: 20
+      - name: Publish Allure Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: allure-report/
