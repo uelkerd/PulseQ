@@ -1,13 +1,11 @@
 # framework/utilities/elements_utils.py
 
-import logging
 
 from selenium.common.exceptions import (
     ElementNotInteractableException,
     NoSuchElementException,
 )
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
 from pulseq.utilities.logger import setup_logger
@@ -272,7 +270,7 @@ class ElementsUtils:
 
             actions = ActionChains(self.driver)
             actions.drag_and_drop(source_element, target_element).perform()
-            logger.debug(f"Performed drag and drop")
+            logger.debug("Performed drag and drop")
         except Exception as e:
             logger.error(f"Error performing drag and drop: {e}")
             raise

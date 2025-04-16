@@ -1,7 +1,6 @@
 # framework/utilities/misc_utils.py
 
 import base64
-import logging
 import os
 import platform
 import random
@@ -97,7 +96,7 @@ class MiscUtils:
         Returns:
             str: Formatted date
         """
-        from datetime import datetime, timedelta
+        from datetime import timedelta
 
         date = datetime.now() + timedelta(days=days_offset)
         formatted_date = date.strftime(format)
@@ -152,7 +151,7 @@ class MiscUtils:
             str: Base64 encoded string
         """
         encoded = base64.b64encode(text.encode("utf-8")).decode("utf-8")
-        logger.debug(f"Encoded text to base64")
+        logger.debug("Encoded text to base64")
         return encoded
 
     @staticmethod
@@ -167,7 +166,7 @@ class MiscUtils:
             str: Decoded text
         """
         decoded = base64.b64decode(encoded_text).decode("utf-8")
-        logger.debug(f"Decoded base64 to text")
+        logger.debug("Decoded base64 to text")
         return decoded
 
     @staticmethod
