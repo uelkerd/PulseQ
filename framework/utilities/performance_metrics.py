@@ -1,20 +1,22 @@
 # framework/utilities/performance_metrics.py
 
-import time
+import functools
 import json
+import logging
 import os
+import platform
 import statistics
+import time
 from datetime import datetime
 from pathlib import Path
-import logging
-import functools
-import platform
+
 import psutil
 
 from framework.utilities.logger import setup_logger
 
 # Set up module logger
 logger = setup_logger("performance_metrics")
+
 
 class PerformanceMetrics:
     """
@@ -40,14 +42,16 @@ class PerformanceMetrics:
                 "tests_executed": 0,
                 "tests_passed": 0,
                 "tests_failed": 0,
-            }
+            },
         }
 
         # Ensure metrics directory exists
         metrics_dir = os.path.dirname(metrics_file)
         Path(metrics_dir).mkdir(parents=True, exist_ok=True)
 
-        logger.debug(f"Initialized performance metrics handler with file: {metrics_file}")
+        logger.debug(
+            f"Initialized performance metrics handler with file: {metrics_file}"
+        )
 
     def _get_system_info(self):
         """
@@ -62,8 +66,9 @@ class PerformanceMetrics:
                 "python_version": platform.python_version(),
                 "processor": platform.processor(),
                 "cpu_count": os.cpu_count(),
-                "memory_total": psutil.virtual_memory().total / (1024 * 1024 * 1024),  # GB
-                "hostname": platform.node()
+                "memory_total": psutil.virtual_memory().total
+                / (1024 * 1024 * 1024),  # GB
+                "hostname": platform.node(),
             }
         except Exception as e:
             logger.error(f"Error getting system info: {e}")
@@ -85,7 +90,7 @@ class PerformanceMetrics:
                 "thread_count": process.num_threads(),
                 "open_files": len(process.open_files()),
                 "total_cpu_percent": psutil.cpu_percent(),
-                "total_memory_percent": psutil.virtual_memory().percent
+                "total_memory_percent": psutil.virtual_memory().percent,
             }
         except Exception as e:
             logger.error(f"Error getting resource usage: {e}")
@@ -109,7 +114,7 @@ class PerformanceMetrics:
                 "end_time": None,
                 "duration": None,
                 "result": None,
-                "resource_usage_start": self.get_resource_usage()
+                "resource_usage_start": self.get_resource_usage(),
             }
 
         logger.debug(f"Started timer for test: {test_name}")
@@ -147,7 +152,9 @@ class PerformanceMetrics:
             else:
                 self.current_metrics["execution_summary"]["tests_failed"] += 1
 
-            logger.debug(f"Stopped timer for test: {test_name}, duration: {test_data['duration']:.2f}s, result: {result}")
+            logger.debug(
+                f"Stopped timer for test: {test_name}, duration: {test_data['duration']:.2f}s, result: {result}"
+            )
 
             return test_data["duration"]
         else:
@@ -169,11 +176,14 @@ class PerformanceMetrics:
         )
 
         # Add final resource usage
-        self.current_metrics["execution_summary"]["final_resource_usage"] = self.get_resource_usage()
+        self.current_metrics["execution_summary"]["final_resource_usage"] = (
+            self.get_resource_usage()
+        )
 
         # Calculate statistics
         durations = [
-            test_data["duration"] for test_data in self.current_metrics["tests"].values()
+            test_data["duration"]
+            for test_data in self.current_metrics["tests"].values()
             if test_data["duration"] is not None
         ]
 
@@ -183,11 +193,13 @@ class PerformanceMetrics:
                 "max_duration": max(durations),
                 "avg_duration": statistics.mean(durations),
                 "median_duration": statistics.median(durations),
-                "total_test_time": sum(durations)
+                "total_test_time": sum(durations),
             }
 
-        logger.info(f"Finalized metrics: {len(self.current_metrics['tests'])} tests, "
-                   f"total duration: {self.current_metrics['execution_summary']['total_duration']:.2f}s")
+        logger.info(
+            f"Finalized metrics: {len(self.current_metrics['tests'])} tests, "
+            f"total duration: {self.current_metrics['execution_summary']['total_duration']:.2f}s"
+        )
 
         return self.current_metrics
 
@@ -206,17 +218,19 @@ class PerformanceMetrics:
             # Load existing history if available
             history = []
             if os.path.exists(self.metrics_file):
-                with open(self.metrics_file, 'r') as f:
+                with open(self.metrics_file, "r") as f:
                     try:
                         history = json.load(f)
                     except json.JSONDecodeError:
-                        logger.warning(f"Invalid JSON in metrics file: {self.metrics_file}, starting new history")
+                        logger.warning(
+                            f"Invalid JSON in metrics file: {self.metrics_file}, starting new history"
+                        )
                         history = []
 
             # Append current metrics and save
             history.append(self.current_metrics)
 
-            with open(self.metrics_file, 'w') as f:
+            with open(self.metrics_file, "w") as f:
                 json.dump(history, f, indent=2)
 
             logger.info(f"Saved metrics to: {self.metrics_file}")
@@ -245,27 +259,34 @@ class PerformanceMetrics:
             if not os.path.exists(self.metrics_file):
                 return {"error": "No history file found for comparison"}
 
-            with open(self.metrics_file, 'r') as f:
+            with open(self.metrics_file, "r") as f:
                 history = json.load(f)
 
             # Get the last N runs (excluding current run)
-            previous_runs = history[-limit-1:-1] if len(history) > 1 else []
+            previous_runs = history[-limit - 1 : -1] if len(history) > 1 else []
 
             if not previous_runs:
                 return {"warning": "No previous runs found for comparison"}
 
             # Calculate averages from previous runs
-            prev_durations = [run["execution_summary"]["total_duration"] for run in previous_runs]
+            prev_durations = [
+                run["execution_summary"]["total_duration"] for run in previous_runs
+            ]
             prev_avg_duration = statistics.mean(prev_durations)
 
-            current_duration = self.current_metrics["execution_summary"]["total_duration"]
+            current_duration = self.current_metrics["execution_summary"][
+                "total_duration"
+            ]
 
             # Calculate improvement
             improvement = {
                 "previous_avg_duration": prev_avg_duration,
                 "current_duration": current_duration,
                 "absolute_diff": prev_avg_duration - current_duration,
-                "percent_diff": ((prev_avg_duration - current_duration) / prev_avg_duration) * 100
+                "percent_diff": (
+                    (prev_avg_duration - current_duration) / prev_avg_duration
+                )
+                * 100,
             }
 
             # Compare individual tests if they exist in both current and previous
@@ -273,29 +294,39 @@ class PerformanceMetrics:
             for test_name, test_data in self.current_metrics["tests"].items():
                 # Find the same test in previous runs
                 prev_test_data = [
-                    run["tests"].get(test_name) for run in previous_runs
+                    run["tests"].get(test_name)
+                    for run in previous_runs
                     if test_name in run["tests"]
                 ]
 
                 if prev_test_data:
-                    prev_durations = [d["duration"] for d in prev_test_data if d["duration"] is not None]
+                    prev_durations = [
+                        d["duration"]
+                        for d in prev_test_data
+                        if d["duration"] is not None
+                    ]
                     if prev_durations:
                         prev_avg = statistics.mean(prev_durations)
                         test_comparisons[test_name] = {
                             "previous_avg": prev_avg,
                             "current": test_data["duration"],
                             "absolute_diff": prev_avg - test_data["duration"],
-                            "percent_diff": ((prev_avg - test_data["duration"]) / prev_avg) * 100
+                            "percent_diff": (
+                                (prev_avg - test_data["duration"]) / prev_avg
+                            )
+                            * 100,
                         }
 
             result = {
                 "overall_improvement": improvement,
                 "test_comparisons": test_comparisons,
-                "compared_runs": len(previous_runs)
+                "compared_runs": len(previous_runs),
             }
 
-            logger.info(f"Comparison with history: {result['overall_improvement']['percent_diff']:.2f}% "
-                       f"difference from previous average")
+            logger.info(
+                f"Comparison with history: {result['overall_improvement']['percent_diff']:.2f}% "
+                f"difference from previous average"
+            )
 
             return result
 
@@ -330,18 +361,32 @@ class PerformanceMetrics:
                 "current_metrics": self.current_metrics,
                 "historical_comparison": comparison,
                 "summary": {
-                    "total_tests": self.current_metrics["execution_summary"]["tests_executed"],
+                    "total_tests": self.current_metrics["execution_summary"][
+                        "tests_executed"
+                    ],
                     "pass_rate": (
-                        self.current_metrics["execution_summary"]["tests_passed"] / 
-                        self.current_metrics["execution_summary"]["tests_executed"] * 100
-                    ) if self.current_metrics["execution_summary"]["tests_executed"] > 0 else 0,
-                    "total_duration": self.current_metrics["execution_summary"]["total_duration"],
-                    "improvement": comparison.get("overall_improvement", {}).get("percent_diff", 0)
-                }
+                        (
+                            self.current_metrics["execution_summary"]["tests_passed"]
+                            / self.current_metrics["execution_summary"][
+                                "tests_executed"
+                            ]
+                            * 100
+                        )
+                        if self.current_metrics["execution_summary"]["tests_executed"]
+                        > 0
+                        else 0
+                    ),
+                    "total_duration": self.current_metrics["execution_summary"][
+                        "total_duration"
+                    ],
+                    "improvement": comparison.get("overall_improvement", {}).get(
+                        "percent_diff", 0
+                    ),
+                },
             }
 
             # Save report
-            with open(output_file, 'w') as f:
+            with open(output_file, "w") as f:
                 json.dump(report, f, indent=2)
 
             logger.info(f"Generated performance report: {output_file}")
@@ -350,6 +395,7 @@ class PerformanceMetrics:
         except Exception as e:
             logger.error(f"Error generating report: {e}")
             return {"error": str(e)}
+
 
 # Decorator for timing tests
 def measure_performance(metrics_instance=None):
@@ -362,6 +408,7 @@ def measure_performance(metrics_instance=None):
     Returns:
         function: Decorated function
     """
+
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -386,7 +433,9 @@ def measure_performance(metrics_instance=None):
                 raise
 
         return wrapper
+
     return decorator
+
 
 # Example usage
 if __name__ == "__main__":

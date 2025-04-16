@@ -1,21 +1,30 @@
 # run_tests.py
-import os
-import sys
-import pytest
 import argparse
 import logging
-from framework.utilities.logger import setup_logger
+import os
+import sys
+
+import pytest
+
 from framework.config import load_config
+from framework.utilities.logger import setup_logger
+
 
 def main():
     """Run tests with enhanced debugging and reporting."""
     parser = argparse.ArgumentParser(description="Run test automation framework tests")
-    parser.add_argument("--test-path", default="tests", help="Path to test files/directories")
-    parser.add_argument("--verbose", "-v", action="store_true", help="Increase verbosity")
+    parser.add_argument(
+        "--test-path", default="tests", help="Path to test files/directories"
+    )
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Increase verbosity"
+    )
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
     parser.add_argument("--allure", action="store_true", help="Generate Allure reports")
     parser.add_argument("--parallel", action="store_true", help="Run tests in parallel")
-    parser.add_argument("--browser", default="chrome", help="Browser to use (chrome, firefox)")
+    parser.add_argument(
+        "--browser", default="chrome", help="Browser to use (chrome, firefox)"
+    )
     args = parser.parse_args()
 
     # Set up logging
@@ -58,11 +67,13 @@ def main():
         try:
             logger.info("Generating Allure report...")
             from framework.reporting import generate_allure_report
+
             generate_allure_report()
         except Exception as e:
             logger.error(f"Failed to generate Allure report: {e}")
 
     return result
+
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -1,19 +1,21 @@
 # framework/core.py
+import argparse
+import logging
 import os
 import sys
-import argparse
 import time
-import pytest
-import logging
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
+import pytest
 
 from framework.config import load_config
-from framework.utilities.logger import setup_logger
 from framework.reporting import generate_allure_report
+from framework.utilities.logger import setup_logger
 
 # Set up module logger
 logger = setup_logger("core")
+
 
 class FrameworkCore:
     """
@@ -38,12 +40,7 @@ class FrameworkCore:
 
     def _ensure_directories(self):
         """Create required directories if they don't exist."""
-        directories = [
-            'screenshots',
-            'logs',
-            'allure-results',
-            'test_data'
-        ]
+        directories = ["screenshots", "logs", "allure-results", "test_data"]
 
         for directory in directories:
             Path(directory).mkdir(parents=True, exist_ok=True)
@@ -77,17 +74,11 @@ class FrameworkCore:
             pytest_args.append(f"-m={markers}")
 
         # Add default pytest arguments
-        pytest_args.extend([
-            "--alluredir=allure-results",
-            "-v"
-        ])
+        pytest_args.extend(["--alluredir=allure-results", "-v"])
 
         # Add parallel execution if specified
         if parallel > 1:
-            pytest_args.extend([
-                f"-n={parallel}",
-                "--dist=loadfile"
-            ])
+            pytest_args.extend([f"-n={parallel}", "--dist=loadfile"])
 
         # Log pytest command
         logger.info(f"Running pytest with arguments: {pytest_args}")
@@ -97,7 +88,9 @@ class FrameworkCore:
 
         # Calculate execution time
         execution_time = time.time() - self.start_time
-        logger.info(f"Test execution completed in {execution_time:.2f} seconds with exit code: {exit_code}")
+        logger.info(
+            f"Test execution completed in {execution_time:.2f} seconds with exit code: {exit_code}"
+        )
 
         # Generate report if requested
         if report:
@@ -131,7 +124,7 @@ class FrameworkCore:
             "execution_time": execution_time,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "test_results": test_results,
-            "configuration": self.config
+            "configuration": self.config,
         }
 
         logger.info(f"Collected metrics: {metrics}")
@@ -163,11 +156,12 @@ class FrameworkCore:
                 "failed": failed,
                 "skipped": skipped,
                 "broken": broken,
-                "pass_rate": (passed / total) * 100 if total > 0 else 0
+                "pass_rate": (passed / total) * 100 if total > 0 else 0,
             }
         except Exception as e:
             logger.error(f"Error parsing test results: {e}")
             return {"error": str(e)}
+
 
 def parse_arguments():
     """
@@ -180,11 +174,23 @@ def parse_arguments():
     parser.add_argument("--config", help="Path to configuration file")
     parser.add_argument("--tests", help="Path to test files or directories")
     parser.add_argument("--markers", help="Pytest markers to filter tests")
-    parser.add_argument("--parallel", type=int, default=1, help="Number of parallel processes (0 = auto)")
-    parser.add_argument("--no-report", action="store_true", help="Disable report generation")
-    parser.add_argument("--collect-only", action="store_true", help="Only collect tests without execution")
+    parser.add_argument(
+        "--parallel",
+        type=int,
+        default=1,
+        help="Number of parallel processes (0 = auto)",
+    )
+    parser.add_argument(
+        "--no-report", action="store_true", help="Disable report generation"
+    )
+    parser.add_argument(
+        "--collect-only",
+        action="store_true",
+        help="Only collect tests without execution",
+    )
 
     return parser.parse_args()
+
 
 def main():
     """Main entry point for the framework."""
@@ -204,7 +210,7 @@ def main():
         test_path=args.tests,
         markers=args.markers,
         parallel=args.parallel,
-        report=not args.no_report
+        report=not args.no_report,
     )
 
     # Collect and display metrics
@@ -213,18 +219,19 @@ def main():
     # Print summary
     if "error" not in metrics["test_results"]:
         results = metrics["test_results"]
-        print("\n" + "="*50)
+        print("\n" + "=" * 50)
         print("TEST EXECUTION SUMMARY")
-        print("="*50)
+        print("=" * 50)
         print(f"Total tests: {results['total']}")
         print(f"Passed: {results['passed']} ({results['pass_rate']:.2f}%)")
         print(f"Failed: {results['failed']}")
         print(f"Skipped: {results['skipped']}")
         print(f"Broken: {results['broken']}")
         print(f"Execution time: {metrics['execution_time']:.2f} seconds")
-        print("="*50)
+        print("=" * 50)
 
     return exit_code
+
 
 if __name__ == "__main__":
     sys.exit(main())

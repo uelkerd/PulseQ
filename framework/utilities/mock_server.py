@@ -1,10 +1,11 @@
 # framework/utilities/mock_server.py
 import http.server
+import os
 import socketserver
 import threading
-import os
 import time
 from pathlib import Path
+
 
 class MockServer:
     """A simple HTTP server for testing purposes."""
@@ -103,7 +104,7 @@ class MockServer:
         """Write content to a mock file if it doesn't exist."""
         file_path = os.path.join(self.mock_dir, filename)
         if not os.path.exists(file_path):
-            with open(file_path, 'w') as f:
+            with open(file_path, "w") as f:
                 f.write(content)
 
     def start(self):

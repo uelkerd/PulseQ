@@ -1,9 +1,11 @@
 # framework/utilities/wait_utils.py
 
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 import logging
+
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from framework.utilities.logger import setup_logger
 
 # Set up module logger
@@ -168,7 +170,6 @@ class WaitUtils:
             logger.error(error_message)
             raise TimeoutException(error_message)
 
-
     def wait_for_element_visible(self, locator, timeout=None, message=None):
         """
         Enhanced wait for an element to be visible on the page.
@@ -211,6 +212,7 @@ class WaitUtils:
 
             # Take a screenshot to help with debugging
             from framework.utilities.misc_utils import take_screenshot
+
             timestamp = int(time.time())
             screenshot_path = take_screenshot(
                 self.driver, f"element_not_found_{timestamp}.png"
@@ -220,7 +222,9 @@ class WaitUtils:
             # Prepare a more informative error message with page source excerpt
             try:
                 page_source = self.driver.page_source
-                short_source = page_source[:500] + "..." if len(page_source) > 500 else page_source
+                short_source = (
+                    page_source[:500] + "..." if len(page_source) > 500 else page_source
+                )
                 logger.error(f"Page source excerpt: {short_source}")
             except:
                 logger.error("Could not retrieve page source")
@@ -314,6 +318,7 @@ class WaitUtils:
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+
     from framework.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()
