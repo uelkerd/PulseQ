@@ -17,42 +17,42 @@ def main():
     parser.add_argument("--parallel", action="store_true", help="Run tests in parallel")
     parser.add_argument("--browser", default="chrome", help="Browser to use (chrome, firefox)")
     args = parser.parse_args()
-    
+
     # Set up logging
     log_level = logging.DEBUG if args.debug else logging.INFO
     logger = setup_logger("test_runner", level=log_level)
-    
+
     # Set environment variables
     if args.browser:
         os.environ["TEST_BROWSER"] = args.browser
-    
+
     # Load config
     config = load_config()
     logger.info(f"Running tests with configuration: {config}")
-    
+
     # Build pytest args
     pytest_args = [args.test_path]
-    
+
     if args.verbose:
         pytest_args.append("-v")
-    
+
     if args.debug:
         pytest_args.append("--log-cli-level=DEBUG")
-    
+
     if args.allure:
         pytest_args.append("--alluredir=allure-results")
-    
+
     if args.parallel:
         pytest_args.extend(["-n", "auto"])
-    
+
     # Add better test output
     pytest_args.extend(["-v", "--tb=native", "--showlocals"])
-    
+
     logger.info(f"Running pytest with args: {pytest_args}")
-    
+
     # Run tests
     result = pytest.main(pytest_args)
-    
+
     # Generate Allure report if requested
     if args.allure:
         try:
@@ -61,7 +61,7 @@ def main():
             generate_allure_report()
         except Exception as e:
             logger.error(f"Failed to generate Allure report: {e}")
-    
+
     return result
 
 if __name__ == "__main__":

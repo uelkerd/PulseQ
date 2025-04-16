@@ -173,15 +173,15 @@ class WaitUtils:
         """
         Enhanced wait for an element to be visible on the page.
         First waits for presence, then for visibility for a more robust approach.
-        
+
         Args:
             locator: Element locator tuple (By.XX, "value")
             timeout: Custom timeout in seconds (overrides default)
             message: Custom error message for TimeoutException
-            
+
         Returns:
             WebElement: The element once visible
-            
+
         Raises:
             TimeoutException: If element doesn't become visible within timeout
         """
@@ -191,14 +191,14 @@ class WaitUtils:
             if message
             else f"Element {locator} not visible after {wait_timeout} seconds"
         )
-        
+
         try:
             # First, wait for the element to be present in the DOM
             logger.debug(f"Waiting for element {locator} to be present in DOM")
             WebDriverWait(self.driver, wait_timeout).until(
                 EC.presence_of_element_located(locator)
             )
-            
+
             # Then, wait for it to be visible
             logger.debug(f"Waiting for element {locator} to be visible")
             element = WebDriverWait(self.driver, wait_timeout).until(
@@ -208,7 +208,7 @@ class WaitUtils:
             return element
         except TimeoutException:
             logger.error(error_message)
-            
+
             # Take a screenshot to help with debugging
             from framework.utilities.misc_utils import take_screenshot
             timestamp = int(time.time())
@@ -216,7 +216,7 @@ class WaitUtils:
                 self.driver, f"element_not_found_{timestamp}.png"
             )
             logger.error(f"Screenshot saved to: {screenshot_path}")
-            
+
             # Prepare a more informative error message with page source excerpt
             try:
                 page_source = self.driver.page_source
@@ -224,7 +224,7 @@ class WaitUtils:
                 logger.error(f"Page source excerpt: {short_source}")
             except:
                 logger.error("Could not retrieve page source")
-                
+
             raise TimeoutException(error_message)
 
     def wait_for_element_to_disappear(self, locator, timeout=None, message=None):

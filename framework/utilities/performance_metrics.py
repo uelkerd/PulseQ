@@ -21,11 +21,11 @@ class PerformanceMetrics:
     Class for collecting, analyzing, and reporting performance metrics for test execution.
     Supports tracking execution times, resource usage, and historical performance trends.
     """
-    
+
     def __init__(self, metrics_file="metrics/performance_history.json"):
         """
         Initialize the performance metrics handler.
-        
+
         Args:
             metrics_file: Path to the metrics history file
         """
@@ -42,17 +42,17 @@ class PerformanceMetrics:
                 "tests_failed": 0,
             }
         }
-        
+
         # Ensure metrics directory exists
         metrics_dir = os.path.dirname(metrics_file)
         Path(metrics_dir).mkdir(parents=True, exist_ok=True)
-        
+
         logger.debug(f"Initialized performance metrics handler with file: {metrics_file}")
-    
+
     def _get_system_info(self):
         """
         Get system information for context.
-        
+
         Returns:
             dict: System information
         """
@@ -68,11 +68,11 @@ class PerformanceMetrics:
         except Exception as e:
             logger.error(f"Error getting system info: {e}")
             return {"error": "Failed to get system info"}
-    
+
     def get_resource_usage(self):
         """
         Get current resource usage.
-        
+
         Returns:
             dict: Resource usage metrics
         """
@@ -90,19 +90,19 @@ class PerformanceMetrics:
         except Exception as e:
             logger.error(f"Error getting resource usage: {e}")
             return {"error": "Failed to get resource usage"}
-    
+
     def start_test_timer(self, test_name):
         """
         Start timing a test.
-        
+
         Args:
             test_name: Name of the test
-            
+
         Returns:
             float: Start time
         """
         start_time = time.time()
-        
+
         if test_name not in self.current_metrics["tests"]:
             self.current_metrics["tests"][test_name] = {
                 "start_time": start_time,
@@ -111,53 +111,53 @@ class PerformanceMetrics:
                 "result": None,
                 "resource_usage_start": self.get_resource_usage()
             }
-        
+
         logger.debug(f"Started timer for test: {test_name}")
         return start_time
-    
+
     def stop_test_timer(self, test_name, result=True):
         """
         Stop timing a test and record the result.
-        
+
         Args:
             test_name: Name of the test
             result: Test result (True = passed, False = failed)
-            
+
         Returns:
             float: Test duration in seconds
         """
         end_time = time.time()
-        
+
         if test_name in self.current_metrics["tests"]:
             test_data = self.current_metrics["tests"][test_name]
             test_data["end_time"] = end_time
             test_data["result"] = result
-            
+
             # Calculate duration
             if test_data["start_time"]:
                 test_data["duration"] = end_time - test_data["start_time"]
-            
+
             # Record end resource usage
             test_data["resource_usage_end"] = self.get_resource_usage()
-            
+
             # Update summary
             self.current_metrics["execution_summary"]["tests_executed"] += 1
             if result:
                 self.current_metrics["execution_summary"]["tests_passed"] += 1
             else:
                 self.current_metrics["execution_summary"]["tests_failed"] += 1
-            
+
             logger.debug(f"Stopped timer for test: {test_name}, duration: {test_data['duration']:.2f}s, result: {result}")
-            
+
             return test_data["duration"]
         else:
             logger.warning(f"No timer started for test: {test_name}")
             return None
-    
+
     def finalize_metrics(self):
         """
         Finalize metrics after all tests are executed.
-        
+
         Returns:
             dict: Finalized metrics
         """
@@ -167,16 +167,16 @@ class PerformanceMetrics:
         self.current_metrics["execution_summary"]["total_duration"] = (
             end_time - self.current_metrics["execution_summary"]["start_time"]
         )
-        
+
         # Add final resource usage
         self.current_metrics["execution_summary"]["final_resource_usage"] = self.get_resource_usage()
-        
+
         # Calculate statistics
         durations = [
             test_data["duration"] for test_data in self.current_metrics["tests"].values()
             if test_data["duration"] is not None
         ]
-        
+
         if durations:
             self.current_metrics["execution_summary"]["statistics"] = {
                 "min_duration": min(durations),
@@ -185,16 +185,16 @@ class PerformanceMetrics:
                 "median_duration": statistics.median(durations),
                 "total_test_time": sum(durations)
             }
-        
+
         logger.info(f"Finalized metrics: {len(self.current_metrics['tests'])} tests, "
                    f"total duration: {self.current_metrics['execution_summary']['total_duration']:.2f}s")
-        
+
         return self.current_metrics
-    
+
     def save_metrics(self):
         """
         Save current metrics to the history file.
-        
+
         Returns:
             bool: True if saved successfully
         """
@@ -202,7 +202,7 @@ class PerformanceMetrics:
             # Finalize if not already done
             if "end_time" not in self.current_metrics["execution_summary"]:
                 self.finalize_metrics()
-            
+
             # Load existing history if available
             history = []
             if os.path.exists(self.metrics_file):
@@ -212,27 +212,27 @@ class PerformanceMetrics:
                     except json.JSONDecodeError:
                         logger.warning(f"Invalid JSON in metrics file: {self.metrics_file}, starting new history")
                         history = []
-            
+
             # Append current metrics and save
             history.append(self.current_metrics)
-            
+
             with open(self.metrics_file, 'w') as f:
                 json.dump(history, f, indent=2)
-            
+
             logger.info(f"Saved metrics to: {self.metrics_file}")
             return True
-            
+
         except Exception as e:
             logger.error(f"Error saving metrics: {e}")
             return False
-    
+
     def compare_with_history(self, limit=5):
         """
         Compare current metrics with historical data.
-        
+
         Args:
             limit: Number of previous runs to compare with
-            
+
         Returns:
             dict: Comparison results
         """
@@ -240,26 +240,26 @@ class PerformanceMetrics:
             # Ensure we have current metrics
             if "end_time" not in self.current_metrics["execution_summary"]:
                 self.finalize_metrics()
-            
+
             # Load history
             if not os.path.exists(self.metrics_file):
                 return {"error": "No history file found for comparison"}
-            
+
             with open(self.metrics_file, 'r') as f:
                 history = json.load(f)
-            
+
             # Get the last N runs (excluding current run)
             previous_runs = history[-limit-1:-1] if len(history) > 1 else []
-            
+
             if not previous_runs:
                 return {"warning": "No previous runs found for comparison"}
-            
+
             # Calculate averages from previous runs
             prev_durations = [run["execution_summary"]["total_duration"] for run in previous_runs]
             prev_avg_duration = statistics.mean(prev_durations)
-            
+
             current_duration = self.current_metrics["execution_summary"]["total_duration"]
-            
+
             # Calculate improvement
             improvement = {
                 "previous_avg_duration": prev_avg_duration,
@@ -267,7 +267,7 @@ class PerformanceMetrics:
                 "absolute_diff": prev_avg_duration - current_duration,
                 "percent_diff": ((prev_avg_duration - current_duration) / prev_avg_duration) * 100
             }
-            
+
             # Compare individual tests if they exist in both current and previous
             test_comparisons = {}
             for test_name, test_data in self.current_metrics["tests"].items():
@@ -276,7 +276,7 @@ class PerformanceMetrics:
                     run["tests"].get(test_name) for run in previous_runs
                     if test_name in run["tests"]
                 ]
-                
+
                 if prev_test_data:
                     prev_durations = [d["duration"] for d in prev_test_data if d["duration"] is not None]
                     if prev_durations:
@@ -287,43 +287,43 @@ class PerformanceMetrics:
                             "absolute_diff": prev_avg - test_data["duration"],
                             "percent_diff": ((prev_avg - test_data["duration"]) / prev_avg) * 100
                         }
-            
+
             result = {
                 "overall_improvement": improvement,
                 "test_comparisons": test_comparisons,
                 "compared_runs": len(previous_runs)
             }
-            
+
             logger.info(f"Comparison with history: {result['overall_improvement']['percent_diff']:.2f}% "
                        f"difference from previous average")
-            
+
             return result
-            
+
         except Exception as e:
             logger.error(f"Error comparing with history: {e}")
             return {"error": str(e)}
-    
+
     def generate_report(self, output_file="metrics/performance_report.json"):
         """
         Generate a comprehensive performance report.
-        
+
         Args:
             output_file: Path to save the report
-            
+
         Returns:
             dict: Report data
         """
         try:
             # Ensure directories exist
             os.makedirs(os.path.dirname(output_file), exist_ok=True)
-            
+
             # Finalize metrics
             if "end_time" not in self.current_metrics["execution_summary"]:
                 self.finalize_metrics()
-            
+
             # Get historical comparison
             comparison = self.compare_with_history()
-            
+
             # Generate report
             report = {
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -339,14 +339,14 @@ class PerformanceMetrics:
                     "improvement": comparison.get("overall_improvement", {}).get("percent_diff", 0)
                 }
             }
-            
+
             # Save report
             with open(output_file, 'w') as f:
                 json.dump(report, f, indent=2)
-            
+
             logger.info(f"Generated performance report: {output_file}")
             return report
-            
+
         except Exception as e:
             logger.error(f"Error generating report: {e}")
             return {"error": str(e)}
@@ -355,10 +355,10 @@ class PerformanceMetrics:
 def measure_performance(metrics_instance=None):
     """
     Decorator to measure performance of a test function.
-    
+
     Args:
         metrics_instance: Instance of PerformanceMetrics (if None, a new one is created)
-        
+
     Returns:
         function: Decorated function
     """
@@ -369,11 +369,11 @@ def measure_performance(metrics_instance=None):
             nonlocal metrics_instance
             if metrics_instance is None:
                 metrics_instance = PerformanceMetrics()
-            
+
             # Start timer
             test_name = func.__name__
             metrics_instance.start_test_timer(test_name)
-            
+
             # Run the test
             try:
                 result = func(*args, **kwargs)
@@ -384,7 +384,7 @@ def measure_performance(metrics_instance=None):
                 # Stop timer with failure
                 metrics_instance.stop_test_timer(test_name, result=False)
                 raise
-            
+
         return wrapper
     return decorator
 
@@ -392,26 +392,26 @@ def measure_performance(metrics_instance=None):
 if __name__ == "__main__":
     # Create metrics instance
     metrics = PerformanceMetrics()
-    
+
     # Example test functions
     @measure_performance(metrics)
     def test_example_1():
         time.sleep(0.5)
         return True
-    
+
     @measure_performance(metrics)
     def test_example_2():
         time.sleep(1)
         return True
-    
+
     # Run tests
     test_example_1()
     test_example_2()
-    
+
     # Finalize and save metrics
     metrics.finalize_metrics()
     metrics.save_metrics()
-    
+
     # Generate report
     report = metrics.generate_report()
     print(f"Report summary: {report['summary']}")
