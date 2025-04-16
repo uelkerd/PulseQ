@@ -1,7 +1,6 @@
 # framework/page_objects/login_page.py
-
 from selenium.webdriver.common.by import By
-
+from framework.utilities.retry import retry
 
 class LoginPage:
     def __init__(self, driver):
@@ -19,7 +18,9 @@ class LoginPage:
     def click_login(self):
         self.driver.find_element(*self.login_button).click()
 
+    @retry(max_attempts=3, delay=1, backoff=2)
     def login(self, username, password):
+        """Login with retry mechanism for increased reliability."""
         self.enter_username(username)
         self.enter_password(password)
         self.click_login()
