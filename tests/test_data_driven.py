@@ -1,15 +1,17 @@
 # tests/test_data_driven.py
 
-import pytest
-import os
 import json
-from framework.utilities.driver_manager import initialize_driver, quit_driver
-from framework.utilities.wait_utils import WaitUtils
-from framework.utilities.elements_utils import ElementsUtils
-from framework.utilities.data_handler import DataHandler
-from framework.utilities.logger import setup_logger
-from framework.page_objects.login_page import LoginPage
+import os
+
+import pytest
 from selenium.webdriver.common.by import By
+
+from framework.page_objects.login_page import LoginPage
+from framework.utilities.data_handler import DataHandler
+from framework.utilities.driver_manager import initialize_driver, quit_driver
+from framework.utilities.elements_utils import ElementsUtils
+from framework.utilities.logger import setup_logger
+from framework.utilities.wait_utils import WaitUtils
 
 # Set up logger
 logger = setup_logger("test_data_driven")

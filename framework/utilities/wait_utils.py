@@ -1,9 +1,11 @@
 # framework/utilities/wait_utils.py
 
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 import logging
+
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from framework.utilities.logger import setup_logger
 
 # Set up module logger
@@ -288,6 +290,7 @@ class WaitUtils:
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+
     from framework.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()

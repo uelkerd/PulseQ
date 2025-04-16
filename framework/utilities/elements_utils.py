@@ -1,13 +1,15 @@
 # framework/utilities/elements_utils.py
 
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
+import logging
+
 from selenium.common.exceptions import (
     ElementNotInteractableException,
     NoSuchElementException,
 )
-import logging
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+
 from framework.utilities.logger import setup_logger
 from framework.utilities.wait_utils import WaitUtils
 
@@ -370,6 +372,7 @@ class ElementsUtils:
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+
     from framework.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()
