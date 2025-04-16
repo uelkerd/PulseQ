@@ -1,6 +1,5 @@
 # framework/utilities/elements_utils.py
 
-
 from selenium.common.exceptions import (
     ElementNotInteractableException,
     NoSuchElementException,

@@ -162,9 +162,7 @@ class DataHandler:
             raise
 
     @staticmethod
-    def generate_random_string(
-        length=10, include_digits=True, include_special=False
-    ):
+    def generate_random_string(length=10, include_digits=True, include_special=False):
         """
         Generate a random string.
 
@@ -225,9 +223,7 @@ class DataHandler:
         return phone
 
     @staticmethod
-    def generate_random_date(
-        start_date=None, end_date=None, date_format="%Y-%m-%d"
-    ):
+    def generate_random_date(start_date=None, end_date=None, date_format="%Y-%m-%d"):
         """
         Generate a random date between start_date and end_date.
 
