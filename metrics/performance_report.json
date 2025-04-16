@@ -1,0 +1,117 @@
+{
+  "timestamp": "2025-04-17 00:36:08",
+  "current_metrics": {
+    "timestamp": "2025-04-17 00:35:04",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744842917.377741,
+        "end_time": 1744842928.464709,
+        "duration": 11.086967945098877,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 48.375,
+          "memory_percent": 0.295257568359375,
+          "thread_count": 2,
+          "open_files": 10,
+          "total_cpu_percent": 58.0,
+          "total_memory_percent": 82.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 30.53125,
+          "memory_percent": 0.18644332885742188,
+          "thread_count": 2,
+          "open_files": 10,
+          "total_cpu_percent": 31.0,
+          "total_memory_percent": 83.4
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744842930.0093272,
+        "end_time": 1744842968.032202,
+        "duration": 38.02287483215332,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 44.34375,
+          "memory_percent": 0.27065277099609375,
+          "thread_count": 2,
+          "open_files": 10,
+          "total_cpu_percent": 47.4,
+          "total_memory_percent": 83.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 45.0625,
+          "memory_percent": 0.2750396728515625,
+          "thread_count": 2,
+          "open_files": 10,
+          "total_cpu_percent": 31.9,
+          "total_memory_percent": 79.8
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744842904.934332,
+      "total_duration": 63.23029613494873,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744842968.164628,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 46.140625,
+        "memory_percent": 0.2816200256347656,
+        "thread_count": 2,
+        "open_files": 10,
+        "total_cpu_percent": 51.0,
+        "total_memory_percent": 79.1
+      },
+      "statistics": {
+        "min_duration": 11.086967945098877,
+        "max_duration": 38.02287483215332,
+        "avg_duration": 24.5549213886261,
+        "median_duration": 24.5549213886261,
+        "total_test_time": 49.1098427772522
+      }
+    }
+  },
+  "historical_comparison": {
+    "overall_improvement": {
+      "previous_avg_duration": 70.1792631149292,
+      "current_duration": 63.23029613494873,
+      "absolute_diff": 6.948966979980469,
+      "percent_diff": 9.90173830779682
+    },
+    "test_comparisons": {
+      "test_complete_checkout_flow": {
+        "previous_avg": 11.036118745803833,
+        "current": 11.086967945098877,
+        "absolute_diff": -0.050849199295043945,
+        "percent_diff": -0.460752556820557
+      },
+      "test_different_shipping_methods": {
+        "previous_avg": 35.92779588699341,
+        "current": 38.02287483215332,
+        "absolute_diff": -2.095078945159912,
+        "percent_diff": -5.831359518267507
+      }
+    },
+    "compared_runs": 1
+  },
+  "summary": {
+    "total_tests": 4,
+    "pass_rate": 0.0,
+    "total_duration": 63.23029613494873,
+    "improvement": 9.90173830779682
+  }
+}
