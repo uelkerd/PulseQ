@@ -1,17 +1,18 @@
 # framework/utilities/mock_server.py
 import http.server
+import os
 import socketserver
 import threading
-import os
 import time
 from pathlib import Path
 
+
 class MockServer:
     """A simple HTTP server for testing purposes."""
-    
+
     def __init__(self, port=8000, mock_dir="test_mock"):
         """Initialize the mock server.
-        
+
         Args:
             port: Port number to run the server on
             mock_dir: Directory containing mock HTML files
@@ -20,13 +21,13 @@ class MockServer:
         self.mock_dir = mock_dir
         self.server = None
         self.server_thread = None
-        
+
         # Create mock directory if it doesn't exist
         Path(mock_dir).mkdir(exist_ok=True)
-        
+
         # Create basic mock files if they don't exist
         self._create_default_mocks()
-    
+
     def _create_default_mocks(self):
         """Create default mock HTML files if they don't exist."""
         login_html = """
@@ -54,7 +55,7 @@ class MockServer:
         </body>
         </html>
         """
-        
+
         dashboard_html = """
         <!DOCTYPE html>
         <html>
@@ -65,7 +66,7 @@ class MockServer:
         </body>
         </html>
         """
-        
+
         home_html = """
         <!DOCTYPE html>
         <html>
@@ -93,36 +94,36 @@ class MockServer:
         </body>
         </html>
         """
-        
+
         # Write the files if they don't exist
         self._write_mock_file("login.html", login_html)
         self._write_mock_file("dashboard.html", dashboard_html)
         self._write_mock_file("index.html", home_html)
-    
+
     def _write_mock_file(self, filename, content):
         """Write content to a mock file if it doesn't exist."""
         file_path = os.path.join(self.mock_dir, filename)
         if not os.path.exists(file_path):
-            with open(file_path, 'w') as f:
+            with open(file_path, "w") as f:
                 f.write(content)
-    
+
     def start(self):
         """Start the mock server in a separate thread."""
         handler = http.server.SimpleHTTPRequestHandler
-        
+
         # Change to the mock directory
         os.chdir(self.mock_dir)
-        
+
         self.server = socketserver.TCPServer(("", self.port), handler)
         self.server_thread = threading.Thread(target=self.server.serve_forever)
         self.server_thread.daemon = True
         self.server_thread.start()
-        
+
         # Give the server a moment to start
         time.sleep(1)
-        
+
         return f"http://localhost:{self.port}"
-    
+
     def stop(self):
         """Stop the mock server."""
         if self.server:
