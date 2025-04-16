@@ -1,7 +1,9 @@
 # framework/page_objects/login_page.py
 from selenium.webdriver.common.by import By
+
 from pulseq.utilities.retry import retry
 from pulseq.utilities.wait_utils import WaitUtils
+
 
 class LoginPage:
     def __init__(self, driver):

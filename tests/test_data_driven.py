@@ -1,16 +1,18 @@
 # tests/test_data_driven.py
 
-import pytest
-import os
 import json
+import os
 import tempfile
-from pulseq.utilities.driver_manager import initialize_driver, quit_driver
-from pulseq.utilities.wait_utils import WaitUtils
-from pulseq.utilities.elements_utils import ElementsUtils
-from pulseq.utilities.data_handler import DataHandler
-from pulseq.utilities.logger import setup_logger
-from pulseq.page_objects.login_page import LoginPage
+
+import pytest
 from selenium.webdriver.common.by import By
+
+from pulseq.page_objects.login_page import LoginPage
+from pulseq.utilities.data_handler import DataHandler
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
+from pulseq.utilities.elements_utils import ElementsUtils
+from pulseq.utilities.logger import setup_logger
+from pulseq.utilities.wait_utils import WaitUtils
 
 # Set up logger
 logger = setup_logger("test_data_driven")
@@ -215,8 +217,10 @@ def test_login_with_generated_data(driver, mock_html):
     # Set expected results for demonstration
     random_users[0]["expected_result"] = "failure"  # First random user will "fail"
     random_users[1]["expected_result"] = "success"  # Second random user will "succeed"
-    random_users[1]["username"] = "testuser1"      # Make sure second user matches success condition
-    random_users[1]["password"] = "password1"      # in the HTML mock
+    random_users[1]["username"] = (
+        "testuser1"  # Make sure second user matches success condition
+    )
+    random_users[1]["password"] = "password1"  # in the HTML mock
 
     login_page = LoginPage(driver)
     elements_utils = ElementsUtils(driver)

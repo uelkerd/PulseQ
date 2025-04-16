@@ -1,6 +1,6 @@
 # framework/utilities/retry.py
-import time
 import functools
+import time
 
 
 def retry(max_attempts=3, delay=2, backoff=2):

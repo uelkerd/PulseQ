@@ -1,17 +1,19 @@
 # framework/utilities/misc_utils.py
 
-import os
-import time
-import random
-import string
-import re
 import base64
 import logging
+import os
 import platform
+import random
+import re
+import string
 import subprocess
+import time
 from datetime import datetime
 from pathlib import Path
+
 from selenium.webdriver.remote.webdriver import WebDriver
+
 from pulseq.utilities.logger import setup_logger
 
 # Set up module logger
@@ -217,8 +219,8 @@ class MiscUtils:
             ImportError: If required packages are not installed
         """
         try:
-            from PIL import Image
             import numpy as np
+            from PIL import Image
             from skimage.metrics import structural_similarity as ssim
         except ImportError:
             error_msg = (

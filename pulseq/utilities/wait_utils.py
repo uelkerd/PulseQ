@@ -1,9 +1,11 @@
 # framework/utilities/wait_utils.py
 
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 import logging
+
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from pulseq.utilities.logger import setup_logger
 
 # Set up module logger
@@ -138,43 +140,49 @@ class WaitUtils:
     def wait_for_url_contains(self, text, timeout=None, message=None):
         """
         Wait for the URL to contain specific text.
-        
+
         Args:
             text: Text to search for in URL
             timeout: Custom timeout in seconds (overrides default)
             message: Custom error message for TimeoutException
-            
+
         Returns:
             bool: True if condition is met
         """
         wait_timeout = timeout if timeout is not None else self.timeout
-        error_message = message if message else f"URL did not contain '{text}' after {wait_timeout} seconds"
-        
+        error_message = (
+            message
+            if message
+            else f"URL did not contain '{text}' after {wait_timeout} seconds"
+        )
+
         try:
-            return WebDriverWait(self.driver, wait_timeout).until(
-                EC.url_contains(text)
-            )
+            return WebDriverWait(self.driver, wait_timeout).until(EC.url_contains(text))
         except TimeoutException:
             logger.error(error_message)
             current_url = self.driver.current_url
             logger.error(f"Current URL: {current_url}")
             raise TimeoutException(error_message)
-    
+
     def wait_for_title_contains(self, text, timeout=None, message=None):
         """
         Wait for the page title to contain specific text.
-        
+
         Args:
             text: Text to search for in title
             timeout: Custom timeout in seconds (overrides default)
             message: Custom error message for TimeoutException
-            
+
         Returns:
             bool: True if condition is met
         """
         wait_timeout = timeout if timeout is not None else self.timeout
-        error_message = message if message else f"Page title did not contain '{text}' after {wait_timeout} seconds"
-        
+        error_message = (
+            message
+            if message
+            else f"Page title did not contain '{text}' after {wait_timeout} seconds"
+        )
+
         try:
             return WebDriverWait(self.driver, wait_timeout).until(
                 EC.title_contains(text)
@@ -190,15 +198,15 @@ class WaitUtils:
         """
         Enhanced wait for an element to be visible on the page.
         First waits for presence, then for visibility for a more robust approach.
-        
+
         Args:
             locator: Element locator tuple (By.XX, "value")
             timeout: Custom timeout in seconds (overrides default)
             message: Custom error message for TimeoutException
-            
+
         Returns:
             WebElement: The element once visible
-            
+
         Raises:
             TimeoutException: If element doesn't become visible within timeout
         """
@@ -208,14 +216,14 @@ class WaitUtils:
             if message
             else f"Element {locator} not visible after {wait_timeout} seconds"
         )
-        
+
         try:
             # First, wait for the element to be present in the DOM
             logger.debug(f"Waiting for element {locator} to be present in DOM")
             WebDriverWait(self.driver, wait_timeout).until(
                 EC.presence_of_element_located(locator)
             )
-            
+
             # Then, wait for it to be visible
             logger.debug(f"Waiting for element {locator} to be visible")
             element = WebDriverWait(self.driver, wait_timeout).until(
@@ -225,7 +233,7 @@ class WaitUtils:
             return element
         except TimeoutException:
             logger.error(error_message)
-            
+
             # Remove the problematic take_screenshot code
             # Just log the error without taking a screenshot
             logger.error(f"Element not found: {locator}")
@@ -318,6 +326,7 @@ class WaitUtils:
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+
     from pulseq.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()

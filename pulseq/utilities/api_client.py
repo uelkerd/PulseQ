@@ -1,9 +1,11 @@
 # framework/utilities/api_client.py
 
-import requests
 import json
 import logging
 import time
+
+import requests
+
 from pulseq.utilities.logger import setup_logger
 from pulseq.utilities.retry import retry
 
@@ -348,7 +350,7 @@ class APIClient:
         """
         try:
             # Import here to make this dependency optional
-            from jsonschema import validate, ValidationError
+            from jsonschema import ValidationError, validate
 
             try:
                 data = response.json()
