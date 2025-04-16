@@ -1,0 +1,44 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment directory
+venv/
+.env/
+env/
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+
+# Pytest and cache files
+.cache/
+pytest_cache/
+
+# Allure report directories (if generated locally)
+allure-results/
+allure-report/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Optional: Coverage reports and other temporary files
+htmlcov/
+.coverage
+coverage.xml
+
+# Miscellaneous
+*.bak
+*.tmp
