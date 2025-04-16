@@ -1,11 +1,14 @@
 # tests/test_login.py
 
-import pytest
 import os
 import tempfile
+
+import pytest
 from selenium.webdriver.common.by import By
-from framework.utilities.driver_manager import initialize_driver, quit_driver
+
 from framework.page_objects.login_page import LoginPage
+from framework.utilities.driver_manager import initialize_driver, quit_driver
+
 
 @pytest.fixture(scope="function")
 def mock_html():
@@ -33,7 +36,7 @@ def mock_html():
     </body>
     </html>
     """
-    
+
     # Create dashboard.html as well
     dashboard_content = """
     <!DOCTYPE html>
@@ -46,27 +49,28 @@ def mock_html():
     </body>
     </html>
     """
-    
+
     # Create a temporary directory
     temp_dir = tempfile.mkdtemp()
-    
+
     # Create the login HTML file
-    login_path = os.path.join(temp_dir, 'login.html')
-    with open(login_path, 'w') as f:
+    login_path = os.path.join(temp_dir, "login.html")
+    with open(login_path, "w") as f:
         f.write(html_content)
-    
+
     # Create the dashboard HTML file
-    dashboard_path = os.path.join(temp_dir, 'dashboard.html')
-    with open(dashboard_path, 'w') as f:
+    dashboard_path = os.path.join(temp_dir, "dashboard.html")
+    with open(dashboard_path, "w") as f:
         f.write(dashboard_content)
-    
+
     # Return the path to the login file
-    yield 'file://' + login_path
-    
+    yield "file://" + login_path
+
     # Clean up
     os.remove(login_path)
     os.remove(dashboard_path)
     os.rmdir(temp_dir)
+
 
 @pytest.fixture(scope="function")
 def driver():
@@ -74,20 +78,22 @@ def driver():
     yield driver
     quit_driver(driver)
 
+
 def test_valid_login(driver, mock_html):
     # Launch the mock login page
     driver.get(mock_html)
-    
+
     # Use the page object to perform actions
     login_page = LoginPage(driver)
     login_page.login("testuser", "securepassword")
-    
+
     # Wait briefly for the page transition
-    from selenium.webdriver.support.ui import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
-    WebDriverWait(driver, 3).until(
-        EC.title_contains("Dashboard")
-    )
-    
+    from selenium.webdriver.support.ui import WebDriverWait
+
+    WebDriverWait(driver, 3).until(EC.title_contains("Dashboard"))
+
     # Check that we're on the dashboard page
-    assert "dashboard" in driver.current_url.lower(), "User did not navigate to dashboard upon login"
+    assert (
+        "dashboard" in driver.current_url.lower()
+    ), "User did not navigate to dashboard upon login"
