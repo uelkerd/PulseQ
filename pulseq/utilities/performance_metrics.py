@@ -2,6 +2,7 @@
 
 import functools
 import json
+import logging
 import os
 import platform
 import statistics
@@ -364,7 +365,6 @@ class PerformanceMetrics:
             )
 
             return result
-
         except Exception as e:
             logger.error(f"Error comparing with history: {e}")
             return {"error": str(e)}

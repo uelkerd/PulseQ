@@ -1,5 +1,7 @@
 # framework/utilities/wait_utils.py
 
+import logging
+
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
