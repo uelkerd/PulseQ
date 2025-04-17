@@ -1,4 +1,4 @@
-# framework/utilities/assertions.py
+# pulseq/utilities/assertions.py
 
 
 def assert_element_present(element, message="Expected element not found"):

@@ -1,5 +1,6 @@
 # tests/test_retry.py
-from framework.utilities.retry import retry
+
+from pulseq.utilities.retry import retry
 
 attempts_log = []
 

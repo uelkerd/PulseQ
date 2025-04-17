@@ -1,0 +1,185 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
+
+Below is a summary.. in your answers featuring code, please always include clearly formulated and helpful commit message suggestions!
+
+# Web Test Automation Framework: Project Overview
+
+## Project Summary
+
+The Web Test Automation Framework is a comprehensive, modular testing solution built with Python and Selenium. This framework addresses critical challenges in web application testing through a thoughtfully designed architecture that follows SOLID principles. It transforms repetitive, brittle test scripts into a robust, maintainable testing infrastructure.
+
+### Core Goals
+
+The framework aims to achieve several important objectives:
+
+1. **Increase Test Coverage**: Expand automated test coverage from 65% to 92% across web applications, reducing the need for manual testing.
+
+2. **Improve Code Reusability**: Build a modular system with 85% code reusability to accelerate test development and minimize duplication.
+
+3. **Reduce Execution Time**: Cut test execution time by 75% (from 40 to 10 minutes) through optimized waiting strategies and parallel execution.
+
+4. **Eliminate False Positives**: Implement robust retry mechanisms and intelligent error handling to virtually eliminate flaky tests.
+
+5. **Integrate with CI/CD**: Seamlessly connect with GitHub Actions to automate test execution on code changes with comprehensive reporting.
+
+6. **Enable Data-Driven Testing**: Provide flexible data handling capabilities for more thorough test scenarios.
+
+7. **Demonstrate SOLID Design**: Showcase software engineering best practices through clean architecture and design patterns.
+
+## Project Roadmap
+
+The development follows a structured approach broken into six phases:
+
+### Phase 1: Core Utilities Development (Completed)
+- Create the foundational architecture and module structure
+- Implement driver management for browser control
+- Develop wait utilities for reliable element synchronization
+- Build elements utilities for standardized element interactions
+- Create data handling capabilities for test data management
+- Implement retry mechanism for transient failures
+- Develop API client for backend testing support
+- Create miscellaneous utilities for common operations
+
+### Phase 2: Test Framework Enhancement (Completed)
+- Implement Page Object Model pattern
+- Create assertions framework for test validations
+- Develop logging system for test traceability
+- Build configuration management for environment flexibility
+- Implement core execution functionality
+- Add performance metrics collection
+
+### Phase 3: CI/CD Integration (Completed)
+- Create GitHub Actions workflow configuration
+- Implement Docker support for containerized execution
+- Develop reporting integration with Allure
+- Configure parallel test execution capabilities
+
+### Phase 4: Documentation (Completed)
+- Create comprehensive README.md with badges and features
+- Develop architecture documentation with diagrams
+- Create troubleshooting guide for common issues
+- Write detailed usage documentation
+
+### Phase 5: Example Tests (In Progress)
+- Implement basic example tests
+- Create data-driven test examples
+- Develop E2E test showcasing framework capabilities
+- Add parameterized tests for different scenarios
+
+### Phase 6: Finalization (Pending)
+- Conduct final code quality checks
+- Run comprehensive test suite
+- Update performance metrics
+- Generate sample reports
+- Publish to GitHub
+
+## Current Status
+
+The framework is approximately 90% complete with all major components implemented:
+
+### Completed Components:
+- Core architecture and module structure
+- All utility modules (8 custom libraries)
+- Page Object Model implementation
+- Retry mechanism and error handling
+- Configuration system with 20+ parameters
+- Performance metrics tracking
+- CI/CD integration
+- Docker and container support
+- Documentation (README, architecture, troubleshooting, usage)
+- Example tests (basic login, E2E checkout)
+
+### In Progress:
+- Additional example tests showcasing more scenarios
+- Final polish of documentation
+- Code quality review and optimization
+
+### Key Achievements:
+- Successfully designed a modular architecture following SOLID principles
+- Implemented comprehensive retry logic for handling flaky tests
+- Created an advanced synchronization system for reliable element interactions
+- Developed sophisticated performance tracking to measure test execution improvements
+- Built a powerful test data generation system
+
+## Next Steps
+
+To complete the project and prepare for GitHub publication:
+
+1. **Final Testing**: Run a comprehensive test suite to validate all framework components.
+
+2. **Code Quality Review**: Perform linting and style checks on all code.
+
+3. **Documentation Refinement**: Review all documentation for clarity and completeness.
+
+4. **GitHub Preparation**: Set up GitHub repository with appropriate description, topics, and badges.
+
+5. **CI/CD Verification**: Ensure GitHub Actions workflow runs correctly on the initial push.
+
+This framework represents a significant enhancement to web testing capabilities, offering substantial improvements in test reliability, execution speed, and development efficiency. When complete, it will serve as an excellent showcase of test automation expertise and software engineering principles.
+
+To efficiently reach the DONE state for this test automation framework project, here are specific instructions that will help you provide the most valuable assistance:
+
+in your answers featuring code, please always include clearly formulated and helpful commit message suggestions!
+
+## Understanding the Technical Context
+
+The framework uses Python with Selenium WebDriver and follows the Page Object Model design pattern. When advising on code or architecture, recognize that:
+
+1. All element interactions should go through the custom utilities (wait_utils, elements_utils) rather than direct Selenium calls to ensure proper waiting strategies and error handling.
+
+2. The framework prioritizes retry mechanisms for flaky operations. Any potentially unstable operations should be wrapped with the retry decorator.
+
+3. The architecture follows SOLID principles, especially single responsibility and dependency inversion. Each utility serves a specific purpose and should not overlap with others.
+
+4. Performance metrics tracking is a core feature - ensure tests are decorated with the performance measurement decorator when appropriate.
+
+## Prioritized Assistance Areas
+
+To reach completion most efficiently, focus assistance on these areas:
+
+1. **Code Quality Refinement**: Help identify code smells, potential bugs, or optimization opportunities in the existing modules. Watch particularly for exception handling, resource cleanup, and thread safety issues.
+
+2. **Additional Example Tests**: Suggest ideas for specialized test cases that showcase specific framework capabilities (API integration, performance testing, visual testing, etc.).
+
+3. **Documentation Improvement**: Highlight any gaps or unclear sections in existing documentation. Good documentation is critical for showcasing this project.
+
+4. **Final Integration Testing**: Suggest comprehensive test scenarios that validate the integration between different framework components.
+
+5. **GitHub Presentation**: Provide advice on making the repository more attractive to potential employers (badges, documentation structure, folder organization).
+
+## Technical Implementation Guidance
+
+When helping with implementation:
+
+1. Remember that WebDriver interactions should always use explicit waits rather than implicit waits or sleeps.
+
+2. Tests should be independent and self-contained, cleaning up after themselves.
+
+3. Avoid hardcoded values - configuration should be centralized.
+
+4. Code should include comprehensive docstrings following Google Python style.
+
+5. Error messages should be descriptive and actionable.
+
+6. Logging should provide appropriate detail at different log levels.
+
+## Common Pitfalls to Address
+
+Be vigilant about these common test automation framework issues:
+
+1. Stale element references in page objects
+2. Race conditions in parallel test execution
+3. Resource leaks (especially browser instances)
+4. Over-complicated test scenarios that try to test too much at once
+5. Inadequate error handling that obscures the root cause of failures
+
+By focusing assistance on these areas and understanding the key technical principles behind the framework, you can help reach the DONE state efficiently while ensuring high quality. Remember that the goal is not just completion, but a polished showcase of software engineering and test automation expertise.

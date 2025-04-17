@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-04-17 00:36:08",
+  "timestamp": "2025-04-17 00:54:46",
   "current_metrics": {
-    "timestamp": "2025-04-17 00:35:04",
+    "timestamp": "2025-04-17 00:53:24",
     "system_info": {
       "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
       "python_version": "3.13.1",
@@ -12,106 +12,106 @@
     },
     "tests": {
       "test_complete_checkout_flow": {
-        "start_time": 1744842917.377741,
-        "end_time": 1744842928.464709,
-        "duration": 11.086967945098877,
+        "start_time": 1744844037.5068731,
+        "end_time": 1744844048.611706,
+        "duration": 11.104832887649536,
         "result": false,
         "resource_usage_start": {
           "cpu_percent": 0.0,
-          "memory_usage": 48.375,
-          "memory_percent": 0.295257568359375,
+          "memory_usage": 43.828125,
+          "memory_percent": 0.26760101318359375,
           "thread_count": 2,
           "open_files": 10,
-          "total_cpu_percent": 58.0,
-          "total_memory_percent": 82.8
-        },
-        "resource_usage_end": {
-          "cpu_percent": 0.0,
-          "memory_usage": 30.53125,
-          "memory_percent": 0.18644332885742188,
-          "thread_count": 2,
-          "open_files": 10,
-          "total_cpu_percent": 31.0,
-          "total_memory_percent": 83.4
-        }
-      },
-      "test_different_shipping_methods": {
-        "start_time": 1744842930.0093272,
-        "end_time": 1744842968.032202,
-        "duration": 38.02287483215332,
-        "result": false,
-        "resource_usage_start": {
-          "cpu_percent": 0.0,
-          "memory_usage": 44.34375,
-          "memory_percent": 0.27065277099609375,
-          "thread_count": 2,
-          "open_files": 10,
-          "total_cpu_percent": 47.4,
+          "total_cpu_percent": 45.8,
           "total_memory_percent": 83.5
         },
         "resource_usage_end": {
           "cpu_percent": 0.0,
-          "memory_usage": 45.0625,
-          "memory_percent": 0.2750396728515625,
+          "memory_usage": 31.765625,
+          "memory_percent": 0.19407272338867188,
           "thread_count": 2,
           "open_files": 10,
-          "total_cpu_percent": 31.9,
-          "total_memory_percent": 79.8
+          "total_cpu_percent": 34.3,
+          "total_memory_percent": 80.7
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744844050.331234,
+        "end_time": 1744844086.382924,
+        "duration": 36.051690101623535,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 44.25,
+          "memory_percent": 0.27008056640625,
+          "thread_count": 2,
+          "open_files": 10,
+          "total_cpu_percent": 58.7,
+          "total_memory_percent": 80.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 25.390625,
+          "memory_percent": 0.15516281127929688,
+          "thread_count": 2,
+          "open_files": 10,
+          "total_cpu_percent": 41.0,
+          "total_memory_percent": 82.2
         }
       }
     },
     "execution_summary": {
-      "start_time": 1744842904.934332,
-      "total_duration": 63.23029613494873,
+      "start_time": 1744844004.663136,
+      "total_duration": 81.86583399772644,
       "tests_executed": 4,
       "tests_passed": 0,
       "tests_failed": 4,
-      "end_time": 1744842968.164628,
+      "end_time": 1744844086.52897,
       "final_resource_usage": {
         "cpu_percent": 0.0,
-        "memory_usage": 46.140625,
-        "memory_percent": 0.2816200256347656,
+        "memory_usage": 39.09375,
+        "memory_percent": 0.23860931396484375,
         "thread_count": 2,
         "open_files": 10,
-        "total_cpu_percent": 51.0,
-        "total_memory_percent": 79.1
+        "total_cpu_percent": 58.8,
+        "total_memory_percent": 82.1
       },
       "statistics": {
-        "min_duration": 11.086967945098877,
-        "max_duration": 38.02287483215332,
-        "avg_duration": 24.5549213886261,
-        "median_duration": 24.5549213886261,
-        "total_test_time": 49.1098427772522
+        "min_duration": 11.104832887649536,
+        "max_duration": 36.051690101623535,
+        "avg_duration": 23.578261494636536,
+        "median_duration": 23.578261494636536,
+        "total_test_time": 47.15652298927307
       }
     }
   },
   "historical_comparison": {
     "overall_improvement": {
-      "previous_avg_duration": 70.1792631149292,
-      "current_duration": 63.23029613494873,
-      "absolute_diff": 6.948966979980469,
-      "percent_diff": 9.90173830779682
+      "previous_avg_duration": 70.36612900098164,
+      "current_duration": 81.86583399772644,
+      "absolute_diff": -11.499704996744796,
+      "percent_diff": -16.342671054967894
     },
     "test_comparisons": {
       "test_complete_checkout_flow": {
-        "previous_avg": 11.036118745803833,
-        "current": 11.086967945098877,
-        "absolute_diff": -0.050849199295043945,
-        "percent_diff": -0.460752556820557
+        "previous_avg": 11.14819327990214,
+        "current": 11.104832887649536,
+        "absolute_diff": 0.043360392252603575,
+        "percent_diff": 0.3889454655470792
       },
       "test_different_shipping_methods": {
-        "previous_avg": 35.92779588699341,
-        "current": 38.02287483215332,
-        "absolute_diff": -2.095078945159912,
-        "percent_diff": -5.831359518267507
+        "previous_avg": 36.67710129419962,
+        "current": 36.051690101623535,
+        "absolute_diff": 0.6254111925760881,
+        "percent_diff": 1.7051816269760531
       }
     },
-    "compared_runs": 1
+    "compared_runs": 3
   },
   "summary": {
     "total_tests": 4,
     "pass_rate": 0.0,
-    "total_duration": 63.23029613494873,
-    "improvement": 9.90173830779682
+    "total_duration": 81.86583399772644,
+    "improvement": -16.342671054967894
   }
 }

@@ -5,8 +5,8 @@ import time
 
 import requests
 
-from framework.utilities.logger import setup_logger
-from framework.utilities.retry import retry
+from pulseq.utilities.logger import setup_logger
+from pulseq.utilities.retry import retry
 
 # Set up module logger
 logger = setup_logger("api_client")

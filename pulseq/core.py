@@ -7,9 +7,9 @@ from pathlib import Path
 
 import pytest
 
-from framework.config import load_config
-from framework.reporting import generate_allure_report
-from framework.utilities.logger import setup_logger
+from pulseq.config import load_config
+from pulseq.reporting import generate_allure_report
+from pulseq.utilities.logger import setup_logger
 
 # Set up module logger
 logger = setup_logger("core")

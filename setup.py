@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="web-test-automation-framework",
+    name="pulseq",
     version="1.0.0",
     author="Your Name",
     author_email="your.email@example.com",
@@ -51,7 +51,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "web-test=framework.core:main",
+            "pulseq=pulseq.core:main",
         ],
     },
 )
