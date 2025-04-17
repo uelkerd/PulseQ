@@ -3,19 +3,14 @@
 import json
 import os
 import tempfile
-from datetime import datetime
 
 import allure
 import pytest
 from selenium.webdriver.common.by import By
-
-from pulseq.config import load_config
-from pulseq.page_objects.login_page import LoginPage
 from pulseq.utilities.data_handler import DataHandler
 from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 from pulseq.utilities.elements_utils import ElementsUtils
 from pulseq.utilities.logger import setup_logger
-from pulseq.utilities.misc_utils import MiscUtils
 from pulseq.utilities.performance_metrics import PerformanceMetrics, measure_performance
 from pulseq.utilities.wait_utils import WaitUtils
 
