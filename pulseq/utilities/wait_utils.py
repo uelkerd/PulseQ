@@ -143,22 +143,24 @@ class WaitUtils:
     def wait_for_url_contains(self, text, timeout=None, message=None):
         """
         Wait for the URL to contain specific text.
-        
+
         Args:
             text: Text to search for in URL
             timeout: Custom timeout in seconds (overrides default)
             message: Custom error message for TimeoutException
-            
+
         Returns:
             bool: True if condition is met
         """
         wait_timeout = timeout if timeout is not None else self.timeout
-        error_message = message if message else f"URL did not contain '{text}' after {wait_timeout} seconds"
-        
+        error_message = (
+            message
+            if message
+            else f"URL did not contain '{text}' after {wait_timeout} seconds"
+        )
+
         try:
-            return WebDriverWait(self.driver, wait_timeout).until(
-                EC.url_contains(text)
-            )
+            return WebDriverWait(self.driver, wait_timeout).until(EC.url_contains(text))
         except TimeoutException:
             logger.error(error_message)
             current_url = self.driver.current_url
@@ -204,7 +206,7 @@ class WaitUtils:
             return element
         except TimeoutException:
             logger.error(error_message)
-            
+
             # Remove the problematic take_screenshot code
             # Just log the error without taking a screenshot
             logger.error(f"Element not found: {locator}")
@@ -297,6 +299,7 @@ class WaitUtils:
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+
     from pulseq.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()

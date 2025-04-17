@@ -216,8 +216,10 @@ def test_login_with_generated_data(driver, mock_html):
     # Set expected results for demonstration
     random_users[0]["expected_result"] = "failure"  # First random user will "fail"
     random_users[1]["expected_result"] = "success"  # Second random user will "succeed"
-    random_users[1]["username"] = "testuser1"      # Make sure second user matches success condition
-    random_users[1]["password"] = "password1"      # in the HTML mock
+    random_users[1]["username"] = (
+        "testuser1"  # Make sure second user matches success condition
+    )
+    random_users[1]["password"] = "password1"  # in the HTML mock
 
     login_page = LoginPage(driver)
     elements_utils = ElementsUtils(driver)

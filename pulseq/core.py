@@ -8,9 +8,9 @@ from pathlib import Path
 import pytest
 
 from pulseq.config import load_config
-from pulseq.utilities.logger import setup_logger
 from pulseq.reporting import generate_allure_report
 from pulseq.utilities.driver_manager import initialize_driver, quit_driver
+from pulseq.utilities.logger import setup_logger
 
 # Set up module logger
 logger = setup_logger("core")

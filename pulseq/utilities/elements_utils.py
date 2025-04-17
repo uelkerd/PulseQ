@@ -350,7 +350,7 @@ class ElementsUtils:
     def scroll_to_element(self, locator, timeout=None):
         """
         Scroll the page to bring an element into view.
-        
+
         Args:
             locator: Element locator tuple (By.XX, "value")
             timeout: Custom timeout in seconds (overrides default)
@@ -365,13 +365,19 @@ class ElementsUtils:
             # Try to find the element directly first
             try:
                 element = self.driver.find_element(*locator)
-                self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+                self.driver.execute_script(
+                    "arguments[0].scrollIntoView(true);", element
+                )
                 logger.debug(f"Scrolled to element {locator}")
                 return element
             except Exception:
                 # If direct find fails, try with waiting
-                element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
-                self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+                element = self.wait_utils.wait_for_element_visible(
+                    locator, wait_timeout
+                )
+                self.driver.execute_script(
+                    "arguments[0].scrollIntoView(true);", element
+                )
                 logger.debug(f"Scrolled to element {locator} after waiting")
                 return element
         except Exception as e:
@@ -384,6 +390,7 @@ class ElementsUtils:
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+
     from pulseq.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()

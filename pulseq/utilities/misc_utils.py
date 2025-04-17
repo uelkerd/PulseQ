@@ -12,6 +12,7 @@ from datetime import datetime
 from pathlib import Path
 
 from selenium.webdriver.remote.webdriver import WebDriver
+
 from pulseq.utilities.logger import setup_logger
 
 # Set up module logger

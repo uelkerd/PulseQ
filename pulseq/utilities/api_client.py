@@ -2,8 +2,9 @@
 
 import json
 import logging
-import requests
 from typing import Dict, Optional, Union
+
+import requests
 
 from pulseq.utilities.retry import retry
 
@@ -47,7 +48,10 @@ class APIClient:
             raise
 
     def get(
-        self, endpoint: str, params: Optional[Dict] = None, headers: Optional[Dict] = None
+        self,
+        endpoint: str,
+        params: Optional[Dict] = None,
+        headers: Optional[Dict] = None,
     ) -> Dict:
         """Make a GET request."""
         return self.request("GET", endpoint, params=params, headers=headers)
@@ -73,7 +77,10 @@ class APIClient:
         return self.request("PUT", endpoint, data=data, params=params, headers=headers)
 
     def delete(
-        self, endpoint: str, params: Optional[Dict] = None, headers: Optional[Dict] = None
+        self,
+        endpoint: str,
+        params: Optional[Dict] = None,
+        headers: Optional[Dict] = None,
     ) -> Dict:
         """Make a DELETE request."""
         return self.request("DELETE", endpoint, params=params, headers=headers)

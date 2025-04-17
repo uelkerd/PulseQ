@@ -65,6 +65,7 @@ with open("test_data/shipping.json", "w") as f:
 with open("test_data/user.json", "w") as f:
     json.dump(USER_DATA, f, indent=2)
 
+
 # Page objects as embedded classes for this example
 # In a real project, these would be in separate files
 class HomePage:
@@ -88,11 +89,14 @@ class HomePage:
 
     def add_product_to_cart(self, product_id):
         """Add a product to the cart by ID."""
-        product_selector = (By.CSS_SELECTOR, f".product-card[data-product-id='{product_id}']")
-        
+        product_selector = (
+            By.CSS_SELECTOR,
+            f".product-card[data-product-id='{product_id}']",
+        )
+
         # First wait for the element to be present before scrolling
         self.wait_utils.wait_for_element_visible(product_selector)
-        
+
         # Now we know the element exists, so scroll to it
         self.elements_utils.scroll_to_element(product_selector)
 
@@ -296,68 +300,76 @@ def test_complete_checkout_flow(driver, mock_ecommerce_site, config):
     """
     # Create page objects
     home_page = HomePage(driver)
-    
+
     # Step 1: Navigate to home page and add products to cart
     home_page.open(mock_ecommerce_site)
-    
+
     # Adding products to cart
     for product in PRODUCTS:
         home_page.add_product_to_cart(product["id"])
-    
+
     # Step 2: Go to cart and verify products
     cart_page = home_page.go_to_cart()
-    
+
     # Update quantities if needed
     for product in PRODUCTS:
         if product["quantity"] > 1:
             cart_page.update_product_quantity(product["id"], product["quantity"])
-    
+
     # Get cart total
     cart_total = cart_page.get_cart_total()
-    
+
     # Calculate expected total
     expected_cart_total = sum(p["price"] * p["quantity"] for p in PRODUCTS)
-    
+
     # Verify cart total
-    assert abs(cart_total - expected_cart_total) < 0.01, f"Cart total {cart_total} does not match expected {expected_cart_total}"
-    
+    assert (
+        abs(cart_total - expected_cart_total) < 0.01
+    ), f"Cart total {cart_total} does not match expected {expected_cart_total}"
+
     # Step 3: Proceed to checkout
     checkout_page = cart_page.proceed_to_checkout()
-    
+
     # Step 4: Fill shipping information
     checkout_page.fill_shipping_information(USER_DATA)
-    
+
     # Step 5: Select shipping method
     # For this test, choose express shipping (id=2)
     shipping_id = 2
-    shipping_method = next((s for s in SHIPPING_METHODS if s["id"] == shipping_id), None)
+    shipping_method = next(
+        (s for s in SHIPPING_METHODS if s["id"] == shipping_id), None
+    )
     checkout_page.select_shipping_method(shipping_id)
-    
+
     # Get order total after shipping method selection
     order_total = checkout_page.get_order_total()
-    
+
     # Calculate expected total (products + shipping)
     expected_order_total = expected_cart_total + shipping_method["price"]
-    
+
     # Verify order total
     assert abs(order_total - expected_order_total) < 0.01, (
         f"Order total {order_total} does not match expected {expected_order_total} "
         f"with shipping method {shipping_method['name']}"
     )
-    
+
     # Step 6: Fill payment information
     checkout_page.fill_payment_information(USER_DATA)
-    
+
     # Step 7: Place order
     confirmation_page = checkout_page.place_order()
-    
+
     # Step 8: Verify order confirmation
-    assert confirmation_page.is_confirmation_displayed(), "Order confirmation should be displayed"
-    
+    assert (
+        confirmation_page.is_confirmation_displayed()
+    ), "Order confirmation should be displayed"
+
     # Get and verify order number format
     order_number = confirmation_page.get_order_number()
-    assert order_number is not None and len(order_number) > 0, "Order number should be present"
-    
+    assert (
+        order_number is not None and len(order_number) > 0
+    ), "Order number should be present"
+
     # Log test completion with order number
     logger.info(f"E2E test completed successfully. Order number: {order_number}")
 
@@ -372,56 +384,66 @@ def test_different_shipping_methods(driver, mock_ecommerce_site, shipping_id):
     This is parameterized to test all available shipping methods.
     """
     # Get the shipping method details for this test
-    shipping_method = next((s for s in SHIPPING_METHODS if s["id"] == shipping_id), None)
-    assert shipping_method is not None, f"Shipping method with ID {shipping_id} not found in test data"
-    
+    shipping_method = next(
+        (s for s in SHIPPING_METHODS if s["id"] == shipping_id), None
+    )
+    assert (
+        shipping_method is not None
+    ), f"Shipping method with ID {shipping_id} not found in test data"
+
     # Create page objects
     home_page = HomePage(driver)
-    
+
     # Step 1: Navigate to home page and add all products to cart
     home_page.open(mock_ecommerce_site)
-    
+
     # Adding all products to cart
     for product in PRODUCTS:
         home_page.add_product_to_cart(product["id"])
-    
+
     # Step 2: Go to cart
     cart_page = home_page.go_to_cart()
-    
+
     # Update quantities if needed
     for product in PRODUCTS:
         if product["quantity"] > 1:
             cart_page.update_product_quantity(product["id"], product["quantity"])
-    
+
     # Step 3: Proceed to checkout
     checkout_page = cart_page.proceed_to_checkout()
-    
+
     # Step 4: Fill shipping information
     checkout_page.fill_shipping_information(USER_DATA)
-    
+
     # Step 5: Select the specified shipping method
     checkout_page.select_shipping_method(shipping_id)
-    
+
     # Get order total after shipping method selection
     order_total = checkout_page.get_order_total()
-    
+
     # Calculate expected total (all products + shipping)
-    expected_total = sum(p["price"] * p["quantity"] for p in PRODUCTS) + shipping_method["price"]
-    
+    expected_total = (
+        sum(p["price"] * p["quantity"] for p in PRODUCTS) + shipping_method["price"]
+    )
+
     # Verify total includes correct shipping cost
     assert abs(order_total - expected_total) < 0.01, (
         f"Order total {order_total} does not match expected {expected_total} "
         f"with shipping method {shipping_method['name']}"
     )
-    
+
     # Fill payment and complete order
     checkout_page.fill_payment_information(USER_DATA)
     confirmation_page = checkout_page.place_order()
-    
+
     # Verify order completion
-    assert confirmation_page.is_confirmation_displayed(), "Order confirmation should be displayed"
-    
-    logger.info(f"Successfully completed checkout with shipping method: {shipping_method['name']}")
+    assert (
+        confirmation_page.is_confirmation_displayed()
+    ), "Order confirmation should be displayed"
+
+    logger.info(
+        f"Successfully completed checkout with shipping method: {shipping_method['name']}"
+    )
 
 
 # When all tests complete, save the metrics
@@ -430,15 +452,15 @@ def teardown_module(module):
     # Save metrics to file
     metrics_path = os.path.join("metrics", "checkout_metrics.json")
     os.makedirs("metrics", exist_ok=True)
-    
+
     metrics_data = {
         "timestamp": datetime.now().isoformat(),
         "test_execution_time": metrics.get_average_execution_time(),
         "tests_executed": metrics.get_test_count(),
-        "performance_by_test": metrics.get_metrics_by_test()
+        "performance_by_test": metrics.get_metrics_by_test(),
     }
-    
+
     with open(metrics_path, "w") as f:
         json.dump(metrics_data, f, indent=2)
-    
+
     logger.info(f"Test metrics saved to {metrics_path}")
