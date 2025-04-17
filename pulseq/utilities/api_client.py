@@ -111,13 +111,17 @@ class APIClient:
                     # Truncate large responses to avoid excessive logging
                     content_str = str(content)
                     if len(content_str) > 1000:
-                        logger.debug(f"Response Body (truncated): {content_str[:1000]}...")
+                        logger.debug(
+                            f"Response Body (truncated): {content_str[:1000]}..."
+                        )
                     else:
                         logger.debug(f"Response Body: {content}")
                 except json.JSONDecodeError:
                     # If not JSON, log as text
                     if len(response.text) > 1000:
-                        logger.debug(f"Response Body (truncated): {response.text[:1000]}...")
+                        logger.debug(
+                            f"Response Body (truncated): {response.text[:1000]}..."
+                        )
                     else:
                         logger.debug(f"Response Body: {response.text}")
         except Exception as e:
@@ -320,7 +324,7 @@ class APIClient:
             json.JSONDecodeError: If response is not valid JSON
         """
         try:
-            from jsonschema import validate, ValidationError
+            from jsonschema import ValidationError, validate
         except ImportError:
             error_msg = (
                 "JSON schema validation requires jsonschema package. "
