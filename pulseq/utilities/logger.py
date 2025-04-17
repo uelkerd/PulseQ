@@ -3,7 +3,7 @@
 import logging
 
 
-def setup_logger(name=__name__, log_file="framework.log", level=logging.DEBUG):
+def setup_logger(name=__name__, log_file="pulseq.log", level=logging.DEBUG):
     """Set up a logger for the application."""
     formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
     logger = logging.getLogger(name)
