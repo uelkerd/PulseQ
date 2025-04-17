@@ -76,6 +76,7 @@ test-automation-framework/
    ```
 
 3. **Install dependencies:**
+
    ```bash
    pip install -e .
    ```
