@@ -382,8 +382,7 @@ class ElementsUtils:
                 return element
         except Exception as e:
             logger.error(f"Error scrolling to element {locator}: {e}")
-            # Don't raise, just log the error and continue
-            return None
+            raise
 
 
 # Example usage
