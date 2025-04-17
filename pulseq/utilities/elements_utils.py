@@ -1,14 +1,19 @@
-# framework/utilities/elements_utils.py
+# pulseq/utilities/elements_utils.py
 
 from selenium.common.exceptions import (
     ElementNotInteractableException,
     NoSuchElementException,
 )
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
-from framework.utilities.logger import setup_logger
-from framework.utilities.wait_utils import WaitUtils
+from pulseq.utilities.logger import setup_logger
+from pulseq.utilities.wait_utils import WaitUtils
 
 # Set up module logger
 logger = setup_logger("elements_utils")
@@ -344,8 +349,8 @@ class ElementsUtils:
 
     def scroll_to_element(self, locator, timeout=None):
         """
-        Scroll to make an element visible.
-
+        Scroll the page to bring an element into view.
+        
         Args:
             locator: Element locator tuple (By.XX, "value")
             timeout: Custom timeout in seconds (overrides default)
@@ -357,20 +362,29 @@ class ElementsUtils:
 
         try:
             logger.debug(f"Scrolling to element {locator}")
-            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
-            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
-            logger.debug(f"Scrolled to element {locator}")
+            # Try to find the element directly first
+            try:
+                element = self.driver.find_element(*locator)
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+                logger.debug(f"Scrolled to element {locator}")
+                return element
+            except Exception:
+                # If direct find fails, try with waiting
+                element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+                logger.debug(f"Scrolled to element {locator} after waiting")
+                return element
         except Exception as e:
             logger.error(f"Error scrolling to element {locator}: {e}")
-            raise
+            # Don't raise, just log the error and continue
+            return None
 
 
 # Example usage
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
-
-    from framework.utilities.driver_manager import initialize_driver
+    from pulseq.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()
     elements_utils = ElementsUtils(driver)

@@ -1,7 +1,7 @@
-# framework/page_objects/login_page.py
+# pulseq/page_objects/login_page.py
 from selenium.webdriver.common.by import By
 
-from framework.utilities.retry import retry
+from pulseq.utilities.retry import retry
 
 
 class LoginPage:

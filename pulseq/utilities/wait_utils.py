@@ -1,10 +1,15 @@
-# framework/utilities/wait_utils.py
+# pulseq/utilities/wait_utils.py
+
+import time
+from typing import Any, Callable, List, Optional, Tuple, Union
 
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from framework.utilities.logger import setup_logger
+from pulseq.utilities.logger import setup_logger
+from pulseq.utilities.misc_utils import MiscUtils
 
 # Set up module logger
 logger = setup_logger("wait_utils")
@@ -135,37 +140,29 @@ class WaitUtils:
             logger.error(error_message)
             raise TimeoutException(error_message)
 
-    def wait_for_url_contains(self, partial_url, timeout=None, message=None):
+    def wait_for_url_contains(self, text, timeout=None, message=None):
         """
-        Wait for the URL to contain a specific string.
-
+        Wait for the URL to contain specific text.
+        
         Args:
-            partial_url: Part of the URL to wait for
+            text: Text to search for in URL
             timeout: Custom timeout in seconds (overrides default)
             message: Custom error message for TimeoutException
-
+            
         Returns:
-            bool: True if URL contains the string
-
-        Raises:
-            TimeoutException: If URL doesn't contain the string within timeout
+            bool: True if condition is met
         """
         wait_timeout = timeout if timeout is not None else self.timeout
-        error_message = (
-            message
-            if message
-            else f"URL does not contain '{partial_url}' after {wait_timeout} seconds"
-        )
-
+        error_message = message if message else f"URL did not contain '{text}' after {wait_timeout} seconds"
+        
         try:
-            logger.debug(f"Waiting for URL to contain '{partial_url}'")
-            result = WebDriverWait(self.driver, wait_timeout).until(
-                EC.url_contains(partial_url)
+            return WebDriverWait(self.driver, wait_timeout).until(
+                EC.url_contains(text)
             )
-            logger.debug(f"URL now contains '{partial_url}'")
-            return result
         except TimeoutException:
             logger.error(error_message)
+            current_url = self.driver.current_url
+            logger.error(f"Current URL: {current_url}")
             raise TimeoutException(error_message)
 
     def wait_for_element_visible(self, locator, timeout=None, message=None):
@@ -207,27 +204,11 @@ class WaitUtils:
             return element
         except TimeoutException:
             logger.error(error_message)
-
-            # Take a screenshot to help with debugging
-            from framework.utilities.misc_utils import take_screenshot
-
-            timestamp = int(time.time())
-            screenshot_path = take_screenshot(
-                self.driver, f"element_not_found_{timestamp}.png"
-            )
-            logger.error(f"Screenshot saved to: {screenshot_path}")
-
-            # Prepare a more informative error message with page source excerpt
-            try:
-                page_source = self.driver.page_source
-                short_source = (
-                    page_source[:500] + "..." if len(page_source) > 500 else page_source
-                )
-                logger.error(f"Page source excerpt: {short_source}")
-            except:
-                logger.error("Could not retrieve page source")
-
-            raise TimeoutException(error_message)
+            
+            # Remove the problematic take_screenshot code
+            # Just log the error without taking a screenshot
+            logger.error(f"Element not found: {locator}")
+            raise
 
     def wait_for_element_to_disappear(self, locator, timeout=None, message=None):
         """
@@ -316,8 +297,7 @@ class WaitUtils:
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
-
-    from framework.utilities.driver_manager import initialize_driver
+    from pulseq.utilities.driver_manager import initialize_driver
 
     driver = initialize_driver()
     wait_utils = WaitUtils(driver)

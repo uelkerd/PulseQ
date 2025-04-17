@@ -1,4 +1,4 @@
-# framework/utilities/performance_metrics.py
+# pulseq/utilities/performance_metrics.py
 
 import functools
 import json
@@ -7,11 +7,13 @@ import platform
 import statistics
 import time
 from datetime import datetime
+from functools import wraps
 from pathlib import Path
+from typing import Dict, List, Optional
 
 import psutil
 
-from framework.utilities.logger import setup_logger
+from pulseq.utilities.logger import setup_logger
 
 # Set up module logger
 logger = setup_logger("performance_metrics")
@@ -211,7 +213,7 @@ class PerformanceMetrics:
             bool: True if saved successfully
         """
         try:
-            # Finalize if not already done
+            # Ensure we have finalized metrics
             if "end_time" not in self.current_metrics["execution_summary"]:
                 self.finalize_metrics()
 

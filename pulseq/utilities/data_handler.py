@@ -1,4 +1,4 @@
-# framework/utilities/data_handler.py
+# pulseq/utilities/data_handler.py
 
 import csv
 import datetime
@@ -7,8 +7,7 @@ import os
 import random
 import string
 from pathlib import Path
-
-from framework.utilities.logger import setup_logger
+from pulseq.utilities.logger import setup_logger
 
 # Set up module logger
 logger = setup_logger("data_handler")

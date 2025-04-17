@@ -2,23 +2,22 @@
 
 import json
 import os
+import tempfile
 from datetime import datetime
 
 import allure
 import pytest
 from selenium.webdriver.common.by import By
 
-from framework.config import load_config
-from framework.utilities.data_handler import DataHandler
-from framework.utilities.driver_manager import initialize_driver, quit_driver
-from framework.utilities.elements_utils import ElementsUtils
-from framework.utilities.logger import setup_logger
-from framework.utilities.misc_utils import MiscUtils
-from framework.utilities.performance_metrics import (
-    PerformanceMetrics,
-    measure_performance,
-)
-from framework.utilities.wait_utils import WaitUtils
+from pulseq.config import load_config
+from pulseq.page_objects.login_page import LoginPage
+from pulseq.utilities.data_handler import DataHandler
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
+from pulseq.utilities.elements_utils import ElementsUtils
+from pulseq.utilities.logger import setup_logger
+from pulseq.utilities.misc_utils import MiscUtils
+from pulseq.utilities.performance_metrics import PerformanceMetrics, measure_performance
+from pulseq.utilities.wait_utils import WaitUtils
 
 # Set up logger
 logger = setup_logger("test_e2e_checkout")
@@ -66,7 +65,6 @@ with open("test_data/shipping.json", "w") as f:
 with open("test_data/user.json", "w") as f:
     json.dump(USER_DATA, f, indent=2)
 
-
 # Page objects as embedded classes for this example
 # In a real project, these would be in separate files
 class HomePage:
@@ -81,19 +79,21 @@ class HomePage:
         self.cart_icon = (By.ID, "cart-icon")
         self.cart_count = (By.CSS_SELECTOR, ".cart-count")
 
-    def open(self):
+    def open(self, base_url):
         """Navigate to the home page."""
-        self.driver.get("http://example.com")
+        self.driver.get(base_url + "index.html")
         self.wait_utils.wait_for_element_visible((By.TAG_NAME, "h1"))
         logger.info("Opened home page")
         return self
 
     def add_product_to_cart(self, product_id):
         """Add a product to the cart by ID."""
-        product_selector = (
-            By.CSS_SELECTOR,
-            f".product-card[data-product-id='{product_id}']",
-        )
+        product_selector = (By.CSS_SELECTOR, f".product-card[data-product-id='{product_id}']")
+        
+        # First wait for the element to be present before scrolling
+        self.wait_utils.wait_for_element_visible(product_selector)
+        
+        # Now we know the element exists, so scroll to it
         self.elements_utils.scroll_to_element(product_selector)
 
         add_button = (
@@ -110,7 +110,7 @@ class HomePage:
     def go_to_cart(self):
         """Navigate to the shopping cart."""
         self.elements_utils.click_element(self.cart_icon)
-        self.wait_utils.wait_for_url_contains("cart")
+        self.wait_utils.wait_for_title_contains("Shopping Cart")
         logger.info("Navigated to cart page")
         return CartPage(self.driver)
 
@@ -158,7 +158,7 @@ class CartPage:
     def proceed_to_checkout(self):
         """Proceed to checkout page."""
         self.elements_utils.click_element(self.checkout_button)
-        self.wait_utils.wait_for_url_contains("checkout")
+        self.wait_utils.wait_for_title_contains("Checkout")
         logger.info("Proceeded to checkout page")
         return CheckoutPage(self.driver)
 
@@ -234,14 +234,14 @@ class CheckoutPage:
         return self
 
     def place_order(self):
-        """Place the order and proceed to confirmation."""
+        """Place the order and complete checkout."""
         self.elements_utils.click_element(self.place_order_button)
-        self.wait_utils.wait_for_url_contains("confirmation")
-        logger.info("Placed order successfully")
+        self.wait_utils.wait_for_title_contains("Confirmation")
+        logger.info("Placed order")
         return ConfirmationPage(self.driver)
 
     def get_order_total(self):
-        """Get the order total from the summary."""
+        """Get the order total price."""
         total_text = self.elements_utils.get_text(self.order_total)
         # Extract numeric value from text
         total = float("".join(c for c in total_text if c.isdigit() or c == "."))
@@ -256,43 +256,32 @@ class ConfirmationPage:
         self.wait_utils = WaitUtils(driver)
 
         # Locators
-        self.confirmation_message = (By.CSS_SELECTOR, ".confirmation-message")
+        self.confirmation_message = (By.CLASS_NAME, "confirmation-message")
         self.order_number = (By.ID, "order-number")
-        self.order_details = (By.ID, "order-details")
+        self.order_details = (By.CLASS_NAME, "order-details")
 
     def get_order_number(self):
         """Get the order number from confirmation page."""
-        order_text = self.elements_utils.get_text(self.order_number)
-        # Extract order number using regex
-        import re
-
-        match = re.search(r"#(\w+)", order_text)
-        order_number = match.group(1) if match else None
-        logger.info(f"Order number: {order_number}")
-        return order_number
+        order_number_text = self.elements_utils.get_text(self.order_number)
+        logger.info(f"Order number: {order_number_text}")
+        return order_number_text
 
     def is_confirmation_displayed(self):
-        """Check if confirmation message is displayed."""
-        is_displayed = self.elements_utils.is_element_displayed(
-            self.confirmation_message
-        )
+        """Check if the confirmation message is displayed."""
+        is_displayed = self.elements_utils.is_element_present(self.confirmation_message)
         logger.info(f"Confirmation message displayed: {is_displayed}")
         return is_displayed
 
 
 @pytest.fixture(scope="function")
 def driver():
-    """Fixture to initialize and quit the WebDriver for each test."""
     driver = initialize_driver(headless=True)
-    logger.info("WebDriver initialized")
     yield driver
     quit_driver(driver)
-    logger.info("WebDriver closed")
 
 
 @pytest.fixture(scope="module")
 def config():
-    """Fixture to load configuration."""
     return load_config()
 
 
@@ -300,216 +289,156 @@ def config():
 @allure.story("End-to-End Checkout Process")
 @allure.severity(allure.severity_level.CRITICAL)
 @measure_performance(metrics)
-def test_complete_checkout_flow(driver, config):
+def test_complete_checkout_flow(driver, mock_ecommerce_site, config):
     """
-    Test the complete checkout flow from product selection to order confirmation.
-
-    This test demonstrates the full capabilities of the framework including:
-    - Page object pattern
-    - Data-driven testing
-    - Allure reporting
-    - Performance metrics
-    - Modular utilities
+    Test the complete checkout flow from adding products to cart to order confirmation.
+    This is a critical end-to-end test that validates the entire purchase flow.
     """
-    try:
-        # Initialize a data handler and load test data
-        data_handler = DataHandler()
-        products = data_handler.load_json_data("products.json")
-        shipping_methods = data_handler.load_json_data("shipping.json")
-        user_data = data_handler.load_json_data("user.json")
-
-        # Step 1: Navigate to the home page and add products to cart
-        with allure.step("Navigate to homepage and add products to cart"):
-            home_page = HomePage(driver).open()
-
-            # Add each product to the cart
-            for product in products:
-                home_page.add_product_to_cart(product["id"])
-
-            # Take a screenshot for the report
-            screenshot_path = MiscUtils.take_screenshot(driver, "products_added.png")
-            allure.attach.file(
-                screenshot_path,
-                name="Products Added",
-                attachment_type=allure.attachment_type.PNG,
-            )
-
-        # Step 2: Go to cart and update quantities
-        with allure.step("Review cart and update quantities"):
-            cart_page = home_page.go_to_cart()
-
-            # Update quantities for each product
-            for product in products:
-                cart_page.update_product_quantity(product["id"], product["quantity"])
-
-            # Verify cart total
-            expected_total = sum(p["price"] * p["quantity"] for p in products)
-            actual_total = cart_page.get_cart_total()
-
-            assert (
-                abs(actual_total - expected_total) < 0.01
-            ), f"Cart total {actual_total} does not match expected {expected_total}"
-
-            screenshot_path = MiscUtils.take_screenshot(driver, "cart_updated.png")
-            allure.attach.file(
-                screenshot_path,
-                name="Cart Updated",
-                attachment_type=allure.attachment_type.PNG,
-            )
-
-        # Step 3: Proceed to checkout and fill shipping information
-        with allure.step("Proceed to checkout and fill shipping information"):
-            checkout_page = cart_page.proceed_to_checkout()
-            checkout_page.fill_shipping_information(user_data)
-
-            screenshot_path = MiscUtils.take_screenshot(driver, "shipping_info.png")
-            allure.attach.file(
-                screenshot_path,
-                name="Shipping Information",
-                attachment_type=allure.attachment_type.PNG,
-            )
-
-        # Step 4: Select shipping method
-        with allure.step("Select shipping method"):
-            # Choose Express shipping (ID 2)
-            shipping_id = 2
-            selected_shipping = next(
-                (s for s in shipping_methods if s["id"] == shipping_id), None
-            )
-            checkout_page.select_shipping_method(shipping_id)
-
-            screenshot_path = MiscUtils.take_screenshot(driver, "shipping_method.png")
-            allure.attach.file(
-                screenshot_path,
-                name="Shipping Method Selected",
-                attachment_type=allure.attachment_type.PNG,
-            )
-
-        # Step 5: Fill payment information and place order
-        with allure.step("Fill payment information and place order"):
-            checkout_page.fill_payment_information(user_data)
-
-            # Verify order total includes shipping
-            expected_total = (
-                sum(p["price"] * p["quantity"] for p in products)
-                + selected_shipping["price"]
-            )
-            actual_total = checkout_page.get_order_total()
-
-            assert (
-                abs(actual_total - expected_total) < 0.01
-            ), f"Order total {actual_total} does not match expected {expected_total}"
-
-            screenshot_path = MiscUtils.take_screenshot(driver, "payment_info.png")
-            allure.attach.file(
-                screenshot_path,
-                name="Payment Information",
-                attachment_type=allure.attachment_type.PNG,
-            )
-
-            confirmation_page = checkout_page.place_order()
-
-        # Step 6: Verify order confirmation
-        with allure.step("Verify order confirmation"):
-            assert (
-                confirmation_page.is_confirmation_displayed()
-            ), "Order confirmation message not displayed"
-
-            order_number = confirmation_page.get_order_number()
-            assert order_number, "Order number should be displayed"
-
-            # Log order details for reference
-            logger.info(
-                f"Order completed successfully with order number: {order_number}"
-            )
-
-            screenshot_path = MiscUtils.take_screenshot(
-                driver, "order_confirmation.png"
-            )
-            allure.attach.file(
-                screenshot_path,
-                name="Order Confirmation",
-                attachment_type=allure.attachment_type.PNG,
-            )
-
-        # Additional test assertions and validations can be added here
-
-    except Exception as e:
-        # Log and re-raise the exception
-        logger.error(f"Test failed with error: {e}")
-        # Take a screenshot on failure
-        screenshot_path = MiscUtils.take_screenshot(
-            driver, f"failure_{datetime.now().strftime('%Y%m%d%H%M%S')}.png"
-        )
-        allure.attach.file(
-            screenshot_path,
-            name="Failure Screenshot",
-            attachment_type=allure.attachment_type.PNG,
-        )
-        raise
+    # Create page objects
+    home_page = HomePage(driver)
+    
+    # Step 1: Navigate to home page and add products to cart
+    home_page.open(mock_ecommerce_site)
+    
+    # Adding products to cart
+    for product in PRODUCTS:
+        home_page.add_product_to_cart(product["id"])
+    
+    # Step 2: Go to cart and verify products
+    cart_page = home_page.go_to_cart()
+    
+    # Update quantities if needed
+    for product in PRODUCTS:
+        if product["quantity"] > 1:
+            cart_page.update_product_quantity(product["id"], product["quantity"])
+    
+    # Get cart total
+    cart_total = cart_page.get_cart_total()
+    
+    # Calculate expected total
+    expected_cart_total = sum(p["price"] * p["quantity"] for p in PRODUCTS)
+    
+    # Verify cart total
+    assert abs(cart_total - expected_cart_total) < 0.01, f"Cart total {cart_total} does not match expected {expected_cart_total}"
+    
+    # Step 3: Proceed to checkout
+    checkout_page = cart_page.proceed_to_checkout()
+    
+    # Step 4: Fill shipping information
+    checkout_page.fill_shipping_information(USER_DATA)
+    
+    # Step 5: Select shipping method
+    # For this test, choose express shipping (id=2)
+    shipping_id = 2
+    shipping_method = next((s for s in SHIPPING_METHODS if s["id"] == shipping_id), None)
+    checkout_page.select_shipping_method(shipping_id)
+    
+    # Get order total after shipping method selection
+    order_total = checkout_page.get_order_total()
+    
+    # Calculate expected total (products + shipping)
+    expected_order_total = expected_cart_total + shipping_method["price"]
+    
+    # Verify order total
+    assert abs(order_total - expected_order_total) < 0.01, (
+        f"Order total {order_total} does not match expected {expected_order_total} "
+        f"with shipping method {shipping_method['name']}"
+    )
+    
+    # Step 6: Fill payment information
+    checkout_page.fill_payment_information(USER_DATA)
+    
+    # Step 7: Place order
+    confirmation_page = checkout_page.place_order()
+    
+    # Step 8: Verify order confirmation
+    assert confirmation_page.is_confirmation_displayed(), "Order confirmation should be displayed"
+    
+    # Get and verify order number format
+    order_number = confirmation_page.get_order_number()
+    assert order_number is not None and len(order_number) > 0, "Order number should be present"
+    
+    # Log test completion with order number
+    logger.info(f"E2E test completed successfully. Order number: {order_number}")
 
 
-# Add more test variations to demonstrate data-driven testing
 @allure.feature("E-commerce Checkout")
 @allure.story("Different Shipping Methods")
 @pytest.mark.parametrize("shipping_id", [1, 2, 3])
 @measure_performance(metrics)
-def test_different_shipping_methods(driver, shipping_id):
-    """Test checkout with different shipping methods."""
-    data_handler = DataHandler()
-    products = data_handler.load_json_data("products.json")
-    shipping_methods = data_handler.load_json_data("shipping.json")
-    user_data = data_handler.load_json_data("user.json")
-
-    # Get the selected shipping method
-    selected_shipping = next(
-        (s for s in shipping_methods if s["id"] == shipping_id), None
-    )
-    assert selected_shipping, f"Shipping method with ID {shipping_id} not found"
-
-    # Log test parameters
-    logger.info(f"Testing with shipping method: {selected_shipping['name']}")
-
-    # Execute abbreviated test flow focusing on shipping
-    home_page = HomePage(driver).open()
-
-    # Add just one product to simplify the test
-    home_page.add_product_to_cart(products[0]["id"])
-
+def test_different_shipping_methods(driver, mock_ecommerce_site, shipping_id):
+    """
+    Test checkout with different shipping methods to ensure each works correctly.
+    This is parameterized to test all available shipping methods.
+    """
+    # Get the shipping method details for this test
+    shipping_method = next((s for s in SHIPPING_METHODS if s["id"] == shipping_id), None)
+    assert shipping_method is not None, f"Shipping method with ID {shipping_id} not found in test data"
+    
+    # Create page objects
+    home_page = HomePage(driver)
+    
+    # Step 1: Navigate to home page and add all products to cart
+    home_page.open(mock_ecommerce_site)
+    
+    # Adding all products to cart
+    for product in PRODUCTS:
+        home_page.add_product_to_cart(product["id"])
+    
+    # Step 2: Go to cart
     cart_page = home_page.go_to_cart()
+    
+    # Update quantities if needed
+    for product in PRODUCTS:
+        if product["quantity"] > 1:
+            cart_page.update_product_quantity(product["id"], product["quantity"])
+    
+    # Step 3: Proceed to checkout
     checkout_page = cart_page.proceed_to_checkout()
-
-    # Fill shipping information
-    checkout_page.fill_shipping_information(user_data)
-
-    # Select the specified shipping method
+    
+    # Step 4: Fill shipping information
+    checkout_page.fill_shipping_information(USER_DATA)
+    
+    # Step 5: Select the specified shipping method
     checkout_page.select_shipping_method(shipping_id)
-
-    # Verify shipping method affects the total
-    product_total = products[0]["price"]
-    expected_total = product_total + selected_shipping["price"]
-    actual_total = checkout_page.get_order_total()
-
-    assert (
-        abs(actual_total - expected_total) < 0.01
-    ), f"Order total with {selected_shipping['name']} shipping does not match expected total"
-
-    logger.info(f"Successfully verified shipping method: {selected_shipping['name']}")
+    
+    # Get order total after shipping method selection
+    order_total = checkout_page.get_order_total()
+    
+    # Calculate expected total (all products + shipping)
+    expected_total = sum(p["price"] * p["quantity"] for p in PRODUCTS) + shipping_method["price"]
+    
+    # Verify total includes correct shipping cost
+    assert abs(order_total - expected_total) < 0.01, (
+        f"Order total {order_total} does not match expected {expected_total} "
+        f"with shipping method {shipping_method['name']}"
+    )
+    
+    # Fill payment and complete order
+    checkout_page.fill_payment_information(USER_DATA)
+    confirmation_page = checkout_page.place_order()
+    
+    # Verify order completion
+    assert confirmation_page.is_confirmation_displayed(), "Order confirmation should be displayed"
+    
+    logger.info(f"Successfully completed checkout with shipping method: {shipping_method['name']}")
 
 
 # When all tests complete, save the metrics
 def teardown_module(module):
-    metrics.finalize_metrics()
-    metrics.save_metrics()
-
-    # Generate a performance report
-    report = metrics.generate_report()
-    logger.info(f"Test execution completed. Performance report generated.")
-
-    # Try to compare with previous runs
-    comparison = metrics.compare_with_history()
-    if "error" not in comparison and "warning" not in comparison:
-        improvement = comparison["overall_improvement"]["percent_diff"]
-        logger.info(
-            f"Performance improvement: {improvement:.2f}% compared to previous runs"
-        )
+    """Module-level teardown function."""
+    # Save metrics to file
+    metrics_path = os.path.join("metrics", "checkout_metrics.json")
+    os.makedirs("metrics", exist_ok=True)
+    
+    metrics_data = {
+        "timestamp": datetime.now().isoformat(),
+        "test_execution_time": metrics.get_average_execution_time(),
+        "tests_executed": metrics.get_test_count(),
+        "performance_by_test": metrics.get_metrics_by_test()
+    }
+    
+    with open(metrics_path, "w") as f:
+        json.dump(metrics_data, f, indent=2)
+    
+    logger.info(f"Test metrics saved to {metrics_path}")

@@ -79,7 +79,7 @@ allure serve allure-results
 ### Driver Manager
 
 ```python
-from framework.utilities.driver_manager import initialize_driver, quit_driver
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 
 # Initialize WebDriver
 driver = initialize_driver(headless=True)
@@ -94,7 +94,7 @@ quit_driver(driver)
 ### Wait Utilities
 
 ```python
-from framework.utilities.wait_utils import WaitUtils
+from pulseq.utilities.wait_utils import WaitUtils
 from selenium.webdriver.common.by import By
 
 wait_utils = WaitUtils(driver)
@@ -112,7 +112,7 @@ wait_utils.wait_for_url_contains("dashboard")
 ### Elements Utilities
 
 ```python
-from framework.utilities.elements_utils import ElementsUtils
+from pulseq.utilities.elements_utils import ElementsUtils
 from selenium.webdriver.common.by import By
 
 elements_utils = ElementsUtils(driver)
@@ -133,7 +133,7 @@ is_present = elements_utils.is_element_present((By.ID, "error-message"))
 ### Data Handler
 
 ```python
-from framework.utilities.data_handler import DataHandler
+from pulseq.utilities.data_handler import DataHandler
 
 data_handler = DataHandler()
 
@@ -154,7 +154,7 @@ data_handler.save_csv_data(random_users, "users.csv")
 ### Performance Metrics
 
 ```python
-from framework.utilities.performance_metrics import PerformanceMetrics, measure_performance
+from pulseq.utilities.performance_metrics import PerformanceMetrics, measure_performance
 
 # Create metrics instance
 metrics = PerformanceMetrics()
@@ -256,13 +256,13 @@ Use the framework's CLI:
 
 ```bash
 # Run tests with custom options
-python -m framework.core --tests tests/test_login.py --parallel 4
+python -m pulseq.core --tests tests/test_login.py --parallel 4
 
 # Run tests without generating reports
-python -m framework.core --tests tests/test_login.py --no-report
+python -m pulseq.core --tests tests/test_login.py --no-report
 
 # Only collect tests without executing them
-python -m framework.core --collect-only --tests tests/
+python -m pulseq.core --collect-only --tests tests/
 ```
 
 ## Continuous Integration

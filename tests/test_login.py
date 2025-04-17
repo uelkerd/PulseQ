@@ -4,9 +4,12 @@ import os
 import tempfile
 
 import pytest
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
-from framework.page_objects.login_page import LoginPage
-from framework.utilities.driver_manager import initialize_driver, quit_driver
+from pulseq.page_objects.login_page import LoginPage
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 
 
 @pytest.fixture(scope="function")
@@ -73,12 +76,14 @@ def mock_html():
 
 @pytest.fixture(scope="function")
 def driver():
+    """Initialize and quit the WebDriver for each test."""
     driver = initialize_driver(headless=True)
     yield driver
     quit_driver(driver)
 
 
 def test_valid_login(driver, mock_html):
+    """Test successful login with valid credentials."""
     # Launch the mock login page
     driver.get(mock_html)
 
@@ -86,10 +91,7 @@ def test_valid_login(driver, mock_html):
     login_page = LoginPage(driver)
     login_page.login("testuser", "securepassword")
 
-    # Wait briefly for the page transition
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.webdriver.support.ui import WebDriverWait
-
+    # Wait for the page transition
     WebDriverWait(driver, 3).until(EC.title_contains("Dashboard"))
 
     # Check that we're on the dashboard page

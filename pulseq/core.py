@@ -1,4 +1,4 @@
-# framework/core.py
+# pulseq/core.py
 import argparse
 import sys
 import time
@@ -7,9 +7,10 @@ from pathlib import Path
 
 import pytest
 
-from framework.config import load_config
-from framework.reporting import generate_allure_report
-from framework.utilities.logger import setup_logger
+from pulseq.config import load_config
+from pulseq.utilities.logger import setup_logger
+from pulseq.reporting import generate_allure_report
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 
 # Set up module logger
 logger = setup_logger("core")
@@ -162,6 +163,20 @@ class FrameworkCore:
         except Exception as e:
             logger.error(f"Error parsing test results: {e}")
             return {"error": str(e)}
+
+
+class TestBase:
+    """Base class for all test classes."""
+
+    def setup_method(self):
+        """Set up test method."""
+        self.driver = initialize_driver()
+        logger.info("WebDriver initialized")
+
+    def teardown_method(self):
+        """Tear down test method."""
+        quit_driver(self.driver)
+        logger.info("WebDriver closed")
 
 
 def parse_arguments():
