@@ -19,14 +19,14 @@ A modular test automation framework for web applications, designed using Python 
 
 ## Project Structure
 
-```
+```text
 test-automation-framework/
 ├── .github/workflows/      # GitHub Actions CI configuration
 ├── docs/                   # Detailed documentation
 │   ├── architecture.md     # Architecture details and diagrams
 │   ├── troubleshooting.md  # Troubleshooting guide
 │   └── usage.md            # Usage instructions
-├── framework/              # Core framework components
+├── pulseq/                 # Core framework components
 │   ├── utilities/          # Utility modules
 │   │   ├── driver_manager.py    # WebDriver management
 │   │   ├── logger.py            # Centralized logging
@@ -40,7 +40,7 @@ test-automation-framework/
 │   │   └── misc_utils.py        # Additional utilities
 │   ├── page_objects/       # Page object classes
 │   ├── config.py           # Configuration management
-│   ├── core.py             # Core framework functionality
+│   ├── core.py            # Core framework functionality
 │   └── reporting.py        # Test reporting
 ├── tests/                  # Test cases
 ├── metrics/                # Performance metrics storage
