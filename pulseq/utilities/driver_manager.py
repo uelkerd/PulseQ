@@ -9,6 +9,7 @@ from pulseq.utilities.logger import setup_logger
 
 logger = setup_logger("driver_manager")
 
+
 def initialize_driver(headless=True):
     """Initializes the Chrome WebDriver with optional headless mode."""
     options = Options()
