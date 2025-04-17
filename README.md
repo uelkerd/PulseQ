@@ -1,6 +1,6 @@
 # Web Test Automation Framework
 
-![CI Status](https://img.shields.io/github/workflow/status/uelkerd/test-automation-framework/Test%20Automation%20Framework%20CI?style=for-the-badge)
+![CI Status](https://img.shields.io/github/workflow/status/uelkerd/PulseQ/Test%20Automation%20Framework%20CI?style=for-the-badge)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![Code Coverage](https://img.shields.io/badge/coverage-92%25-brightgreen?style=for-the-badge)
@@ -20,7 +20,7 @@ A modular test automation framework for web applications, designed using Python 
 ## Project Structure
 
 ```text
-test-automation-framework/
+PulseQ/
 ├── .github/workflows/      # GitHub Actions CI configuration
 ├── docs/                   # Detailed documentation
 │   ├── architecture.md     # Architecture details and diagrams
@@ -64,8 +64,8 @@ test-automation-framework/
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/test-automation-framework.git
-   cd test-automation-framework
+   git clone https://github.com/uelkerd/PulseQ.git
+   cd PulseQ
    ```
 
 2. **Create and activate a virtual environment:**
