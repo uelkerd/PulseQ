@@ -1,17 +1,4 @@
-import base64
-import os
-import platform
-import random
-import re
-import string
-import subprocess
-import time
 from datetime import datetime
-from pathlib import Path
-
-from selenium.webdriver.remote.webdriver import WebDriver
-
-from framework.utilities.logger import setup_logger
 
 
 def get_formatted_date(days_offset=0, format="%Y-%m-%d"):
