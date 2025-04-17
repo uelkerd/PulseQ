@@ -96,7 +96,7 @@ class MiscUtils:
         Returns:
             str: Formatted date
         """
-        from datetime import datetime, timedelta
+        from datetime import timedelta
 
         date = datetime.now() + timedelta(days=days_offset)
         formatted_date = date.strftime(format)
