@@ -54,7 +54,8 @@ class APIClient:
         endpoint = endpoint.lstrip("/")
         return f"{self.base_url}/{endpoint}"
 
-    def _log_request(self, method, url, **kwargs):
+    @staticmethod
+    def _log_request(method, url, **kwargs):
         """
         Log request details.
 
@@ -90,7 +91,8 @@ class APIClient:
         if data:
             logger.debug(f"Request Body: {data}")
 
-    def _log_response(self, response):
+    @staticmethod
+    def _log_response(response):
         """
         Log response details.
 
@@ -300,7 +302,8 @@ class APIClient:
             logger.error(f"Authentication error: {e}")
             raise
 
-    def validate_status_code(self, response, expected_codes):
+    @staticmethod
+    def validate_status_code(response, expected_codes):
         """
         Validate response status code.
 
@@ -330,7 +333,8 @@ class APIClient:
 
         return True
 
-    def validate_json_schema(self, response, schema):
+    @staticmethod
+    def validate_json_schema(response, schema):
         """
         Validate response against a JSON schema.
 

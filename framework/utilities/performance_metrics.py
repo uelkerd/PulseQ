@@ -53,7 +53,8 @@ class PerformanceMetrics:
             f"Initialized performance metrics handler with file: {metrics_file}"
         )
 
-    def _get_system_info(self):
+    @staticmethod
+    def _get_system_info():
         """
         Get system information for context.
 
@@ -74,7 +75,8 @@ class PerformanceMetrics:
             logger.error(f"Error getting system info: {e}")
             return {"error": "Failed to get system info"}
 
-    def get_resource_usage(self):
+    @staticmethod
+    def get_resource_usage():
         """
         Get current resource usage.
 
