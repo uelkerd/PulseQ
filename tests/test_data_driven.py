@@ -1,15 +1,18 @@
 # tests/test_data_driven.py
 
-import pytest
-import os
 import json
-from framework.utilities.driver_manager import initialize_driver, quit_driver
-from framework.utilities.wait_utils import WaitUtils
-from framework.utilities.elements_utils import ElementsUtils
-from framework.utilities.data_handler import DataHandler
-from framework.utilities.logger import setup_logger
-from framework.page_objects.login_page import LoginPage
+import os
+import tempfile
+
+import pytest
 from selenium.webdriver.common.by import By
+
+from pulseq.page_objects.login_page import LoginPage
+from pulseq.utilities.data_handler import DataHandler
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
+from pulseq.utilities.elements_utils import ElementsUtils
+from pulseq.utilities.logger import setup_logger
+from pulseq.utilities.wait_utils import WaitUtils
 
 # Set up logger
 logger = setup_logger("test_data_driven")
@@ -34,6 +37,75 @@ def setup_module(module):
         json.dump(TEST_USERS, f)
 
     logger.info("Test data setup complete")
+
+
+@pytest.fixture(scope="function")
+def mock_html():
+    """Create a temporary HTML file with login form for testing."""
+    html_content = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Test Login Page</title>
+    </head>
+    <body>
+        <form id="loginForm">
+            <input type="text" id="username" name="username" placeholder="Username">
+            <input type="password" id="password" name="password" placeholder="Password">
+            <button id="loginBtn" type="button">Login</button>
+            <div id="errorMessage" style="display:none; color:red;">Invalid username or password</div>
+        </form>
+        <script>
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                var username = document.getElementById('username').value;
+                var password = document.getElementById('password').value;
+                var errorMsg = document.getElementById('errorMessage');
+                
+                if ((username === 'testuser1' && password === 'password1') || 
+                    (username === 'testuser2' && password === 'password2')) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    errorMsg.style.display = 'block';
+                }
+            });
+        </script>
+    </body>
+    </html>
+    """
+
+    # Create dashboard.html as well
+    dashboard_content = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Dashboard</title>
+    </head>
+    <body>
+        <h1>Welcome to the Dashboard</h1>
+    </body>
+    </html>
+    """
+
+    # Create a temporary directory
+    temp_dir = tempfile.mkdtemp()
+
+    # Create the login HTML file
+    login_path = os.path.join(temp_dir, "login.html")
+    with open(login_path, "w") as f:
+        f.write(html_content)
+
+    # Create the dashboard HTML file
+    dashboard_path = os.path.join(temp_dir, "dashboard.html")
+    with open(dashboard_path, "w") as f:
+        f.write(dashboard_content)
+
+    # Return the path to the login file
+    yield "file://" + login_path
+
+    # Clean up
+    os.remove(login_path)
+    os.remove(dashboard_path)
+    os.rmdir(temp_dir)
 
 
 @pytest.fixture(scope="function")
@@ -63,9 +135,9 @@ def test_data():
 
 # Parameterized test using pytest parameterization
 @pytest.mark.parametrize("user_data", TEST_USERS)
-def test_login_parameterized(driver, user_data):
+def test_login_parameterized(driver, mock_html, user_data):
     """Test login functionality with different user credentials using pytest parameterization."""
-    driver.get("http://example.com/login")
+    driver.get(mock_html)
     logger.info(f"Testing with user: {user_data['username']}")
 
     login_page = LoginPage(driver)
@@ -95,9 +167,9 @@ def test_login_parameterized(driver, user_data):
 
 
 # Alternative test using test_data fixture
-def test_login_with_fixture(driver, test_data):
+def test_login_with_fixture(driver, mock_html, test_data):
     """Test login functionality with different user credentials using fixture data."""
-    driver.get("http://example.com/login")
+    driver.get(mock_html)
 
     login_page = LoginPage(driver)
     elements_utils = ElementsUtils(driver)
@@ -116,7 +188,7 @@ def test_login_with_fixture(driver, test_data):
                     "dashboard" in driver.current_url
                 ), "User should be redirected to dashboard after successful login"
                 # Navigate back to login page for next test
-                driver.get("http://example.com/login")
+                driver.get(mock_html)
             except Exception as e:
                 logger.error(f"Login failed unexpectedly: {e}")
                 assert False, f"Login should succeed for user {user['username']}"
@@ -128,13 +200,13 @@ def test_login_with_fixture(driver, test_data):
             ), "Error message should be displayed for invalid login"
             logger.info(f"Login correctly failed for invalid user: {user['username']}")
             # Clear form for next test
-            driver.get("http://example.com/login")
+            driver.get(mock_html)
 
 
 # Test with dynamically generated test data
-def test_login_with_generated_data(driver):
+def test_login_with_generated_data(driver, mock_html):
     """Test login with dynamically generated user data."""
-    driver.get("http://example.com/login")
+    driver.get(mock_html)
 
     # Generate random test data
     data_handler = DataHandler()
@@ -145,6 +217,10 @@ def test_login_with_generated_data(driver):
     # Set expected results for demonstration
     random_users[0]["expected_result"] = "failure"  # First random user will "fail"
     random_users[1]["expected_result"] = "success"  # Second random user will "succeed"
+    random_users[1]["username"] = (
+        "testuser1"  # Make sure second user matches success condition
+    )
+    random_users[1]["password"] = "password1"  # in the HTML mock
 
     login_page = LoginPage(driver)
     elements_utils = ElementsUtils(driver)
@@ -163,7 +239,7 @@ def test_login_with_generated_data(driver):
                     "dashboard" in driver.current_url
                 ), "User should be redirected to dashboard after successful login"
                 # Navigate back to login page for next test
-                driver.get("http://example.com/login")
+                driver.get(mock_html)
             except Exception as e:
                 logger.error(f"Login failed unexpectedly: {e}")
                 assert (
@@ -179,4 +255,4 @@ def test_login_with_generated_data(driver):
                 f"Login correctly failed for invalid generated user: {user['username']}"
             )
             # Clear form for next test
-            driver.get("http://example.com/login")
+            driver.get(mock_html)

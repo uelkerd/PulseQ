@@ -5,8 +5,8 @@ import tempfile
 
 import pytest
 
-from framework.page_objects.login_page import LoginPage
-from framework.utilities.driver_manager import initialize_driver, quit_driver
+from pulseq.page_objects.login_page import LoginPage
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 
 
 @pytest.fixture(scope="function")

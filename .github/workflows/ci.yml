@@ -1,8 +1,8 @@
-name: Test Automation Framework CI
+name: PulseQ
 
 permissions:
-    contents: write
-  
+  contents: write
+
 on:
   push:
     branches: [main]

@@ -3,6 +3,15 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Allure report directories (if generated locally)
+allure-results/
+allure-report/
+
+#Cursor
+.cursor/
+.cursor/rules
+*.mdc
+
 # Virtual environment directory
 venv/
 .env/
