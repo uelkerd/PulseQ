@@ -1,6 +1,8 @@
 # framework/page_objects/login_page.py
 from selenium.webdriver.common.by import By
+
 from framework.utilities.retry import retry
+
 
 class LoginPage:
     def __init__(self, driver):
