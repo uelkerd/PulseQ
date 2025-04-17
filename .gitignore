@@ -51,3 +51,8 @@ coverage.xml
 # Miscellaneous
 *.bak
 *.tmp
+
+# VSCODE
+*.code-workspace
+
+pytest_results.txt
