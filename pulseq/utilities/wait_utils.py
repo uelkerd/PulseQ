@@ -333,7 +333,8 @@ if __name__ == "__main__":
     try:
         driver.get("https://www.example.com")
         # Wait for page title element to be visible
-        title_element = wait_utils.wait_for_element_visible((By.TAG_NAME, "h1"))
+        title_element = wait_utils.wait_for_element_visible(
+            (By.TAG_NAME, "h1"))
         print(f"Page title: {title_element.text}")
     finally:
         driver.quit()

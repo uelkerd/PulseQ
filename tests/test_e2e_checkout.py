@@ -395,7 +395,8 @@ class CartPage:
             By.CSS_SELECTOR,
             f".cart-item[data-product-id='{product_id}'] .item-quantity",
         )
-        self.elements_utils.send_keys(quantity_input, str(quantity), clear_first=True)
+        self.elements_utils.send_keys(
+            quantity_input, str(quantity), clear_first=True)
 
         self.elements_utils.click_element(self.update_cart_button)
 
@@ -405,14 +406,16 @@ class CartPage:
             f".cart-item[data-product-id='{product_id}'] .item-total",
         )
         self.wait_utils.wait_for_element_visible(updated_price_locator)
-        logger.info(f"Updated quantity for product ID {product_id} to {quantity}")
+        logger.info(
+            f"Updated quantity for product ID {product_id} to {quantity}")
         return self
 
     def get_cart_total(self):
         """Get the cart total price."""
         total_text = self.elements_utils.get_text(self.cart_total)
         # Extract numeric value from text (e.g., "$1,234.56" -> 1234.56)
-        total = float("".join(c for c in total_text if c.isdigit() or c == "."))
+        total = float(
+            "".join(c for c in total_text if c.isdigit() or c == "."))
         logger.info(f"Cart total: {total}")
         return total
 
@@ -488,8 +491,10 @@ class CheckoutPage:
 
     def fill_payment_information(self, user_data):
         """Fill the payment information form."""
-        self.elements_utils.send_keys(self.card_number, user_data["card_number"])
-        self.elements_utils.send_keys(self.card_expiry, user_data["card_expiry"])
+        self.elements_utils.send_keys(
+            self.card_number, user_data["card_number"])
+        self.elements_utils.send_keys(
+            self.card_expiry, user_data["card_expiry"])
         self.elements_utils.send_keys(self.card_cvv, user_data["card_cvv"])
         logger.info("Filled payment information form")
         return self
@@ -505,7 +510,8 @@ class CheckoutPage:
         """Get the order total price."""
         total_text = self.elements_utils.get_text(self.order_total)
         # Extract numeric value from text
-        total = float("".join(c for c in total_text if c.isdigit() or c == "."))
+        total = float(
+            "".join(c for c in total_text if c.isdigit() or c == "."))
         logger.info(f"Order total: {total}")
         return total
 
@@ -529,7 +535,8 @@ class ConfirmationPage:
 
     def is_confirmation_displayed(self):
         """Check if the confirmation message is displayed."""
-        is_displayed = self.elements_utils.is_element_present(self.confirmation_message)
+        is_displayed = self.elements_utils.is_element_present(
+            self.confirmation_message)
         logger.info(f"Confirmation message displayed: {is_displayed}")
         return is_displayed
 
@@ -571,7 +578,8 @@ def test_complete_checkout_flow(driver, mock_ecommerce_site, config):
     # Update quantities if needed
     for product in PRODUCTS:
         if product["quantity"] > 1:
-            cart_page.update_product_quantity(product["id"], product["quantity"])
+            cart_page.update_product_quantity(
+                product["id"], product["quantity"])
 
     # Get cart total
     cart_total = cart_page.get_cart_total()
@@ -580,9 +588,9 @@ def test_complete_checkout_flow(driver, mock_ecommerce_site, config):
     expected_cart_total = sum(p["price"] * p["quantity"] for p in PRODUCTS)
 
     # Verify cart total
-    assert (
-        abs(cart_total - expected_cart_total) < 0.01
-    ), f"Cart total {cart_total} does not match expected {expected_cart_total}"
+    assert abs(cart_total - expected_cart_total) < 0.01, (
+        f"Cart total {cart_total} does not match expected {expected_cart_total}"
+    )
 
     # Step 3: Proceed to checkout
     checkout_page = cart_page.proceed_to_checkout()
@@ -617,18 +625,19 @@ def test_complete_checkout_flow(driver, mock_ecommerce_site, config):
     confirmation_page = checkout_page.place_order()
 
     # Step 8: Verify order confirmation
-    assert (
-        confirmation_page.is_confirmation_displayed()
-    ), "Order confirmation message should be displayed"
+    assert confirmation_page.is_confirmation_displayed(), (
+        "Order confirmation message should be displayed"
+    )
 
     # Get and verify order number format
     order_number = confirmation_page.get_order_number()
-    assert (
-        order_number is not None and len(order_number) > 0
-    ), "Order number should be present"
+    assert order_number is not None and len(order_number) > 0, (
+        "Order number should be present"
+    )
 
     # Log test completion with order number
-    logger.info(f"E2E test completed successfully. Order number: {order_number}")
+    logger.info(
+        f"E2E test completed successfully. Order number: {order_number}")
 
 
 @allure.feature("E-commerce Checkout")
@@ -644,9 +653,9 @@ def test_different_shipping_methods(driver, mock_ecommerce_site, shipping_id):
     shipping_method = next(
         (s for s in SHIPPING_METHODS if s["id"] == shipping_id), None
     )
-    assert (
-        shipping_method is not None
-    ), f"Shipping method with ID {shipping_id} not found in test data"
+    assert shipping_method is not None, (
+        f"Shipping method with ID {shipping_id} not found in test data"
+    )
 
     # Create page objects
     home_page = HomePage(driver)
@@ -664,7 +673,8 @@ def test_different_shipping_methods(driver, mock_ecommerce_site, shipping_id):
     # Update quantities if needed
     for product in PRODUCTS:
         if product["quantity"] > 1:
-            cart_page.update_product_quantity(product["id"], product["quantity"])
+            cart_page.update_product_quantity(
+                product["id"], product["quantity"])
 
     # Step 3: Proceed to checkout
     checkout_page = cart_page.proceed_to_checkout()
@@ -680,7 +690,8 @@ def test_different_shipping_methods(driver, mock_ecommerce_site, shipping_id):
 
     # Calculate expected total (all products + shipping)
     expected_total = (
-        sum(p["price"] * p["quantity"] for p in PRODUCTS) + shipping_method["price"]
+        sum(p["price"] * p["quantity"]
+            for p in PRODUCTS) + shipping_method["price"]
     )
 
     # Verify total includes correct shipping cost
@@ -694,9 +705,9 @@ def test_different_shipping_methods(driver, mock_ecommerce_site, shipping_id):
     confirmation_page = checkout_page.place_order()
 
     # Verify order completion
-    assert (
-        confirmation_page.is_confirmation_displayed()
-    ), "Order confirmation should be displayed"
+    assert confirmation_page.is_confirmation_displayed(), (
+        "Order confirmation should be displayed"
+    )
 
     logger.info(
         f"Successfully completed checkout with shipping method: {shipping_method['name']}"

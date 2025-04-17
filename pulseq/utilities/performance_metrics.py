@@ -298,7 +298,7 @@ class PerformanceMetrics:
                 history = json.load(f)
 
             # Get the last N runs (excluding current run)
-            previous_runs = history[-limit - 1 : -1] if len(history) > 1 else []
+            previous_runs = history[-limit - 1: -1] if len(history) > 1 else []
 
             if not previous_runs:
                 return {"warning": "No previous runs found for comparison"}

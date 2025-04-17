@@ -21,7 +21,8 @@ def retry(max_attempts=3, delay=2, backoff=2):
                     return func(*args, **kwargs)
                 except Exception as e:
                     attempts += 1
-                    print(f"[Retry] {func.__name__} failed on attempt {attempts}: {e}")
+                    print(
+                        f"[Retry] {func.__name__} failed on attempt {attempts}: {e}")
                     if attempts >= max_attempts:
                         raise
                     time.sleep(curr_delay)
