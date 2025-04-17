@@ -157,9 +157,8 @@ class PerformanceMetrics:
             )
 
             return test_data["duration"]
-        else:
-            logger.warning(f"No timer started for test: {test_name}")
-            return None
+        logger.warning(f"No timer started for test: {test_name}")
+        return None
 
     def finalize_metrics(self):
         """
