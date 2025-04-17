@@ -1,4 +1,4 @@
-# framework/core.py
+# pulseq/core.py
 import argparse
 import sys
 import time

@@ -1,4 +1,4 @@
-# framework/utilities/mock_server.py
+# pulseq/utilities/mock_server.py
 import http.server
 import os
 import socketserver

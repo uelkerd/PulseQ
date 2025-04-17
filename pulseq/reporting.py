@@ -1,4 +1,4 @@
-# framework/reporting.py
+# pulseq/reporting.py
 
 import subprocess
 
