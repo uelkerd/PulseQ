@@ -6,10 +6,10 @@ import os
 def load_config(config_file="config.json"):
     """
     Load configuration from a JSON file or use defaults.
-    
+
     Args:
         config_file: Path to the configuration file
-        
+
     Returns:
         dict: Configuration settings
     """
@@ -23,7 +23,9 @@ def load_config(config_file="config.json"):
     # Override with environment variables if defined
     config["base_url"] = os.getenv("BASE_URL", config["base_url"])
     config["timeout"] = int(os.getenv("TIMEOUT", config["timeout"]))
-    config["retry_attempts"] = int(os.getenv("RETRY_ATTEMPTS", config["retry_attempts"]))
+    config["retry_attempts"] = int(
+        os.getenv("RETRY_ATTEMPTS", config["retry_attempts"])
+    )
 
     return config
 

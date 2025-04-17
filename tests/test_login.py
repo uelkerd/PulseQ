@@ -95,4 +95,6 @@ def test_valid_login(driver):
     WebDriverWait(driver, 3).until(EC.title_contains("Dashboard"))
 
     # Check that we're on the dashboard page
-    assert "dashboard" in driver.current_url, "User did not navigate to dashboard upon login"
+    assert (
+        "dashboard" in driver.current_url
+    ), "User did not navigate to dashboard upon login"
