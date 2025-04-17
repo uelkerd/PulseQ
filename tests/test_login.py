@@ -4,7 +4,6 @@ import os
 import tempfile
 
 import pytest
-from selenium.webdriver.common.by import By
 
 from pulseq.page_objects.login_page import LoginPage
 from pulseq.utilities.driver_manager import initialize_driver, quit_driver
