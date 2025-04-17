@@ -10,16 +10,19 @@ import pytest
 from selenium.webdriver.common.by import By
 
 from pulseq.config import load_config
+from pulseq.page_objects.login_page import LoginPage
+from pulseq.utilities.data_handler import DataHandler
 from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 from pulseq.utilities.elements_utils import ElementsUtils
 from pulseq.utilities.logger import setup_logger
+from pulseq.utilities.misc_utils import MiscUtils
 from pulseq.utilities.performance_metrics import PerformanceMetrics, measure_performance
 from pulseq.utilities.wait_utils import WaitUtils
 
 # Set up logger
 logger = setup_logger("test_e2e_checkout")
 
-# Create metrics instance for performance measurement
+# Initialize performance metrics
 metrics = PerformanceMetrics()
 
 # Create or ensure test data directory exists
@@ -63,10 +66,209 @@ with open("test_data/user.json", "w") as f:
     json.dump(USER_DATA, f, indent=2)
 
 
+# Page objects as embedded classes for this example
+# In a real project, these would be in separate files
+class HomePage:
+    """Home page object containing product listing and cart functionality."""
+
+    def __init__(self, driver):
+        self.driver = driver
+        self.elements_utils = ElementsUtils(driver)
+        self.wait_utils = WaitUtils(driver)
+
+        # Locators
+        self.product_cards = (By.CSS_SELECTOR, ".product-card")
+        self.add_to_cart_buttons = (By.CSS_SELECTOR, ".add-to-cart-btn")
+        self.cart_icon = (By.ID, "cart-icon")
+        self.cart_count = (By.CSS_SELECTOR, ".cart-count")
+
+    def open(self, base_url):
+        """Navigate to the home page."""
+        self.driver.get(base_url + "index.html")
+        self.wait_utils.wait_for_element_visible((By.TAG_NAME, "h1"))
+        logger.info("Opened home page")
+        return self
+
+    def add_product_to_cart(self, product_id):
+        """Add a product to the cart by its ID."""
+        product_selector = (
+            By.CSS_SELECTOR,
+            f".product-card[data-product-id='{product_id}']",
+        )
+
+        # First wait for the element to be present before scrolling
+        self.wait_utils.wait_for_element_visible(product_selector)
+
+        # Now scroll to the element
+        self.elements_utils.scroll_to_element(product_selector)
+
+        # Find the add to cart button within this product card
+        add_button = self.driver.find_element(*product_selector).find_element(
+            By.CSS_SELECTOR, ".add-to-cart-btn"
+        )
+        self.elements_utils.click_element(add_button)
+        logger.info(f"Added product {product_id} to cart")
+
+    def go_to_cart(self):
+        """Navigate to the cart page."""
+        self.elements_utils.click_element(self.cart_icon)
+        self.wait_utils.wait_for_title_contains("Shopping Cart")
+        logger.info("Navigated to cart page")
+        return CartPage(self.driver)
+
+
+class CartPage:
+    """Cart page object for managing shopping cart."""
+
+    def __init__(self, driver):
+        self.driver = driver
+        self.elements_utils = ElementsUtils(driver)
+        self.wait_utils = WaitUtils(driver)
+
+        # Locators
+        self.cart_items = (By.CSS_SELECTOR, ".cart-item")
+        self.quantity_inputs = (By.CSS_SELECTOR, ".item-quantity")
+        self.update_cart_button = (By.ID, "update-cart")
+        self.checkout_button = (By.ID, "checkout-button")
+        self.cart_total = (By.ID, "cart-total")
+
+    def update_product_quantity(self, product_id, quantity):
+        """Update the quantity of a product in the cart."""
+        item_selector = (
+            By.CSS_SELECTOR,
+            f".cart-item[data-product-id='{product_id}']",
+        )
+        quantity_input = self.driver.find_element(*item_selector).find_element(
+            By.CSS_SELECTOR, ".item-quantity"
+        )
+        self.elements_utils.fill_input(quantity_input, str(quantity))
+        self.elements_utils.click_element(self.update_cart_button)
+        logger.info(f"Updated quantity for product {product_id} to {quantity}")
+
+    def get_cart_total(self):
+        """Get the current cart total as a float."""
+        total_text = self.elements_utils.get_text(self.cart_total)
+        return float(total_text.replace("$", "").strip())
+
+    def proceed_to_checkout(self):
+        """Navigate to the checkout page."""
+        self.elements_utils.click_element(self.checkout_button)
+        self.wait_utils.wait_for_title_contains("Checkout")
+        logger.info("Proceeded to checkout page")
+        return CheckoutPage(self.driver)
+
+
+class CheckoutPage:
+    """Checkout page object for completing the purchase."""
+
+    def __init__(self, driver):
+        self.driver = driver
+        self.elements_utils = ElementsUtils(driver)
+        self.wait_utils = WaitUtils(driver)
+
+        # Locators
+        self.shipping_form = {
+            "first_name": (By.ID, "first-name"),
+            "last_name": (By.ID, "last-name"),
+            "email": (By.ID, "email"),
+            "address": (By.ID, "address"),
+            "city": (By.ID, "city"),
+            "state": (By.ID, "state"),
+            "zip": (By.ID, "zip"),
+            "country": (By.ID, "country"),
+        }
+        self.continue_shipping_button = (By.ID, "continue-shipping")
+        self.shipping_method_form = (By.ID, "shipping-method-form")
+        self.shipping_methods = {
+            1: (By.ID, "shipping-1"),
+            2: (By.ID, "shipping-2"),
+            3: (By.ID, "shipping-3"),
+        }
+        self.continue_payment_button = (By.ID, "continue-payment")
+        self.payment_form = {
+            "card_number": (By.ID, "card-number"),
+            "card_expiry": (By.ID, "card-expiry"),
+            "card_cvv": (By.ID, "card-cvv"),
+        }
+        self.place_order_button = (By.ID, "place-order")
+        self.order_total = (By.ID, "order-total")
+
+    def fill_shipping_information(self, user_data):
+        """Fill out the shipping information form."""
+        for field, locator in self.shipping_form.items():
+            if field in user_data:
+                self.elements_utils.fill_input(locator, user_data[field])
+        self.elements_utils.click_element(self.continue_shipping_button)
+        self.wait_utils.wait_for_element_visible(self.shipping_methods[1])
+        logger.info("Filled shipping information")
+
+    def select_shipping_method(self, shipping_id):
+        """Select a shipping method by ID."""
+        self.wait_utils.wait_for_element_visible(self.shipping_method_form)
+        shipping_radio = self.shipping_methods.get(shipping_id)
+        if not shipping_radio:
+            raise ValueError(f"Invalid shipping method ID: {shipping_id}")
+        self.elements_utils.click_element(shipping_radio)
+        self.elements_utils.click_element(self.continue_payment_button)
+        self.wait_utils.wait_for_element_visible(self.payment_form["card_number"])
+        logger.info(f"Selected shipping method {shipping_id}")
+
+    def fill_payment_information(self, payment_data):
+        """Fill out the payment information form."""
+        for field, locator in self.payment_form.items():
+            if field in payment_data:
+                self.elements_utils.fill_input(locator, payment_data[field])
+        logger.info("Filled payment information")
+
+    def get_order_total(self):
+        """Get the current order total as a float."""
+        total_text = self.elements_utils.get_text(self.order_total)
+        return float(total_text.replace("$", "").strip())
+
+    def place_order(self):
+        """Place the order and navigate to confirmation page."""
+        self.elements_utils.click_element(self.place_order_button)
+        self.wait_utils.wait_for_title_contains("Confirmation")
+        logger.info("Placed order")
+        return ConfirmationPage(self.driver)
+
+
+class ConfirmationPage:
+    """Order confirmation page object."""
+
+    def __init__(self, driver):
+        self.driver = driver
+        self.elements_utils = ElementsUtils(driver)
+
+        # Locators
+        self.confirmation_message = (By.CLASS_NAME, "confirmation-message")
+        self.order_number = (By.ID, "order-number")
+        self.order_details = (By.CLASS_NAME, "order-details")
+
+    def get_order_number(self):
+        """Get the order number from the confirmation page."""
+        return self.elements_utils.get_text(self.order_number)
+
+    def is_confirmation_displayed(self):
+        """Check if the confirmation message is displayed."""
+        is_displayed = self.elements_utils.is_element_present(self.confirmation_message)
+        logger.info(f"Confirmation message displayed: {is_displayed}")
+        return is_displayed
+
+
+@pytest.fixture(scope="function")
+def driver():
+    """Initialize and quit the WebDriver for each test."""
+    driver = initialize_driver(headless=True)
+    logger.info("WebDriver initialized")
+    yield driver
+    quit_driver(driver)
+    logger.info("WebDriver closed")
+
+
 @pytest.fixture(scope="function")
 def mock_ecommerce_site():
     """Create temporary HTML files for the e-commerce site testing."""
-
     # Create home page with products
     home_content = """
     <!DOCTYPE html>
@@ -323,312 +525,59 @@ def mock_ecommerce_site():
     os.rmdir(temp_dir)
 
 
-# Page objects as embedded classes for this example
-# In a real project, these would be in separate files
-class HomePage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.elements_utils = ElementsUtils(driver)
-        self.wait_utils = WaitUtils(driver)
-
-        # Update locators to match HTML structure
-        self.product_cards = (By.CSS_SELECTOR, ".product-card")
-        self.add_to_cart_buttons = (By.CSS_SELECTOR, ".add-to-cart-btn")
-        self.cart_icon = (By.ID, "cart-icon")
-        self.cart_count = (By.CSS_SELECTOR, ".cart-count")
-
-    def open(self, base_url):
-        """Navigate to the home page."""
-        self.driver.get(base_url + "index.html")
-        self.wait_utils.wait_for_element_visible((By.TAG_NAME, "h1"))
-        logger.info("Opened home page")
-        return self
-
-    def add_product_to_cart(self, product_id):
-        """Add a product to the cart by ID."""
-        product_selector = (
-            By.CSS_SELECTOR,
-            f".product-card[data-product-id='{product_id}']",
-        )
-
-        # First wait for the element to be present before scrolling
-        self.wait_utils.wait_for_element_visible(product_selector)
-
-        # Now we know the element exists, so scroll to it
-        self.elements_utils.scroll_to_element(product_selector)
-
-        add_button = (
-            By.CSS_SELECTOR,
-            f".product-card[data-product-id='{product_id}'] .add-to-cart-btn",
-        )
-        self.elements_utils.click_element(add_button)
-
-        # Wait for cart update
-        self.wait_utils.wait_for_element_visible(self.cart_count)
-        logger.info(f"Added product ID {product_id} to cart")
-        return self
-
-    def go_to_cart(self):
-        """Navigate to the shopping cart."""
-        self.elements_utils.click_element(self.cart_icon)
-        self.wait_utils.wait_for_title_contains("Shopping Cart")
-        logger.info("Navigated to cart page")
-        return CartPage(self.driver)
-
-
-class CartPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.elements_utils = ElementsUtils(driver)
-        self.wait_utils = WaitUtils(driver)
-
-        # Locators
-        self.cart_items = (By.CSS_SELECTOR, ".cart-item")
-        self.item_quantity_inputs = (By.CSS_SELECTOR, ".item-quantity")
-        self.update_cart_button = (By.ID, "update-cart")
-        self.checkout_button = (By.ID, "checkout-button")
-        self.cart_total = (By.ID, "cart-total")
-
-    def update_product_quantity(self, product_id, quantity):
-        """Update the quantity for a product in the cart."""
-        quantity_input = (
-            By.CSS_SELECTOR,
-            f".cart-item[data-product-id='{product_id}'] .item-quantity",
-        )
-        self.elements_utils.send_keys(quantity_input, str(quantity), clear_first=True)
-
-        self.elements_utils.click_element(self.update_cart_button)
-
-        # Wait for cart update
-        updated_price_locator = (
-            By.CSS_SELECTOR,
-            f".cart-item[data-product-id='{product_id}'] .item-total",
-        )
-        self.wait_utils.wait_for_element_visible(updated_price_locator)
-        logger.info(f"Updated quantity for product ID {product_id} to {quantity}")
-        return self
-
-    def get_cart_total(self):
-        """Get the cart total price."""
-        total_text = self.elements_utils.get_text(self.cart_total)
-        # Extract numeric value from text (e.g., "$1,234.56" -> 1234.56)
-        total = float("".join(c for c in total_text if c.isdigit() or c == "."))
-        logger.info(f"Cart total: {total}")
-        return total
-
-    def proceed_to_checkout(self):
-        """Proceed to checkout page."""
-        self.elements_utils.click_element(self.checkout_button)
-        self.wait_utils.wait_for_title_contains("Checkout")
-        logger.info("Proceeded to checkout page")
-        return CheckoutPage(self.driver)
-
-
-class CheckoutPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.elements_utils = ElementsUtils(driver)
-        self.wait_utils = WaitUtils(driver)
-
-        # Locators - Shipping Information
-        self.first_name = (By.ID, "first-name")
-        self.last_name = (By.ID, "last-name")
-        self.email = (By.ID, "email")
-        self.address = (By.ID, "address")
-        self.city = (By.ID, "city")
-        self.state = (By.ID, "state")
-        self.zip_code = (By.ID, "zip")
-        self.country = (By.ID, "country")
-
-        # Shipping Methods
-        self.shipping_methods = (By.NAME, "shipping-method")
-
-        # Payment Information
-        self.card_number = (By.ID, "card-number")
-        self.card_expiry = (By.ID, "card-expiry")
-        self.card_cvv = (By.ID, "card-cvv")
-
-        # Continue Buttons
-        self.continue_to_shipping = (By.ID, "continue-shipping")
-        self.continue_to_payment = (By.ID, "continue-payment")
-        self.place_order_button = (By.ID, "place-order")
-
-        # Order Summary
-        self.order_summary = (By.ID, "order-summary")
-        self.order_total = (By.ID, "order-total")
-
-    def fill_shipping_information(self, user_data):
-        """Fill the shipping information form."""
-        self.elements_utils.send_keys(self.first_name, user_data["first_name"])
-        self.elements_utils.send_keys(self.last_name, user_data["last_name"])
-        self.elements_utils.send_keys(self.email, user_data["email"])
-        self.elements_utils.send_keys(self.address, user_data["address"])
-        self.elements_utils.send_keys(self.city, user_data["city"])
-        self.elements_utils.send_keys(self.state, user_data["state"])
-        self.elements_utils.send_keys(self.zip_code, user_data["zip"])
-        self.elements_utils.send_keys(self.country, user_data["country"])
-
-        self.elements_utils.click_element(self.continue_to_shipping)
-        self.wait_utils.wait_for_element_visible(self.shipping_methods)
-        logger.info("Filled shipping information form")
-        return self
-
-    def select_shipping_method(self, shipping_id):
-        """Select a shipping method by ID."""
-        shipping_method = (
-            By.CSS_SELECTOR,
-            f"input[name='shipping-method'][value='{shipping_id}']",
-        )
-        self.elements_utils.click_element(shipping_method)
-
-        self.elements_utils.click_element(self.continue_to_payment)
-        self.wait_utils.wait_for_element_visible(self.card_number)
-        logger.info(f"Selected shipping method ID {shipping_id}")
-        return self
-
-    def fill_payment_information(self, user_data):
-        """Fill the payment information form."""
-        self.elements_utils.send_keys(self.card_number, user_data["card_number"])
-        self.elements_utils.send_keys(self.card_expiry, user_data["card_expiry"])
-        self.elements_utils.send_keys(self.card_cvv, user_data["card_cvv"])
-        logger.info("Filled payment information form")
-        return self
-
-    def place_order(self):
-        """Place the order and complete checkout."""
-        self.elements_utils.click_element(self.place_order_button)
-        self.wait_utils.wait_for_title_contains("Confirmation")
-        logger.info("Placed order")
-        return ConfirmationPage(self.driver)
-
-    def get_order_total(self):
-        """Get the order total price."""
-        total_text = self.elements_utils.get_text(self.order_total)
-        # Extract numeric value from text
-        total = float("".join(c for c in total_text if c.isdigit() or c == "."))
-        logger.info(f"Order total: {total}")
-        return total
-
-
-class ConfirmationPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.elements_utils = ElementsUtils(driver)
-        self.wait_utils = WaitUtils(driver)
-
-        # Locators
-        self.confirmation_message = (By.CLASS_NAME, "confirmation-message")
-        self.order_number = (By.ID, "order-number")
-        self.order_details = (By.CLASS_NAME, "order-details")
-
-    def get_order_number(self):
-        """Get the order number from confirmation page."""
-        order_number_text = self.elements_utils.get_text(self.order_number)
-        logger.info(f"Order number: {order_number_text}")
-        return order_number_text
-
-    def is_confirmation_displayed(self):
-        """Check if the confirmation message is displayed."""
-        is_displayed = self.elements_utils.is_element_present(self.confirmation_message)
-        logger.info(f"Confirmation message displayed: {is_displayed}")
-        return is_displayed
-
-
-@pytest.fixture(scope="function")
-def driver():
-    driver = initialize_driver(headless=True)
-    yield driver
-    quit_driver(driver)
-
-
-@pytest.fixture(scope="module")
-def config():
-    return load_config()
-
-
 @allure.feature("E-commerce Checkout")
-@allure.story("End-to-End Checkout Process")
-@allure.severity(allure.severity_level.CRITICAL)
+@allure.story("Complete Checkout Flow")
 @measure_performance(metrics)
 def test_complete_checkout_flow(driver, mock_ecommerce_site, config):
     """
     Test the complete checkout flow from adding products to cart to order confirmation.
     This is a critical end-to-end test that validates the entire purchase flow.
     """
-    # Create page objects
-    home_page = HomePage(driver)
+    # Load test data
+    data_handler = DataHandler()
+    products = data_handler.load_json_data("products.json")
+    user_data = data_handler.load_json_data("user.json")
 
-    # Step 1: Navigate to home page and add products to cart
-    home_page.open(mock_ecommerce_site)
+    # Step 1: Navigate to home page and add products
+    home_page = HomePage(driver).open(mock_ecommerce_site)
 
-    # Adding products to cart
-    for product in PRODUCTS:
+    # Add each product to cart
+    for product in products:
         home_page.add_product_to_cart(product["id"])
 
-    # Step 2: Go to cart and verify products
+    # Step 2: Go to cart
     cart_page = home_page.go_to_cart()
 
     # Update quantities if needed
-    for product in PRODUCTS:
-        if product["quantity"] > 1:
+    for product in products:
+        if "quantity" in product and product["quantity"] > 1:
             cart_page.update_product_quantity(product["id"], product["quantity"])
-
-    # Get cart total
-    cart_total = cart_page.get_cart_total()
-
-    # Calculate expected total
-    expected_cart_total = sum(p["price"] * p["quantity"] for p in PRODUCTS)
-
-    # Verify cart total
-    assert (
-        abs(cart_total - expected_cart_total) < 0.01
-    ), f"Cart total {cart_total} does not match expected {expected_cart_total}"
 
     # Step 3: Proceed to checkout
     checkout_page = cart_page.proceed_to_checkout()
 
-    # Step 4: Fill shipping information
-    checkout_page.fill_shipping_information(USER_DATA)
+    # Fill shipping information
+    checkout_page.fill_shipping_information(user_data)
 
-    # Step 5: Select shipping method
-    # For this test, choose express shipping (id=2)
-    shipping_id = 2
-    shipping_method = next(
-        (s for s in SHIPPING_METHODS if s["id"] == shipping_id), None
-    )
-    checkout_page.select_shipping_method(shipping_id)
+    # Select shipping method (using Express shipping)
+    checkout_page.select_shipping_method(2)  # ID 2 is Express shipping
 
-    # Get order total after shipping method selection
-    order_total = checkout_page.get_order_total()
+    # Fill payment information
+    checkout_page.fill_payment_information(user_data)
 
-    # Calculate expected total (products + shipping)
-    expected_order_total = expected_cart_total + shipping_method["price"]
-
-    # Verify order total
-    assert abs(order_total - expected_order_total) < 0.01, (
-        f"Order total {order_total} does not match expected {expected_order_total} "
-        f"with shipping method {shipping_method['name']}"
-    )
-
-    # Step 6: Fill payment information
-    checkout_page.fill_payment_information(USER_DATA)
-
-    # Step 7: Place order
+    # Place order
     confirmation_page = checkout_page.place_order()
 
-    # Step 8: Verify order confirmation
+    # Verify order confirmation
     assert (
         confirmation_page.is_confirmation_displayed()
-    ), "Order confirmation message should be displayed"
+    ), "Order confirmation should be displayed"
 
     # Get and verify order number format
     order_number = confirmation_page.get_order_number()
-    assert (
-        order_number is not None and len(order_number) > 0
-    ), "Order number should be present"
+    assert order_number.startswith("ORD-"), "Invalid order number format"
 
-    # Log test completion with order number
-    logger.info(f"E2E test completed successfully. Order number: {order_number}")
+    logger.info(f"Order completed successfully with number: {order_number}")
 
 
 @allure.feature("E-commerce Checkout")
@@ -637,86 +586,43 @@ def test_complete_checkout_flow(driver, mock_ecommerce_site, config):
 @measure_performance(metrics)
 def test_different_shipping_methods(driver, mock_ecommerce_site, shipping_id):
     """
-    Test checkout with different shipping methods to ensure each works correctly.
-    This is parameterized to test all available shipping methods.
+    Test checkout process with different shipping methods.
+    Verifies that each shipping method can be selected and affects the total price correctly.
     """
-    # Get the shipping method details for this test
-    shipping_method = next(
-        (s for s in SHIPPING_METHODS if s["id"] == shipping_id), None
-    )
-    assert (
-        shipping_method is not None
-    ), f"Shipping method with ID {shipping_id} not found in test data"
+    # Load test data
+    data_handler = DataHandler()
+    products = data_handler.load_json_data("products.json")
+    user_data = data_handler.load_json_data("user.json")
 
-    # Create page objects
-    home_page = HomePage(driver)
+    # Add a single product to cart for simplicity
+    home_page = HomePage(driver).open(mock_ecommerce_site)
+    home_page.add_product_to_cart(products[0]["id"])
 
-    # Step 1: Navigate to home page and add all products to cart
-    home_page.open(mock_ecommerce_site)
-
-    # Adding all products to cart
-    for product in PRODUCTS:
-        home_page.add_product_to_cart(product["id"])
-
-    # Step 2: Go to cart
+    # Proceed through checkout
     cart_page = home_page.go_to_cart()
-
-    # Update quantities if needed
-    for product in PRODUCTS:
-        if product["quantity"] > 1:
-            cart_page.update_product_quantity(product["id"], product["quantity"])
-
-    # Step 3: Proceed to checkout
     checkout_page = cart_page.proceed_to_checkout()
 
-    # Step 4: Fill shipping information
-    checkout_page.fill_shipping_information(USER_DATA)
+    # Fill shipping information
+    checkout_page.fill_shipping_information(user_data)
 
-    # Step 5: Select the specified shipping method
+    # Select the specified shipping method
     checkout_page.select_shipping_method(shipping_id)
 
-    # Get order total after shipping method selection
-    order_total = checkout_page.get_order_total()
+    # Verify shipping cost is added to total
+    shipping_costs = {1: 5.99, 2: 15.99, 3: 29.99}
+    expected_total = products[0]["price"] + shipping_costs[shipping_id]
+    actual_total = checkout_page.get_order_total()
 
-    # Calculate expected total (all products + shipping)
-    expected_total = (
-        sum(p["price"] * p["quantity"] for p in PRODUCTS) + shipping_method["price"]
+    assert abs(actual_total - expected_total) < 0.01, (
+        f"Order total ${actual_total} does not match "
+        f"expected ${expected_total} for shipping method {shipping_id}"
     )
 
-    # Verify total includes correct shipping cost
-    assert abs(order_total - expected_total) < 0.01, (
-        f"Order total {order_total} does not match expected {expected_total} "
-        f"with shipping method {shipping_method['name']}"
-    )
-
-    # Fill payment and complete order
-    checkout_page.fill_payment_information(USER_DATA)
-    confirmation_page = checkout_page.place_order()
-
-    # Verify order completion
-    assert (
-        confirmation_page.is_confirmation_displayed()
-    ), "Order confirmation should be displayed"
-
-    logger.info(
-        f"Successfully completed checkout with shipping method: {shipping_method['name']}"
-    )
+    logger.info(f"Successfully verified shipping method {shipping_id}")
 
 
 def teardown_module(module):
-    """Module-level teardown function."""
-    # Save metrics to file
-    metrics_path = os.path.join("metrics", "checkout_metrics.json")
-    os.makedirs("metrics", exist_ok=True)
-
-    metrics_data = {
-        "timestamp": datetime.now().isoformat(),
-        "test_execution_time": metrics.get_average_execution_time(),
-        "tests_executed": metrics.get_test_count(),
-        "performance_by_test": metrics.get_metrics_by_test(),
-    }
-
-    with open(metrics_path, "w") as f:
-        json.dump(metrics_data, f, indent=2)
-
+    """Save test metrics and generate performance report."""
+    metrics.save_metrics()
+    metrics_path = metrics.get_metrics_path()
     logger.info(f"Test metrics saved to {metrics_path}")
