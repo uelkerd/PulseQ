@@ -13,6 +13,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 from framework.utilities.logger import setup_logger
 
+
 def get_formatted_date(days_offset=0, format="%Y-%m-%d"):
     """
     Get a date with optional offset from today.
@@ -28,4 +29,4 @@ def get_formatted_date(days_offset=0, format="%Y-%m-%d"):
 
     date = datetime.now() + timedelta(days=days_offset)
     formatted_date = date.strftime(format)
-    return formatted_date 
+    return formatted_date
