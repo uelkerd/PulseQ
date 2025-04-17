@@ -82,10 +82,10 @@ def driver():
     quit_driver(driver)
 
 
-def test_valid_login(driver, mock_html):
+def test_valid_login(driver):
     """Test successful login with valid credentials."""
-    # Launch the mock login page
-    driver.get(mock_html)
+    # Launch the web app
+    driver.get("http://example.com/login")
 
     # Use the page object to perform actions
     login_page = LoginPage(driver)
@@ -96,5 +96,5 @@ def test_valid_login(driver, mock_html):
 
     # Check that we're on the dashboard page
     assert (
-        "dashboard" in driver.current_url.lower()
+        "dashboard" in driver.current_url
     ), "User did not navigate to dashboard upon login"
