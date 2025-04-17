@@ -210,3 +210,10 @@ When using the framework, consider these security aspects:
 - Use environment variables for credentials
 - Implement secure handling of authentication tokens
 - Clear sensitive data after test execution
+
+The test automation framework is organized into several key components under the `pulseq` namespace:
+
+- `pulseq.core`: The core test runner and execution engine
+- `pulseq.config`: Configuration management and settings
+- `pulseq.page_objects`: Page object models for web UI testing
+- `pulseq.utilities`: Common utility functions and helpers

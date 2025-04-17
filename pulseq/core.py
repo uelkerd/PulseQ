@@ -15,7 +15,7 @@ from pulseq.utilities.logger import setup_logger
 logger = setup_logger("core")
 
 
-class FrameworkCore:
+class PulseQCore:
     """
     Core class that serves as the main entry point for the test automation framework.
     Handles configuration loading, test execution, reporting, and metrics tracking.

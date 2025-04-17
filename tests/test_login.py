@@ -4,7 +4,6 @@ import os
 import tempfile
 
 import pytest
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -82,19 +81,17 @@ def driver():
     quit_driver(driver)
 
 
-def test_valid_login(driver):
+def test_valid_login(web_driver):
     """Test successful login with valid credentials."""
     # Launch the web app
-    driver.get("http://example.com/login")
+    web_driver.get("http://example.com/login")
 
     # Use the page object to perform actions
-    login_page = LoginPage(driver)
+    login_page = LoginPage(web_driver)
     login_page.login("testuser", "securepassword")
 
     # Wait for the page transition
-    WebDriverWait(driver, 3).until(EC.title_contains("Dashboard"))
+    WebDriverWait(web_driver, 3).until(EC.title_contains("Dashboard"))
 
     # Check that we're on the dashboard page
-    assert (
-        "dashboard" in driver.current_url
-    ), "User did not navigate to dashboard upon login"
+    assert "dashboard" in web_driver.current_url, "User did not navigate to dashboard upon login"

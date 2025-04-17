@@ -156,13 +156,19 @@ Use the framework's CLI:
 
 ```bash
 # Run tests with custom options
-python -m framework.core --tests tests/test_login.py --parallel 4
+python -m pulseq.core --tests tests/test_login.py --parallel 4
 
 # Run tests without generating reports
-python -m framework.core --tests tests/test_login.py --no-report
+python -m pulseq.core --tests tests/test_login.py --no-report
 
 # Only collect tests without executing them
-python -m framework.core --collect-only --tests tests/
+python -m pulseq.core --collect-only --tests tests/
+
+# Run tests with a specific browser
+python -m pulseq.core --tests tests/test_e2e_checkout.py --browser firefox
+
+# Run tests in headless mode
+python -m pulseq.core --tests tests/test_e2e_checkout.py --headless
 ```
 
 ## Continuous Integration
