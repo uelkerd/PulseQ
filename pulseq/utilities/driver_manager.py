@@ -1,4 +1,4 @@
-# framework/utilities/driver_manager.py
+# pulseq/utilities/driver_manager.py
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options

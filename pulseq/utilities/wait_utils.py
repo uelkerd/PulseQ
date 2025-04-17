@@ -1,4 +1,4 @@
-# framework/utilities/wait_utils.py
+# pulseq/utilities/wait_utils.py
 
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC

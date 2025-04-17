@@ -1,4 +1,4 @@
-# framework/utilities/performance_metrics.py
+# pulseq/utilities/performance_metrics.py
 
 import functools
 import json

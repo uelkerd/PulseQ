@@ -1,4 +1,4 @@
-# framework/utilities/logger.py
+# pulseq/utilities/logger.py
 
 import logging
 
