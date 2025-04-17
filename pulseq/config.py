@@ -1,4 +1,4 @@
-# framework/config.py
+# pulseq/config.py
 import json
 import os
 
