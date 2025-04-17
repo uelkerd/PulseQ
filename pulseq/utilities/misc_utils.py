@@ -100,8 +100,7 @@ class MiscUtils:
 
         date = datetime.now() + timedelta(days=days_offset)
         formatted_date = date.strftime(format)
-        logger.debug(
-            f"Formatted date with offset {days_offset}: {formatted_date}")
+        logger.debug(f"Formatted date with offset {days_offset}: {formatted_date}")
         return formatted_date
 
     @staticmethod

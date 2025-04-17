@@ -12,20 +12,16 @@ from pulseq.utilities.logger import setup_logger
 
 def main():
     """Run tests with enhanced debugging and reporting."""
-    parser = argparse.ArgumentParser(
-        description="Run test automation framework tests")
+    parser = argparse.ArgumentParser(description="Run test automation framework tests")
     parser.add_argument(
         "--test-path", default="tests", help="Path to test files/directories"
     )
     parser.add_argument(
         "--verbose", "-v", action="store_true", help="Increase verbosity"
     )
-    parser.add_argument("--debug", action="store_true",
-                        help="Enable debug mode")
-    parser.add_argument("--allure", action="store_true",
-                        help="Generate Allure reports")
-    parser.add_argument("--parallel", action="store_true",
-                        help="Run tests in parallel")
+    parser.add_argument("--debug", action="store_true", help="Enable debug mode")
+    parser.add_argument("--allure", action="store_true", help="Generate Allure reports")
+    parser.add_argument("--parallel", action="store_true", help="Run tests in parallel")
     parser.add_argument(
         "--browser", default="chrome", help="Browser to use (chrome, firefox)"
     )
