@@ -1,6 +1,6 @@
 # Web Test Automation Framework
 
-![CI Status](https://img.shields.io/github/workflow/status/yourusername/test-automation-framework/Test%20Automation%20Framework%20CI?style=for-the-badge)
+![CI Status](https://img.shields.io/github/workflow/status/uelkerd/test-automation-framework/Test%20Automation%20Framework%20CI?style=for-the-badge)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![Code Coverage](https://img.shields.io/badge/coverage-92%25-brightgreen?style=for-the-badge)
