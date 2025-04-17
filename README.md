@@ -1,11 +1,13 @@
-# Web Test Automation Framework
+# PulseQ Test Automation Framework
 
 ![CI Status](https://img.shields.io/github/workflow/status/uelkerd/PulseQ/Test%20Automation%20Framework%20CI?style=for-the-badge)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![Code Coverage](https://img.shields.io/badge/coverage-92%25-brightgreen?style=for-the-badge)
 
-A modular test automation framework for web applications, designed using Python and Selenium. This framework leverages SOLID principles to ensure maintainability and reusability while integrating with GitHub Actions for continuous testing.
+## Overview
+
+PulseQ is a modular test automation framework for web applications, designed using Python and Selenium. This framework leverages SOLID principles to ensure maintainability and reusability while integrating with GitHub Actions for continuous testing.
 
 ## Key Features
 

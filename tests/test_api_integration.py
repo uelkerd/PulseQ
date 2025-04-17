@@ -122,7 +122,7 @@ def test_api_ui_integration(api_client, driver):
     # 2. Navigate to a UI page that would display the user
     driver.get(f"{API_BASE_URL.replace('/api', '')}/users/{user_id}")
 
-    # 3. Use framework utilities to verify UI elements
+    # 3. Use pulseq utilities to verify UI elements
     wait_utils = WaitUtils(driver)
     elements_utils = ElementsUtils(driver)
 
