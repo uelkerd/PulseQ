@@ -1,0 +1,17 @@
+test_settings:
+  browser: chrome
+  headless: true
+  implicit_wait: 10
+  page_load_timeout: 30
+  script_timeout: 30
+
+metrics:
+  output_dir: test_results/metrics
+  default_filename: test_metrics.json
+
+logging:
+  level: INFO
+  output_dir: test_results/logs
+
+test_data:
+  dir: test_data
