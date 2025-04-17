@@ -1,11 +1,14 @@
-import os
 import json
+import os
+
 import pytest
 import yaml
+
 from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 from pulseq.utilities.logger import setup_logger
 
 logger = setup_logger("conftest")
+
 
 def pytest_configure(config):
     """Create test results directories if they don't exist."""
@@ -13,11 +16,13 @@ def pytest_configure(config):
     os.makedirs("test_results/logs", exist_ok=True)
     os.makedirs("test_data", exist_ok=True)
 
+
 @pytest.fixture(scope="session")
 def config():
     """Load test configuration from config.yaml."""
     with open("config.yaml", "r") as f:
         return yaml.safe_load(f)
+
 
 @pytest.fixture(scope="session")
 def test_data():
@@ -61,8 +66,9 @@ def test_data():
     return {
         "products": products,
         "shipping_methods": shipping_methods,
-        "user_data": user_data
+        "user_data": user_data,
     }
+
 
 @pytest.fixture
 def driver(config):
@@ -71,14 +77,15 @@ def driver(config):
     driver.implicitly_wait(config["test_settings"]["implicit_wait"])
     driver.set_page_load_timeout(config["test_settings"]["page_load_timeout"])
     driver.set_script_timeout(config["test_settings"]["script_timeout"])
-    
+
     yield driver
-    
+
     quit_driver(driver)
+
 
 @pytest.fixture(autouse=True)
 def test_logging(request):
     """Set up logging for each test."""
     logger.info(f"Starting test: {request.node.name}")
     yield
-    logger.info(f"Finished test: {request.node.name}") 
+    logger.info(f"Finished test: {request.node.name}")
