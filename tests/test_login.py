@@ -1,11 +1,12 @@
 # tests/test_login.py
 
-import pytest
 import os
 import tempfile
-from selenium.webdriver.common.by import By
-from framework.utilities.driver_manager import initialize_driver, quit_driver
+
+import pytest
+
 from framework.page_objects.login_page import LoginPage
+from framework.utilities.driver_manager import initialize_driver, quit_driver
 
 
 @pytest.fixture(scope="function")
@@ -86,8 +87,8 @@ def test_valid_login(driver, mock_html):
     login_page.login("testuser", "securepassword")
 
     # Wait briefly for the page transition
-    from selenium.webdriver.support.ui import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.support.ui import WebDriverWait
 
     WebDriverWait(driver, 3).until(EC.title_contains("Dashboard"))
 

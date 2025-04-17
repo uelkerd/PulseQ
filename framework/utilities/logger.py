@@ -1,7 +1,6 @@
 # framework/utilities/logger.py
 
 import logging
-import os
 
 
 def setup_logger(name=__name__, log_file="framework.log", level=logging.DEBUG):
