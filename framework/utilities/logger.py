@@ -5,7 +5,8 @@ import logging
 
 def setup_logger(name=__name__, log_file="framework.log", level=logging.DEBUG):
     """Set up a logger for the application."""
-    formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
+    formatter = logging.Formatter(
+        "%(asctime)s %(levelname)s %(name)s: %(message)s")
     logger = logging.getLogger(name)
     logger.setLevel(level)
 

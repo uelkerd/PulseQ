@@ -1,15 +1,17 @@
 # tests/test_data_driven.py
 
-import pytest
-import os
 import json
-from framework.utilities.driver_manager import initialize_driver, quit_driver
-from framework.utilities.wait_utils import WaitUtils
-from framework.utilities.elements_utils import ElementsUtils
-from framework.utilities.data_handler import DataHandler
-from framework.utilities.logger import setup_logger
-from framework.page_objects.login_page import LoginPage
+import os
+
+import pytest
 from selenium.webdriver.common.by import By
+
+from framework.page_objects.login_page import LoginPage
+from framework.utilities.data_handler import DataHandler
+from framework.utilities.driver_manager import initialize_driver, quit_driver
+from framework.utilities.elements_utils import ElementsUtils
+from framework.utilities.logger import setup_logger
+from framework.utilities.wait_utils import WaitUtils
 
 # Set up logger
 logger = setup_logger("test_data_driven")
@@ -78,9 +80,9 @@ def test_login_parameterized(driver, user_data):
         try:
             wait_utils.wait_for_url_contains("dashboard", timeout=5)
             logger.info(f"Login successful for user: {user_data['username']}")
-            assert (
-                "dashboard" in driver.current_url
-            ), "User should be redirected to dashboard after successful login"
+            assert "dashboard" in driver.current_url, (
+                "User should be redirected to dashboard after successful login"
+            )
         except Exception as e:
             logger.error(f"Login failed unexpectedly: {e}")
             assert False, f"Login should succeed for user {user_data['username']}"
@@ -88,10 +90,11 @@ def test_login_parameterized(driver, user_data):
         # Check for error message
         elements_utils = ElementsUtils(driver)
         error_message_locator = (By.ID, "errorMessage")
-        assert elements_utils.is_element_present(
-            error_message_locator
-        ), "Error message should be displayed for invalid login"
-        logger.info(f"Login correctly failed for invalid user: {user_data['username']}")
+        assert elements_utils.is_element_present(error_message_locator), (
+            "Error message should be displayed for invalid login"
+        )
+        logger.info(
+            f"Login correctly failed for invalid user: {user_data['username']}")
 
 
 # Alternative test using test_data fixture
@@ -112,9 +115,9 @@ def test_login_with_fixture(driver, test_data):
             try:
                 wait_utils.wait_for_url_contains("dashboard", timeout=5)
                 logger.info(f"Login successful for user: {user['username']}")
-                assert (
-                    "dashboard" in driver.current_url
-                ), "User should be redirected to dashboard after successful login"
+                assert "dashboard" in driver.current_url, (
+                    "User should be redirected to dashboard after successful login"
+                )
                 # Navigate back to login page for next test
                 driver.get("http://example.com/login")
             except Exception as e:
@@ -123,10 +126,11 @@ def test_login_with_fixture(driver, test_data):
         else:
             # Check for error message
             error_message_locator = (By.ID, "errorMessage")
-            assert elements_utils.is_element_present(
-                error_message_locator
-            ), "Error message should be displayed for invalid login"
-            logger.info(f"Login correctly failed for invalid user: {user['username']}")
+            assert elements_utils.is_element_present(error_message_locator), (
+                "Error message should be displayed for invalid login"
+            )
+            logger.info(
+                f"Login correctly failed for invalid user: {user['username']}")
             # Clear form for next test
             driver.get("http://example.com/login")
 
@@ -139,12 +143,15 @@ def test_login_with_generated_data(driver):
     # Generate random test data
     data_handler = DataHandler()
     random_users = data_handler.generate_test_data_set(
-        2, {"username": "string", "password": "string", "expected_result": "string"}
+        2, {"username": "string", "password": "string",
+            "expected_result": "string"}
     )
 
     # Set expected results for demonstration
-    random_users[0]["expected_result"] = "failure"  # First random user will "fail"
-    random_users[1]["expected_result"] = "success"  # Second random user will "succeed"
+    # First random user will "fail"
+    random_users[0]["expected_result"] = "failure"
+    # Second random user will "succeed"
+    random_users[1]["expected_result"] = "success"
 
     login_page = LoginPage(driver)
     elements_utils = ElementsUtils(driver)
@@ -158,23 +165,24 @@ def test_login_with_generated_data(driver):
         if user["expected_result"] == "success":
             try:
                 wait_utils.wait_for_url_contains("dashboard", timeout=5)
-                logger.info(f"Login successful for generated user: {user['username']}")
-                assert (
-                    "dashboard" in driver.current_url
-                ), "User should be redirected to dashboard after successful login"
+                logger.info(
+                    f"Login successful for generated user: {user['username']}")
+                assert "dashboard" in driver.current_url, (
+                    "User should be redirected to dashboard after successful login"
+                )
                 # Navigate back to login page for next test
                 driver.get("http://example.com/login")
             except Exception as e:
                 logger.error(f"Login failed unexpectedly: {e}")
-                assert (
-                    False
-                ), f"Login should succeed for generated user {user['username']}"
+                assert False, (
+                    f"Login should succeed for generated user {user['username']}"
+                )
         else:
             # Check for error message
             error_message_locator = (By.ID, "errorMessage")
-            assert elements_utils.is_element_present(
-                error_message_locator
-            ), "Error message should be displayed for invalid login"
+            assert elements_utils.is_element_present(error_message_locator), (
+                "Error message should be displayed for invalid login"
+            )
             logger.info(
                 f"Login correctly failed for invalid generated user: {user['username']}"
             )
