@@ -8,6 +8,7 @@ import pytest
 
 from pulseq.config import load_config
 from pulseq.reporting import generate_allure_report
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 from pulseq.utilities.logger import setup_logger
 
 # Set up module logger
@@ -161,6 +162,20 @@ class PulseQCore:
         except Exception as e:
             logger.error(f"Error parsing test results: {e}")
             return {"error": str(e)}
+
+
+class TestBase:
+    """Base class for all test classes."""
+
+    def setup_method(self):
+        """Set up test method."""
+        self.driver = initialize_driver()
+        logger.info("WebDriver initialized")
+
+    def teardown_method(self):
+        """Tear down test method."""
+        quit_driver(self.driver)
+        logger.info("WebDriver closed")
 
 
 def parse_arguments():

@@ -62,7 +62,104 @@ pytest tests/ --html=reports/report.html
 
 ### Configuration
 
-Create a `config.json` file in your project root:
+```python
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
+
+# Initialize WebDriver
+driver = initialize_driver(headless=True)
+
+# Use the driver
+driver.get("https://example.com")
+
+# Quit driver when done
+quit_driver(driver)
+```
+
+### Wait Utilities
+
+```python
+from pulseq.utilities.wait_utils import WaitUtils
+from selenium.webdriver.common.by import By
+
+wait_utils = WaitUtils(driver)
+
+# Wait for element to be visible
+element = wait_utils.wait_for_element_visible((By.ID, "username"))
+
+# Wait for element to be clickable
+button = wait_utils.wait_for_element_clickable((By.ID, "submit"))
+
+# Wait for URL to contain specific text
+wait_utils.wait_for_url_contains("dashboard")
+```
+
+### Elements Utilities
+
+```python
+from pulseq.utilities.elements_utils import ElementsUtils
+from selenium.webdriver.common.by import By
+
+elements_utils = ElementsUtils(driver)
+
+# Click an element
+elements_utils.click_element((By.ID, "submit-button"))
+
+# Send keys to an element
+elements_utils.send_keys((By.ID, "username"), "testuser", clear_first=True)
+
+# Get text from an element
+text = elements_utils.get_text((By.ID, "message"))
+
+# Check if element is present
+is_present = elements_utils.is_element_present((By.ID, "error-message"))
+```
+
+### Data Handler
+
+```python
+from pulseq.utilities.data_handler import DataHandler
+
+data_handler = DataHandler()
+
+# Load data from JSON file
+users = data_handler.load_json_data("users.json")
+
+# Generate random test data
+random_users = data_handler.generate_test_data_set(5, {
+    "username": "string",
+    "email": "email",
+    "age": "number"
+})
+
+# Save data to CSV
+data_handler.save_csv_data(random_users, "users.csv")
+```
+
+### Performance Metrics
+
+```python
+from pulseq.utilities.performance_metrics import PerformanceMetrics, measure_performance
+
+# Create metrics instance
+metrics = PerformanceMetrics()
+
+# Use decorator to measure test performance
+@measure_performance(metrics)
+def test_login():
+    # Test code here
+    pass
+
+# After tests complete
+metrics.finalize_metrics()
+metrics.save_metrics()
+report = metrics.generate_report()
+```
+
+## Configuring the Framework
+
+### Configuration File
+
+Create a `config.json` file in the project root:
 
 ```json
 {
