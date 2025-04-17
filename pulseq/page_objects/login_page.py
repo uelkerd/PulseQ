@@ -24,4 +24,4 @@ class LoginPage:
         """Login with retry mechanism for increased reliability."""
         self.enter_username(username)
         self.enter_password(password)
-        self.click_login() 
+        self.click_login()
