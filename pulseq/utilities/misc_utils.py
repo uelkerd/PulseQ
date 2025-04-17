@@ -13,7 +13,6 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 from pulseq.utilities.logger import setup_logger
 
-
 def get_formatted_date(days_offset=0, format="%Y-%m-%d"):
     """
     Get a date with optional offset from today.
