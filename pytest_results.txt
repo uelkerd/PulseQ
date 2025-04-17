@@ -1,0 +1,2152 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.1, pytest-8.3.5, pluggy-1.5.0
+rootdir: /Users/UELKERD/Projects/test-automation-framework
+configfile: pytest.ini
+plugins: allure-pytest-2.14.0
+collected 12 items
+
+tests/test_data_driven.py FFFFF                                          [ 41%]
+tests/test_e2e_checkout.py FFFF                                          [ 75%]
+tests/test_example.py .                                                  [ 83%]
+tests/test_login.py .                                                    [ 91%]
+tests/test_retry.py .                                                    [100%]
+
+=================================== FAILURES ===================================
+_____________________ test_login_parameterized[user_data0] _____________________
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="170518587d4837f512925b194a5588be")>
+user_data = {'expected_result': 'success', 'password': 'password1', 'username': 'testuser1'}
+
+    @pytest.mark.parametrize("user_data", TEST_USERS)
+    def test_login_parameterized(driver, user_data):
+        """Test login functionality with different user credentials using pytest parameterization."""
+        driver.get("http://example.com/login")
+        logger.info(f"Testing with user: {user_data['username']}")
+    
+        login_page = LoginPage(driver)
+>       login_page.login(user_data["username"], user_data["password"])
+
+tests/test_data_driven.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+framework/utilities/retry.py:21: in wrapper
+    return func(*args, **kwargs)
+framework/page_objects/login_page.py:24: in login
+    self.enter_username(username)
+framework/page_objects/login_page.py:13: in enter_username
+    self.driver.find_element(*self.username_field).send_keys(username)
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:898: in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:429: in execute
+    self.error_handler.check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x10728e900>
+response = {'status': 404, 'value': '{"value":{"error":"no such element","message":"no such element: Unable to locate element: {\...000191275c0c _pthread_start + 136\\n15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8\\n"}}'}
+
+    def check_response(self, response: Dict[str, Any]) -> None:
+        """Checks that a JSON response from the WebDriver does not have an
+        error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get("status", None)
+        if not status or status == ErrorCode.SUCCESS:
+            return
+        value = None
+        message = response.get("message", "")
+        screen: str = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get("value", None)
+            if value_json and isinstance(value_json, str):
+                import json
+    
+                try:
+                    value = json.loads(value_json)
+                    if len(value) == 1:
+                        value = value["value"]
+                    status = value.get("error", None)
+                    if not status:
+                        status = value.get("status", ErrorCode.UNKNOWN_ERROR)
+                        message = value.get("value") or value.get("message")
+                        if not isinstance(message, str):
+                            value = message
+                            message = message.get("message")
+                    else:
+                        message = value.get("message", None)
+                except ValueError:
+                    pass
+    
+        exception_class: Type[WebDriverException]
+        e = ErrorCode()
+        error_codes = [item for item in dir(e) if not item.startswith("__")]
+        for error_code in error_codes:
+            error_info = getattr(ErrorCode, error_code)
+            if isinstance(error_info, list) and status in error_info:
+                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)
+                break
+        else:
+            exception_class = WebDriverException
+    
+        if not value:
+            value = response["value"]
+        if isinstance(value, str):
+            raise exception_class(value)
+        if message == "" and "message" in value:
+            message = value["message"]
+    
+        screen = None  # type: ignore[assignment]
+        if "screen" in value:
+            screen = value["screen"]
+    
+        stacktrace = None
+        st_value = value.get("stackTrace") or value.get("stacktrace")
+        if st_value:
+            if isinstance(st_value, str):
+                stacktrace = st_value.split("\n")
+            else:
+                stacktrace = []
+                try:
+                    for frame in st_value:
+                        line = frame.get("lineNumber", "")
+                        file = frame.get("fileName", "<anonymous>")
+                        if line:
+                            file = f"{file}:{line}"
+                        meth = frame.get("methodName", "<anonymous>")
+                        if "className" in frame:
+                            meth = f"{frame['className']}.{meth}"
+                        msg = "    at %s (%s)"
+                        msg = msg % (meth, file)
+                        stacktrace.append(msg)
+                except TypeError:
+                    pass
+        if exception_class == UnexpectedAlertPresentException:
+            alert_text = None
+            if "data" in value:
+                alert_text = value["data"].get("text")
+            elif "alert" in value:
+                alert_text = value["alert"].get("text")
+            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here
+>       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+E         (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+E       Stacktrace:
+E       0   chromedriver                        0x000000010276ae10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x00000001027630ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x00000001022aa8d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x00000001022f16a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x00000001023327b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x00000001022e5a80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x000000010272fc98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x0000000102732f64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x000000010270fa20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x00000001027337e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x0000000102700b14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x00000001027539c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x0000000102753b50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x0000000102762cf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:232: NoSuchElementException
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:53:24,668 INFO test_data_driven: Test data setup complete
+2025-04-17 00:53:26,308 INFO test_data_driven: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+INFO     test_data_driven:test_data_driven.py:36 Test data setup complete
+INFO     test_data_driven:test_data_driven.py:43 WebDriver initialized
+----------------------------- Captured stdout call -----------------------------
+[Retry] login failed on attempt 1: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x000000010276ae10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001027630ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001022aa8d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001022f16a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001023327b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x00000001022e5a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010272fc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x0000000102732f64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010270fa20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001027337e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000102700b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001027539c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x0000000102753b50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x0000000102762cf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 2: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x000000010276ae10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001027630ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001022aa8d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001022f16a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001023327b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x00000001022e5a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010272fc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x0000000102732f64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010270fa20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001027337e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000102700b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001027539c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x0000000102753b50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x0000000102762cf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 3: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x000000010276ae10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001027630ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001022aa8d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001022f16a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001023327b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x00000001022e5a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010272fc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x0000000102732f64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010270fa20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001027337e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000102700b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001027539c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x0000000102753b50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x0000000102762cf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:53:27,064 INFO test_data_driven: Testing with user: testuser1
+------------------------------ Captured log call -------------------------------
+INFO     test_data_driven:test_data_driven.py:69 Testing with user: testuser1
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:53:30,278 INFO test_data_driven: WebDriver closed
+---------------------------- Captured log teardown -----------------------------
+INFO     test_data_driven:test_data_driven.py:46 WebDriver closed
+_____________________ test_login_parameterized[user_data1] _____________________
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="70b98de97e17e3092084b04383564fdd")>
+user_data = {'expected_result': 'failure', 'password': 'wrongpass', 'username': 'invaliduser'}
+
+    @pytest.mark.parametrize("user_data", TEST_USERS)
+    def test_login_parameterized(driver, user_data):
+        """Test login functionality with different user credentials using pytest parameterization."""
+        driver.get("http://example.com/login")
+        logger.info(f"Testing with user: {user_data['username']}")
+    
+        login_page = LoginPage(driver)
+>       login_page.login(user_data["username"], user_data["password"])
+
+tests/test_data_driven.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+framework/utilities/retry.py:21: in wrapper
+    return func(*args, **kwargs)
+framework/page_objects/login_page.py:24: in login
+    self.enter_username(username)
+framework/page_objects/login_page.py:13: in enter_username
+    self.driver.find_element(*self.username_field).send_keys(username)
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:898: in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:429: in execute
+    self.error_handler.check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x107321310>
+response = {'status': 404, 'value': '{"value":{"error":"no such element","message":"no such element: Unable to locate element: {\...000191275c0c _pthread_start + 136\\n15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8\\n"}}'}
+
+    def check_response(self, response: Dict[str, Any]) -> None:
+        """Checks that a JSON response from the WebDriver does not have an
+        error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get("status", None)
+        if not status or status == ErrorCode.SUCCESS:
+            return
+        value = None
+        message = response.get("message", "")
+        screen: str = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get("value", None)
+            if value_json and isinstance(value_json, str):
+                import json
+    
+                try:
+                    value = json.loads(value_json)
+                    if len(value) == 1:
+                        value = value["value"]
+                    status = value.get("error", None)
+                    if not status:
+                        status = value.get("status", ErrorCode.UNKNOWN_ERROR)
+                        message = value.get("value") or value.get("message")
+                        if not isinstance(message, str):
+                            value = message
+                            message = message.get("message")
+                    else:
+                        message = value.get("message", None)
+                except ValueError:
+                    pass
+    
+        exception_class: Type[WebDriverException]
+        e = ErrorCode()
+        error_codes = [item for item in dir(e) if not item.startswith("__")]
+        for error_code in error_codes:
+            error_info = getattr(ErrorCode, error_code)
+            if isinstance(error_info, list) and status in error_info:
+                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)
+                break
+        else:
+            exception_class = WebDriverException
+    
+        if not value:
+            value = response["value"]
+        if isinstance(value, str):
+            raise exception_class(value)
+        if message == "" and "message" in value:
+            message = value["message"]
+    
+        screen = None  # type: ignore[assignment]
+        if "screen" in value:
+            screen = value["screen"]
+    
+        stacktrace = None
+        st_value = value.get("stackTrace") or value.get("stacktrace")
+        if st_value:
+            if isinstance(st_value, str):
+                stacktrace = st_value.split("\n")
+            else:
+                stacktrace = []
+                try:
+                    for frame in st_value:
+                        line = frame.get("lineNumber", "")
+                        file = frame.get("fileName", "<anonymous>")
+                        if line:
+                            file = f"{file}:{line}"
+                        meth = frame.get("methodName", "<anonymous>")
+                        if "className" in frame:
+                            meth = f"{frame['className']}.{meth}"
+                        msg = "    at %s (%s)"
+                        msg = msg % (meth, file)
+                        stacktrace.append(msg)
+                except TypeError:
+                    pass
+        if exception_class == UnexpectedAlertPresentException:
+            alert_text = None
+            if "data" in value:
+                alert_text = value["data"].get("text")
+            elif "alert" in value:
+                alert_text = value["alert"].get("text")
+            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here
+>       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+E         (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+E       Stacktrace:
+E       0   chromedriver                        0x00000001029eee10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x00000001029e70ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x000000010252e8d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x00000001025756a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x00000001025b67b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x0000000102569a80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x00000001029b3c98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x00000001029b6f64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x0000000102993a20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x00000001029b77e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x0000000102984b14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x00000001029d79c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x00000001029d7b50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x00000001029e6cf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:232: NoSuchElementException
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:53:31,672 INFO test_data_driven: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+INFO     test_data_driven:test_data_driven.py:43 WebDriver initialized
+----------------------------- Captured stdout call -----------------------------
+[Retry] login failed on attempt 1: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x00000001029eee10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001029e70ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x000000010252e8d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001025756a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001025b67b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000102569a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x00000001029b3c98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x00000001029b6f64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x0000000102993a20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001029b77e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000102984b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001029d79c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x00000001029d7b50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x00000001029e6cf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 2: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x00000001029eee10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001029e70ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x000000010252e8d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001025756a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001025b67b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000102569a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x00000001029b3c98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x00000001029b6f64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x0000000102993a20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001029b77e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000102984b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001029d79c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x00000001029d7b50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x00000001029e6cf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 3: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x00000001029eee10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001029e70ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x000000010252e8d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001025756a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001025b67b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000102569a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x00000001029b3c98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x00000001029b6f64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x0000000102993a20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001029b77e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000102984b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001029d79c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x00000001029d7b50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x00000001029e6cf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:53:32,978 INFO test_data_driven: Testing with user: invaliduser
+------------------------------ Captured log call -------------------------------
+INFO     test_data_driven:test_data_driven.py:69 Testing with user: invaliduser
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:53:36,300 INFO test_data_driven: WebDriver closed
+---------------------------- Captured log teardown -----------------------------
+INFO     test_data_driven:test_data_driven.py:46 WebDriver closed
+_____________________ test_login_parameterized[user_data2] _____________________
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="528ea7d62ef6a128fbd638d03031698f")>
+user_data = {'expected_result': 'success', 'password': 'password2', 'username': 'testuser2'}
+
+    @pytest.mark.parametrize("user_data", TEST_USERS)
+    def test_login_parameterized(driver, user_data):
+        """Test login functionality with different user credentials using pytest parameterization."""
+        driver.get("http://example.com/login")
+        logger.info(f"Testing with user: {user_data['username']}")
+    
+        login_page = LoginPage(driver)
+>       login_page.login(user_data["username"], user_data["password"])
+
+tests/test_data_driven.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+framework/utilities/retry.py:21: in wrapper
+    return func(*args, **kwargs)
+framework/page_objects/login_page.py:24: in login
+    self.enter_username(username)
+framework/page_objects/login_page.py:13: in enter_username
+    self.driver.find_element(*self.username_field).send_keys(username)
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:898: in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:429: in execute
+    self.error_handler.check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x107322c10>
+response = {'status': 404, 'value': '{"value":{"error":"no such element","message":"no such element: Unable to locate element: {\...000191275c0c _pthread_start + 136\\n15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8\\n"}}'}
+
+    def check_response(self, response: Dict[str, Any]) -> None:
+        """Checks that a JSON response from the WebDriver does not have an
+        error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get("status", None)
+        if not status or status == ErrorCode.SUCCESS:
+            return
+        value = None
+        message = response.get("message", "")
+        screen: str = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get("value", None)
+            if value_json and isinstance(value_json, str):
+                import json
+    
+                try:
+                    value = json.loads(value_json)
+                    if len(value) == 1:
+                        value = value["value"]
+                    status = value.get("error", None)
+                    if not status:
+                        status = value.get("status", ErrorCode.UNKNOWN_ERROR)
+                        message = value.get("value") or value.get("message")
+                        if not isinstance(message, str):
+                            value = message
+                            message = message.get("message")
+                    else:
+                        message = value.get("message", None)
+                except ValueError:
+                    pass
+    
+        exception_class: Type[WebDriverException]
+        e = ErrorCode()
+        error_codes = [item for item in dir(e) if not item.startswith("__")]
+        for error_code in error_codes:
+            error_info = getattr(ErrorCode, error_code)
+            if isinstance(error_info, list) and status in error_info:
+                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)
+                break
+        else:
+            exception_class = WebDriverException
+    
+        if not value:
+            value = response["value"]
+        if isinstance(value, str):
+            raise exception_class(value)
+        if message == "" and "message" in value:
+            message = value["message"]
+    
+        screen = None  # type: ignore[assignment]
+        if "screen" in value:
+            screen = value["screen"]
+    
+        stacktrace = None
+        st_value = value.get("stackTrace") or value.get("stacktrace")
+        if st_value:
+            if isinstance(st_value, str):
+                stacktrace = st_value.split("\n")
+            else:
+                stacktrace = []
+                try:
+                    for frame in st_value:
+                        line = frame.get("lineNumber", "")
+                        file = frame.get("fileName", "<anonymous>")
+                        if line:
+                            file = f"{file}:{line}"
+                        meth = frame.get("methodName", "<anonymous>")
+                        if "className" in frame:
+                            meth = f"{frame['className']}.{meth}"
+                        msg = "    at %s (%s)"
+                        msg = msg % (meth, file)
+                        stacktrace.append(msg)
+                except TypeError:
+                    pass
+        if exception_class == UnexpectedAlertPresentException:
+            alert_text = None
+            if "data" in value:
+                alert_text = value["data"].get("text")
+            elif "alert" in value:
+                alert_text = value["alert"].get("text")
+            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here
+>       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+E         (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+E       Stacktrace:
+E       0   chromedriver                        0x0000000101266e10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x000000010125f0ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x0000000100da68d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x0000000100ded6a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x0000000100e2e7b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x0000000100de1a80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x000000010122bc98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x000000010122ef64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x000000010120ba20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x000000010122f7e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x00000001011fcb14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x000000010124f9c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x000000010124fb50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x000000010125ecf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:232: NoSuchElementException
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:53:37,888 INFO test_data_driven: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+INFO     test_data_driven:test_data_driven.py:43 WebDriver initialized
+----------------------------- Captured stdout call -----------------------------
+[Retry] login failed on attempt 1: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000101266e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010125f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x0000000100da68d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x0000000100ded6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x0000000100e2e7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000100de1a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010122bc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010122ef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010120ba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010122f7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x00000001011fcb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010124f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010124fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010125ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 2: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000101266e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010125f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x0000000100da68d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x0000000100ded6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x0000000100e2e7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000100de1a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010122bc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010122ef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010120ba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010122f7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x00000001011fcb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010124f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010124fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010125ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 3: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000101266e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010125f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x0000000100da68d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x0000000100ded6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x0000000100e2e7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000100de1a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010122bc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010122ef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010120ba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010122f7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x00000001011fcb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010124f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010124fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010125ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:53:39,036 INFO test_data_driven: Testing with user: testuser2
+------------------------------ Captured log call -------------------------------
+INFO     test_data_driven:test_data_driven.py:69 Testing with user: testuser2
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:53:42,258 INFO test_data_driven: WebDriver closed
+---------------------------- Captured log teardown -----------------------------
+INFO     test_data_driven:test_data_driven.py:46 WebDriver closed
+___________________________ test_login_with_fixture ____________________________
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="dda20a55fefbfe1a0b0ee61be037aa0f")>
+test_data = [{'expected_result': 'success', 'password': 'password1', 'username': 'testuser1'}, {'expected_result': 'failure', 'pas...ongpass', 'username': 'invaliduser'}, {'expected_result': 'success', 'password': 'password2', 'username': 'testuser2'}]
+
+    def test_login_with_fixture(driver, test_data):
+        """Test login functionality with different user credentials using fixture data."""
+        driver.get("http://example.com/login")
+    
+        login_page = LoginPage(driver)
+        elements_utils = ElementsUtils(driver)
+        wait_utils = WaitUtils(driver)
+    
+        # Test each user from the loaded test data
+        for user in test_data:
+            logger.info(f"Testing with user from fixture: {user['username']}")
+>           login_page.login(user["username"], user["password"])
+
+tests/test_data_driven.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+framework/utilities/retry.py:21: in wrapper
+    return func(*args, **kwargs)
+framework/page_objects/login_page.py:24: in login
+    self.enter_username(username)
+framework/page_objects/login_page.py:13: in enter_username
+    self.driver.find_element(*self.username_field).send_keys(username)
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:898: in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:429: in execute
+    self.error_handler.check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x1073015b0>
+response = {'status': 404, 'value': '{"value":{"error":"no such element","message":"no such element: Unable to locate element: {\...000191275c0c _pthread_start + 136\\n15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8\\n"}}'}
+
+    def check_response(self, response: Dict[str, Any]) -> None:
+        """Checks that a JSON response from the WebDriver does not have an
+        error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get("status", None)
+        if not status or status == ErrorCode.SUCCESS:
+            return
+        value = None
+        message = response.get("message", "")
+        screen: str = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get("value", None)
+            if value_json and isinstance(value_json, str):
+                import json
+    
+                try:
+                    value = json.loads(value_json)
+                    if len(value) == 1:
+                        value = value["value"]
+                    status = value.get("error", None)
+                    if not status:
+                        status = value.get("status", ErrorCode.UNKNOWN_ERROR)
+                        message = value.get("value") or value.get("message")
+                        if not isinstance(message, str):
+                            value = message
+                            message = message.get("message")
+                    else:
+                        message = value.get("message", None)
+                except ValueError:
+                    pass
+    
+        exception_class: Type[WebDriverException]
+        e = ErrorCode()
+        error_codes = [item for item in dir(e) if not item.startswith("__")]
+        for error_code in error_codes:
+            error_info = getattr(ErrorCode, error_code)
+            if isinstance(error_info, list) and status in error_info:
+                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)
+                break
+        else:
+            exception_class = WebDriverException
+    
+        if not value:
+            value = response["value"]
+        if isinstance(value, str):
+            raise exception_class(value)
+        if message == "" and "message" in value:
+            message = value["message"]
+    
+        screen = None  # type: ignore[assignment]
+        if "screen" in value:
+            screen = value["screen"]
+    
+        stacktrace = None
+        st_value = value.get("stackTrace") or value.get("stacktrace")
+        if st_value:
+            if isinstance(st_value, str):
+                stacktrace = st_value.split("\n")
+            else:
+                stacktrace = []
+                try:
+                    for frame in st_value:
+                        line = frame.get("lineNumber", "")
+                        file = frame.get("fileName", "<anonymous>")
+                        if line:
+                            file = f"{file}:{line}"
+                        meth = frame.get("methodName", "<anonymous>")
+                        if "className" in frame:
+                            meth = f"{frame['className']}.{meth}"
+                        msg = "    at %s (%s)"
+                        msg = msg % (meth, file)
+                        stacktrace.append(msg)
+                except TypeError:
+                    pass
+        if exception_class == UnexpectedAlertPresentException:
+            alert_text = None
+            if "data" in value:
+                alert_text = value["data"].get("text")
+            elif "alert" in value:
+                alert_text = value["alert"].get("text")
+            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here
+>       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+E         (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+E       Stacktrace:
+E       0   chromedriver                        0x0000000105496e10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x000000010548f0ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x0000000104fd68d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x000000010501d6a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x000000010505e7b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x0000000105011a80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x000000010545bc98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x000000010545ef64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x000000010543ba20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x000000010545f7e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x000000010542cb14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x000000010547f9c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x000000010547fb50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x000000010548ecf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:232: NoSuchElementException
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:53:42,259 DEBUG data_handler: Initialized DataHandler with data folder: test_data
+2025-04-17 00:53:42,260 DEBUG data_handler: Loading JSON data from test_data/users.json
+2025-04-17 00:53:42,260 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:53:42,260 INFO test_data_driven: Loaded test data: 3 users
+2025-04-17 00:53:43,670 INFO test_data_driven: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+DEBUG    data_handler:data_handler.py:33 Initialized DataHandler with data folder: test_data
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/users.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+INFO     test_data_driven:test_data_driven.py:56 Loaded test data: 3 users
+INFO     test_data_driven:test_data_driven.py:43 WebDriver initialized
+----------------------------- Captured stdout call -----------------------------
+[Retry] login failed on attempt 1: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000105496e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010548f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x0000000104fd68d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x000000010501d6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x000000010505e7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000105011a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010545bc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010545ef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010543ba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010545f7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x000000010542cb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010547f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010547fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010548ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 2: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000105496e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010548f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x0000000104fd68d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x000000010501d6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x000000010505e7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000105011a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010545bc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010545ef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010543ba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010545f7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x000000010542cb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010547f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010547fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010548ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 3: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000105496e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010548f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x0000000104fd68d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x000000010501d6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x000000010505e7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000105011a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010545bc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010545ef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010543ba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010545f7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x000000010542cb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010547f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010547fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010548ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:53:44,374 INFO test_data_driven: Testing with user from fixture: testuser1
+------------------------------ Captured log call -------------------------------
+INFO     test_data_driven:test_data_driven.py:108 Testing with user from fixture: testuser1
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:53:47,559 INFO test_data_driven: WebDriver closed
+---------------------------- Captured log teardown -----------------------------
+INFO     test_data_driven:test_data_driven.py:46 WebDriver closed
+________________________ test_login_with_generated_data ________________________
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="92854e00db3478e5fa1dacedbdde6e35")>
+
+    def test_login_with_generated_data(driver):
+        """Test login with dynamically generated user data."""
+        driver.get("http://example.com/login")
+    
+        # Generate random test data
+        data_handler = DataHandler()
+        random_users = data_handler.generate_test_data_set(
+            2, {"username": "string", "password": "string", "expected_result": "string"}
+        )
+    
+        # Set expected results for demonstration
+        random_users[0]["expected_result"] = "failure"  # First random user will "fail"
+        random_users[1]["expected_result"] = "success"  # Second random user will "succeed"
+    
+        login_page = LoginPage(driver)
+        elements_utils = ElementsUtils(driver)
+        wait_utils = WaitUtils(driver)
+    
+        # Test each generated user
+        for user in random_users:
+            logger.info(f"Testing with generated user: {user['username']}")
+>           login_page.login(user["username"], user["password"])
+
+tests/test_data_driven.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+framework/utilities/retry.py:21: in wrapper
+    return func(*args, **kwargs)
+framework/page_objects/login_page.py:24: in login
+    self.enter_username(username)
+framework/page_objects/login_page.py:13: in enter_username
+    self.driver.find_element(*self.username_field).send_keys(username)
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:898: in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:429: in execute
+    self.error_handler.check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x107302780>
+response = {'status': 404, 'value': '{"value":{"error":"no such element","message":"no such element: Unable to locate element: {\...000191275c0c _pthread_start + 136\\n15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8\\n"}}'}
+
+    def check_response(self, response: Dict[str, Any]) -> None:
+        """Checks that a JSON response from the WebDriver does not have an
+        error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get("status", None)
+        if not status or status == ErrorCode.SUCCESS:
+            return
+        value = None
+        message = response.get("message", "")
+        screen: str = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get("value", None)
+            if value_json and isinstance(value_json, str):
+                import json
+    
+                try:
+                    value = json.loads(value_json)
+                    if len(value) == 1:
+                        value = value["value"]
+                    status = value.get("error", None)
+                    if not status:
+                        status = value.get("status", ErrorCode.UNKNOWN_ERROR)
+                        message = value.get("value") or value.get("message")
+                        if not isinstance(message, str):
+                            value = message
+                            message = message.get("message")
+                    else:
+                        message = value.get("message", None)
+                except ValueError:
+                    pass
+    
+        exception_class: Type[WebDriverException]
+        e = ErrorCode()
+        error_codes = [item for item in dir(e) if not item.startswith("__")]
+        for error_code in error_codes:
+            error_info = getattr(ErrorCode, error_code)
+            if isinstance(error_info, list) and status in error_info:
+                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)
+                break
+        else:
+            exception_class = WebDriverException
+    
+        if not value:
+            value = response["value"]
+        if isinstance(value, str):
+            raise exception_class(value)
+        if message == "" and "message" in value:
+            message = value["message"]
+    
+        screen = None  # type: ignore[assignment]
+        if "screen" in value:
+            screen = value["screen"]
+    
+        stacktrace = None
+        st_value = value.get("stackTrace") or value.get("stacktrace")
+        if st_value:
+            if isinstance(st_value, str):
+                stacktrace = st_value.split("\n")
+            else:
+                stacktrace = []
+                try:
+                    for frame in st_value:
+                        line = frame.get("lineNumber", "")
+                        file = frame.get("fileName", "<anonymous>")
+                        if line:
+                            file = f"{file}:{line}"
+                        meth = frame.get("methodName", "<anonymous>")
+                        if "className" in frame:
+                            meth = f"{frame['className']}.{meth}"
+                        msg = "    at %s (%s)"
+                        msg = msg % (meth, file)
+                        stacktrace.append(msg)
+                except TypeError:
+                    pass
+        if exception_class == UnexpectedAlertPresentException:
+            alert_text = None
+            if "data" in value:
+                alert_text = value["data"].get("text")
+            elif "alert" in value:
+                alert_text = value["alert"].get("text")
+            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here
+>       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+E         (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+E       Stacktrace:
+E       0   chromedriver                        0x0000000104826e10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x000000010481f0ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x00000001043668d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x00000001043ad6a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x00000001043ee7b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x00000001043a1a80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x00000001047ebc98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x00000001047eef64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x00000001047cba20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x00000001047ef7e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x00000001047bcb14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x000000010480f9c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x000000010480fb50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x000000010481ecf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:232: NoSuchElementException
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:53:48,934 INFO test_data_driven: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+INFO     test_data_driven:test_data_driven.py:43 WebDriver initialized
+----------------------------- Captured stdout call -----------------------------
+[Retry] login failed on attempt 1: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000104826e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010481f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001043668d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001043ad6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001043ee7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x00000001043a1a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x00000001047ebc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x00000001047eef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x00000001047cba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001047ef7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x00000001047bcb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010480f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010480fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010481ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 2: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000104826e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010481f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001043668d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001043ad6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001043ee7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x00000001043a1a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x00000001047ebc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x00000001047eef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x00000001047cba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001047ef7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x00000001047bcb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010480f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010480fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010481ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+[Retry] login failed on attempt 3: Message: no such element: Unable to locate element: {"method":"css selector","selector":"[id="username"]"}
+  (Session info: chrome=135.0.7049.85); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+0   chromedriver                        0x0000000104826e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010481f0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001043668d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001043ad6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001043ee7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x00000001043a1a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x00000001047ebc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x00000001047eef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x00000001047cba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001047ef7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x00000001047bcb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010480f9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010480fb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010481ecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:53:49,549 DEBUG data_handler: Initialized DataHandler with data folder: test_data
+2025-04-17 00:53:49,551 DEBUG data_handler: Generated random string: eBmSZ3Jfyc
+2025-04-17 00:53:49,552 DEBUG data_handler: Generated random string: KoZrbAaC6O
+2025-04-17 00:53:49,552 DEBUG data_handler: Generated random string: 4HgIBe69HU
+2025-04-17 00:53:49,552 DEBUG data_handler: Generated random string: CmD3ObI5EO
+2025-04-17 00:53:49,552 DEBUG data_handler: Generated random string: zaEmAJsyY6
+2025-04-17 00:53:49,552 DEBUG data_handler: Generated random string: MWWBSzhM7C
+2025-04-17 00:53:49,552 DEBUG data_handler: Generated dataset with 2 items
+2025-04-17 00:53:49,552 INFO test_data_driven: Testing with generated user: eBmSZ3Jfyc
+------------------------------ Captured log call -------------------------------
+DEBUG    data_handler:data_handler.py:33 Initialized DataHandler with data folder: test_data
+DEBUG    data_handler:data_handler.py:185 Generated random string: eBmSZ3Jfyc
+DEBUG    data_handler:data_handler.py:185 Generated random string: KoZrbAaC6O
+DEBUG    data_handler:data_handler.py:185 Generated random string: 4HgIBe69HU
+DEBUG    data_handler:data_handler.py:185 Generated random string: CmD3ObI5EO
+DEBUG    data_handler:data_handler.py:185 Generated random string: zaEmAJsyY6
+DEBUG    data_handler:data_handler.py:185 Generated random string: MWWBSzhM7C
+DEBUG    data_handler:data_handler.py:303 Generated dataset with 2 items
+INFO     test_data_driven:test_data_driven.py:155 Testing with generated user: eBmSZ3Jfyc
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:53:52,745 INFO test_data_driven: WebDriver closed
+---------------------------- Captured log teardown -----------------------------
+INFO     test_data_driven:test_data_driven.py:46 WebDriver closed
+_________________________ test_complete_checkout_flow __________________________
+
+self = <framework.utilities.wait_utils.WaitUtils object at 0x107303100>
+locator = ('css selector', ".product-card[data-product-id='1']"), timeout = 10
+message = None
+
+    def wait_for_element_visible(self, locator, timeout=None, message=None):
+        """
+        Enhanced wait for an element to be visible on the page.
+        First waits for presence, then for visibility for a more robust approach.
+    
+        Args:
+            locator: Element locator tuple (By.XX, "value")
+            timeout: Custom timeout in seconds (overrides default)
+            message: Custom error message for TimeoutException
+    
+        Returns:
+            WebElement: The element once visible
+    
+        Raises:
+            TimeoutException: If element doesn't become visible within timeout
+        """
+        wait_timeout = timeout if timeout is not None else self.timeout
+        error_message = (
+            message
+            if message
+            else f"Element {locator} not visible after {wait_timeout} seconds"
+        )
+    
+        try:
+            # First, wait for the element to be present in the DOM
+            logger.debug(f"Waiting for element {locator} to be present in DOM")
+>           WebDriverWait(self.driver, wait_timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+
+framework/utilities/wait_utils.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.support.wait.WebDriverWait (session="784ef7a348b539f745654d11482b4d5a")>
+method = <function presence_of_element_located.<locals>._predicate at 0x107336840>
+message = ''
+
+    def until(self, method: Callable[[D], Union[Literal[False], T]], message: str = "") -> T:
+        """Wait until the method returns a value that is not False.
+    
+        Calls the method provided with the driver as an argument until the
+        return value does not evaluate to ``False``.
+    
+        Parameters:
+        -----------
+        method: callable(WebDriver)
+            - A callable object that takes a WebDriver instance as an argument.
+    
+        message: str
+            - Optional message for :exc:`TimeoutException`
+    
+        Return:
+        -------
+        object: T
+            - The result of the last call to `method`
+    
+        Raises:
+        -------
+        TimeoutException
+            - If 'method' does not return a truthy value within the WebDriverWait
+            object's timeout
+    
+        Example:
+        --------
+        >>> from selenium.webdriver.common.by import By
+        >>> from selenium.webdriver.support.ui import WebDriverWait
+        >>> from selenium.webdriver.support import expected_conditions as EC
+    
+        # Wait until an element is visible on the page
+        >>> wait = WebDriverWait(driver, 10)
+        >>> element = wait.until(EC.visibility_of_element_located((By.ID, "exampleId")))
+        >>> print(element.text)
+        """
+        screen = None
+        stacktrace = None
+    
+        end_time = time.monotonic() + self._timeout
+        while True:
+            try:
+                value = method(self._driver)
+                if value:
+                    return value
+            except self._ignored_exceptions as exc:
+                screen = getattr(exc, "screen", None)
+                stacktrace = getattr(exc, "stacktrace", None)
+            if time.monotonic() > end_time:
+                break
+            time.sleep(self._poll)
+>       raise TimeoutException(message, screen, stacktrace)
+E       selenium.common.exceptions.TimeoutException: Message: 
+E       Stacktrace:
+E       0   chromedriver                        0x00000001054f2e10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x00000001054eb0ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x00000001050328d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x00000001050796a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x00000001050ba7b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x000000010506da80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x00000001054b7c98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x00000001054baf64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x0000000105497a20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x00000001054bb7e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x0000000105488b14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x00000001054db9c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x00000001054dbb50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x00000001054eacf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/support/wait.py:146: TimeoutException
+
+During handling of the above exception, another exception occurred:
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="784ef7a348b539f745654d11482b4d5a")>
+config = {'base_url': 'http://example.com', 'retry_attempts': 3, 'timeout': 30}
+
+    @allure.feature("E-commerce Checkout")
+    @allure.story("End-to-End Checkout Process")
+    @allure.severity(allure.severity_level.CRITICAL)
+    @measure_performance(metrics)
+    def test_complete_checkout_flow(driver, config):
+        """
+        Test the complete checkout flow from product selection to order confirmation.
+    
+        This test demonstrates the full capabilities of the framework including:
+        - Page object pattern
+        - Data-driven testing
+        - Allure reporting
+        - Performance metrics
+        - Modular utilities
+        """
+        try:
+            # Initialize a data handler and load test data
+            data_handler = DataHandler()
+            products = data_handler.load_json_data("products.json")
+            shipping_methods = data_handler.load_json_data("shipping.json")
+            user_data = data_handler.load_json_data("user.json")
+    
+            # Step 1: Navigate to the home page and add products to cart
+            with allure.step("Navigate to homepage and add products to cart"):
+                home_page = HomePage(driver).open()
+    
+                # Add each product to the cart
+                for product in products:
+>                   home_page.add_product_to_cart(product["id"])
+
+tests/test_e2e_checkout.py:299: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_e2e_checkout.py:90: in add_product_to_cart
+    self.elements_utils.scroll_to_element(product_selector)
+framework/utilities/elements_utils.py:361: in scroll_to_element
+    element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <framework.utilities.wait_utils.WaitUtils object at 0x107303100>
+locator = ('css selector', ".product-card[data-product-id='1']"), timeout = 10
+message = None
+
+    def wait_for_element_visible(self, locator, timeout=None, message=None):
+        """
+        Enhanced wait for an element to be visible on the page.
+        First waits for presence, then for visibility for a more robust approach.
+    
+        Args:
+            locator: Element locator tuple (By.XX, "value")
+            timeout: Custom timeout in seconds (overrides default)
+            message: Custom error message for TimeoutException
+    
+        Returns:
+            WebElement: The element once visible
+    
+        Raises:
+            TimeoutException: If element doesn't become visible within timeout
+        """
+        wait_timeout = timeout if timeout is not None else self.timeout
+        error_message = (
+            message
+            if message
+            else f"Element {locator} not visible after {wait_timeout} seconds"
+        )
+    
+        try:
+            # First, wait for the element to be present in the DOM
+            logger.debug(f"Waiting for element {locator} to be present in DOM")
+            WebDriverWait(self.driver, wait_timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+    
+            # Then, wait for it to be visible
+            logger.debug(f"Waiting for element {locator} to be visible")
+            element = WebDriverWait(self.driver, wait_timeout).until(
+                EC.visibility_of_element_located(locator)
+            )
+            logger.debug(f"Element {locator} is now visible")
+            return element
+        except TimeoutException:
+            logger.error(error_message)
+    
+            # Take a screenshot to help with debugging
+>           from framework.utilities.misc_utils import take_screenshot
+E           ImportError: cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+
+framework/utilities/wait_utils.py:213: ImportError
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:53:57,504 INFO test_e2e_checkout: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+INFO     test_e2e_checkout:test_e2e_checkout.py:261 WebDriver initialized
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:53:57,507 DEBUG performance_metrics: Started timer for test: test_complete_checkout_flow
+2025-04-17 00:53:57,507 DEBUG data_handler: Initialized DataHandler with data folder: test_data
+2025-04-17 00:53:57,508 DEBUG data_handler: Loading JSON data from test_data/products.json
+2025-04-17 00:53:57,509 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:53:57,510 DEBUG data_handler: Loading JSON data from test_data/shipping.json
+2025-04-17 00:53:57,510 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:53:57,511 DEBUG data_handler: Loading JSON data from test_data/user.json
+2025-04-17 00:53:57,511 DEBUG data_handler: Successfully loaded JSON data with dict format
+2025-04-17 00:53:58,111 DEBUG wait_utils: Waiting for element ('tag name', 'h1') to be present in DOM
+2025-04-17 00:53:58,125 DEBUG wait_utils: Waiting for element ('tag name', 'h1') to be visible
+2025-04-17 00:53:58,146 DEBUG wait_utils: Element ('tag name', 'h1') is now visible
+2025-04-17 00:53:58,146 INFO test_e2e_checkout: Opened home page
+2025-04-17 00:53:58,146 DEBUG elements_utils: Scrolling to element ('css selector', ".product-card[data-product-id='1']")
+2025-04-17 00:53:58,146 DEBUG wait_utils: Waiting for element ('css selector', ".product-card[data-product-id='1']") to be present in DOM
+2025-04-17 00:54:08,437 ERROR wait_utils: Element ('css selector', ".product-card[data-product-id='1']") not visible after 10 seconds
+2025-04-17 00:54:08,437 ERROR elements_utils: Error scrolling to element ('css selector', ".product-card[data-product-id='1']"): cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+2025-04-17 00:54:08,438 ERROR test_e2e_checkout: Test failed with error: cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+2025-04-17 00:54:08,611 DEBUG misc_utils: Screenshot saved to screenshots/failure_20250417005408.png
+2025-04-17 00:54:08,612 DEBUG performance_metrics: Stopped timer for test: test_complete_checkout_flow, duration: 11.10s, result: False
+------------------------------ Captured log call -------------------------------
+DEBUG    performance_metrics:performance_metrics.py:115 Started timer for test: test_complete_checkout_flow
+DEBUG    data_handler:data_handler.py:33 Initialized DataHandler with data folder: test_data
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/products.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/shipping.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/user.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with dict format
+DEBUG    wait_utils:wait_utils.py:197 Waiting for element ('tag name', 'h1') to be present in DOM
+DEBUG    wait_utils:wait_utils.py:203 Waiting for element ('tag name', 'h1') to be visible
+DEBUG    wait_utils:wait_utils.py:207 Element ('tag name', 'h1') is now visible
+INFO     test_e2e_checkout:test_e2e_checkout.py:84 Opened home page
+DEBUG    elements_utils:elements_utils.py:360 Scrolling to element ('css selector', ".product-card[data-product-id='1']")
+DEBUG    wait_utils:wait_utils.py:197 Waiting for element ('css selector', ".product-card[data-product-id='1']") to be present in DOM
+ERROR    wait_utils:wait_utils.py:210 Element ('css selector', ".product-card[data-product-id='1']") not visible after 10 seconds
+ERROR    elements_utils:elements_utils.py:365 Error scrolling to element ('css selector', ".product-card[data-product-id='1']"): cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+ERROR    test_e2e_checkout:test_e2e_checkout.py:374 Test failed with error: cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+DEBUG    misc_utils:misc_utils.py:65 Screenshot saved to screenshots/failure_20250417005408.png
+DEBUG    performance_metrics:performance_metrics.py:150 Stopped timer for test: test_complete_checkout_flow, duration: 11.10s, result: False
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:54:08,735 INFO test_e2e_checkout: WebDriver closed
+---------------------------- Captured log teardown -----------------------------
+INFO     test_e2e_checkout:test_e2e_checkout.py:264 WebDriver closed
+______________________ test_different_shipping_methods[1] ______________________
+
+self = <framework.utilities.wait_utils.WaitUtils object at 0x107384160>
+locator = ('css selector', ".product-card[data-product-id='1']"), timeout = 10
+message = None
+
+    def wait_for_element_visible(self, locator, timeout=None, message=None):
+        """
+        Enhanced wait for an element to be visible on the page.
+        First waits for presence, then for visibility for a more robust approach.
+    
+        Args:
+            locator: Element locator tuple (By.XX, "value")
+            timeout: Custom timeout in seconds (overrides default)
+            message: Custom error message for TimeoutException
+    
+        Returns:
+            WebElement: The element once visible
+    
+        Raises:
+            TimeoutException: If element doesn't become visible within timeout
+        """
+        wait_timeout = timeout if timeout is not None else self.timeout
+        error_message = (
+            message
+            if message
+            else f"Element {locator} not visible after {wait_timeout} seconds"
+        )
+    
+        try:
+            # First, wait for the element to be present in the DOM
+            logger.debug(f"Waiting for element {locator} to be present in DOM")
+>           WebDriverWait(self.driver, wait_timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+
+framework/utilities/wait_utils.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.support.wait.WebDriverWait (session="d1f3d41c9ccc28e92e1bb11af1659c95")>
+method = <function presence_of_element_located.<locals>._predicate at 0x107337600>
+message = ''
+
+    def until(self, method: Callable[[D], Union[Literal[False], T]], message: str = "") -> T:
+        """Wait until the method returns a value that is not False.
+    
+        Calls the method provided with the driver as an argument until the
+        return value does not evaluate to ``False``.
+    
+        Parameters:
+        -----------
+        method: callable(WebDriver)
+            - A callable object that takes a WebDriver instance as an argument.
+    
+        message: str
+            - Optional message for :exc:`TimeoutException`
+    
+        Return:
+        -------
+        object: T
+            - The result of the last call to `method`
+    
+        Raises:
+        -------
+        TimeoutException
+            - If 'method' does not return a truthy value within the WebDriverWait
+            object's timeout
+    
+        Example:
+        --------
+        >>> from selenium.webdriver.common.by import By
+        >>> from selenium.webdriver.support.ui import WebDriverWait
+        >>> from selenium.webdriver.support import expected_conditions as EC
+    
+        # Wait until an element is visible on the page
+        >>> wait = WebDriverWait(driver, 10)
+        >>> element = wait.until(EC.visibility_of_element_located((By.ID, "exampleId")))
+        >>> print(element.text)
+        """
+        screen = None
+        stacktrace = None
+    
+        end_time = time.monotonic() + self._timeout
+        while True:
+            try:
+                value = method(self._driver)
+                if value:
+                    return value
+            except self._ignored_exceptions as exc:
+                screen = getattr(exc, "screen", None)
+                stacktrace = getattr(exc, "stacktrace", None)
+            if time.monotonic() > end_time:
+                break
+            time.sleep(self._poll)
+>       raise TimeoutException(message, screen, stacktrace)
+E       selenium.common.exceptions.TimeoutException: Message: 
+E       Stacktrace:
+E       0   chromedriver                        0x00000001031cae10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x00000001031c30ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x0000000102d0a8d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x0000000102d516a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x0000000102d927b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x0000000102d45a80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x000000010318fc98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x0000000103192f64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x000000010316fa20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x00000001031937e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x0000000103160b14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x00000001031b39c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x00000001031b3b50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x00000001031c2cf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/support/wait.py:146: TimeoutException
+
+During handling of the above exception, another exception occurred:
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="d1f3d41c9ccc28e92e1bb11af1659c95")>
+shipping_id = 1
+
+    @allure.feature("E-commerce Checkout")
+    @allure.story("Different Shipping Methods")
+    @pytest.mark.parametrize("shipping_id", [1, 2, 3])
+    @measure_performance(metrics)
+    def test_different_shipping_methods(driver, shipping_id):
+        """Test checkout with different shipping methods."""
+        data_handler = DataHandler()
+        products = data_handler.load_json_data("products.json")
+        shipping_methods = data_handler.load_json_data("shipping.json")
+        user_data = data_handler.load_json_data("user.json")
+    
+        # Get the selected shipping method
+        selected_shipping = next((s for s in shipping_methods if s["id"] == shipping_id), None)
+        assert selected_shipping, f"Shipping method with ID {shipping_id} not found"
+    
+        # Log test parameters
+        logger.info(f"Testing with shipping method: {selected_shipping['name']}")
+    
+        # Execute abbreviated test flow focusing on shipping
+        home_page = HomePage(driver).open()
+    
+        # Add just one product to simplify the test
+>       home_page.add_product_to_cart(products[0]["id"])
+
+tests/test_e2e_checkout.py:403: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_e2e_checkout.py:90: in add_product_to_cart
+    self.elements_utils.scroll_to_element(product_selector)
+framework/utilities/elements_utils.py:361: in scroll_to_element
+    element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <framework.utilities.wait_utils.WaitUtils object at 0x107384160>
+locator = ('css selector', ".product-card[data-product-id='1']"), timeout = 10
+message = None
+
+    def wait_for_element_visible(self, locator, timeout=None, message=None):
+        """
+        Enhanced wait for an element to be visible on the page.
+        First waits for presence, then for visibility for a more robust approach.
+    
+        Args:
+            locator: Element locator tuple (By.XX, "value")
+            timeout: Custom timeout in seconds (overrides default)
+            message: Custom error message for TimeoutException
+    
+        Returns:
+            WebElement: The element once visible
+    
+        Raises:
+            TimeoutException: If element doesn't become visible within timeout
+        """
+        wait_timeout = timeout if timeout is not None else self.timeout
+        error_message = (
+            message
+            if message
+            else f"Element {locator} not visible after {wait_timeout} seconds"
+        )
+    
+        try:
+            # First, wait for the element to be present in the DOM
+            logger.debug(f"Waiting for element {locator} to be present in DOM")
+            WebDriverWait(self.driver, wait_timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+    
+            # Then, wait for it to be visible
+            logger.debug(f"Waiting for element {locator} to be visible")
+            element = WebDriverWait(self.driver, wait_timeout).until(
+                EC.visibility_of_element_located(locator)
+            )
+            logger.debug(f"Element {locator} is now visible")
+            return element
+        except TimeoutException:
+            logger.error(error_message)
+    
+            # Take a screenshot to help with debugging
+>           from framework.utilities.misc_utils import take_screenshot
+E           ImportError: cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+
+framework/utilities/wait_utils.py:213: ImportError
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:54:10,329 INFO test_e2e_checkout: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+INFO     test_e2e_checkout:test_e2e_checkout.py:261 WebDriver initialized
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:54:10,332 DEBUG performance_metrics: Started timer for test: test_different_shipping_methods
+2025-04-17 00:54:10,332 DEBUG data_handler: Initialized DataHandler with data folder: test_data
+2025-04-17 00:54:10,332 DEBUG data_handler: Loading JSON data from test_data/products.json
+2025-04-17 00:54:10,333 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:54:10,333 DEBUG data_handler: Loading JSON data from test_data/shipping.json
+2025-04-17 00:54:10,334 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:54:10,334 DEBUG data_handler: Loading JSON data from test_data/user.json
+2025-04-17 00:54:10,334 DEBUG data_handler: Successfully loaded JSON data with dict format
+2025-04-17 00:54:10,334 INFO test_e2e_checkout: Testing with shipping method: Standard
+2025-04-17 00:54:10,953 DEBUG wait_utils: Waiting for element ('tag name', 'h1') to be present in DOM
+2025-04-17 00:54:10,968 DEBUG wait_utils: Waiting for element ('tag name', 'h1') to be visible
+2025-04-17 00:54:10,982 DEBUG wait_utils: Element ('tag name', 'h1') is now visible
+2025-04-17 00:54:10,982 INFO test_e2e_checkout: Opened home page
+2025-04-17 00:54:10,982 DEBUG elements_utils: Scrolling to element ('css selector', ".product-card[data-product-id='1']")
+2025-04-17 00:54:10,982 DEBUG wait_utils: Waiting for element ('css selector', ".product-card[data-product-id='1']") to be present in DOM
+2025-04-17 00:54:21,276 ERROR wait_utils: Element ('css selector', ".product-card[data-product-id='1']") not visible after 10 seconds
+2025-04-17 00:54:21,279 ERROR elements_utils: Error scrolling to element ('css selector', ".product-card[data-product-id='1']"): cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+2025-04-17 00:54:21,280 DEBUG performance_metrics: Stopped timer for test: test_different_shipping_methods, duration: 10.95s, result: False
+------------------------------ Captured log call -------------------------------
+DEBUG    performance_metrics:performance_metrics.py:115 Started timer for test: test_different_shipping_methods
+DEBUG    data_handler:data_handler.py:33 Initialized DataHandler with data folder: test_data
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/products.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/shipping.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/user.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with dict format
+INFO     test_e2e_checkout:test_e2e_checkout.py:397 Testing with shipping method: Standard
+DEBUG    wait_utils:wait_utils.py:197 Waiting for element ('tag name', 'h1') to be present in DOM
+DEBUG    wait_utils:wait_utils.py:203 Waiting for element ('tag name', 'h1') to be visible
+DEBUG    wait_utils:wait_utils.py:207 Element ('tag name', 'h1') is now visible
+INFO     test_e2e_checkout:test_e2e_checkout.py:84 Opened home page
+DEBUG    elements_utils:elements_utils.py:360 Scrolling to element ('css selector', ".product-card[data-product-id='1']")
+DEBUG    wait_utils:wait_utils.py:197 Waiting for element ('css selector', ".product-card[data-product-id='1']") to be present in DOM
+ERROR    wait_utils:wait_utils.py:210 Element ('css selector', ".product-card[data-product-id='1']") not visible after 10 seconds
+ERROR    elements_utils:elements_utils.py:365 Error scrolling to element ('css selector', ".product-card[data-product-id='1']"): cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+DEBUG    performance_metrics:performance_metrics.py:150 Stopped timer for test: test_different_shipping_methods, duration: 10.95s, result: False
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:54:21,415 INFO test_e2e_checkout: WebDriver closed
+---------------------------- Captured log teardown -----------------------------
+INFO     test_e2e_checkout:test_e2e_checkout.py:264 WebDriver closed
+______________________ test_different_shipping_methods[2] ______________________
+
+self = <framework.utilities.wait_utils.WaitUtils object at 0x1072a2450>
+locator = ('css selector', ".product-card[data-product-id='1']"), timeout = 10
+message = None
+
+    def wait_for_element_visible(self, locator, timeout=None, message=None):
+        """
+        Enhanced wait for an element to be visible on the page.
+        First waits for presence, then for visibility for a more robust approach.
+    
+        Args:
+            locator: Element locator tuple (By.XX, "value")
+            timeout: Custom timeout in seconds (overrides default)
+            message: Custom error message for TimeoutException
+    
+        Returns:
+            WebElement: The element once visible
+    
+        Raises:
+            TimeoutException: If element doesn't become visible within timeout
+        """
+        wait_timeout = timeout if timeout is not None else self.timeout
+        error_message = (
+            message
+            if message
+            else f"Element {locator} not visible after {wait_timeout} seconds"
+        )
+    
+        try:
+            # First, wait for the element to be present in the DOM
+            logger.debug(f"Waiting for element {locator} to be present in DOM")
+>           WebDriverWait(self.driver, wait_timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+
+framework/utilities/wait_utils.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.support.wait.WebDriverWait (session="1f685d837f699becdb2512ae17eccee4")>
+method = <function presence_of_element_located.<locals>._predicate at 0x10737c720>
+message = ''
+
+    def until(self, method: Callable[[D], Union[Literal[False], T]], message: str = "") -> T:
+        """Wait until the method returns a value that is not False.
+    
+        Calls the method provided with the driver as an argument until the
+        return value does not evaluate to ``False``.
+    
+        Parameters:
+        -----------
+        method: callable(WebDriver)
+            - A callable object that takes a WebDriver instance as an argument.
+    
+        message: str
+            - Optional message for :exc:`TimeoutException`
+    
+        Return:
+        -------
+        object: T
+            - The result of the last call to `method`
+    
+        Raises:
+        -------
+        TimeoutException
+            - If 'method' does not return a truthy value within the WebDriverWait
+            object's timeout
+    
+        Example:
+        --------
+        >>> from selenium.webdriver.common.by import By
+        >>> from selenium.webdriver.support.ui import WebDriverWait
+        >>> from selenium.webdriver.support import expected_conditions as EC
+    
+        # Wait until an element is visible on the page
+        >>> wait = WebDriverWait(driver, 10)
+        >>> element = wait.until(EC.visibility_of_element_located((By.ID, "exampleId")))
+        >>> print(element.text)
+        """
+        screen = None
+        stacktrace = None
+    
+        end_time = time.monotonic() + self._timeout
+        while True:
+            try:
+                value = method(self._driver)
+                if value:
+                    return value
+            except self._ignored_exceptions as exc:
+                screen = getattr(exc, "screen", None)
+                stacktrace = getattr(exc, "stacktrace", None)
+            if time.monotonic() > end_time:
+                break
+            time.sleep(self._poll)
+>       raise TimeoutException(message, screen, stacktrace)
+E       selenium.common.exceptions.TimeoutException: Message: 
+E       Stacktrace:
+E       0   chromedriver                        0x00000001051fee10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x00000001051f70ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x0000000104d3e8d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x0000000104d856a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x0000000104dc67b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x0000000104d79a80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x00000001051c3c98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x00000001051c6f64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x00000001051a3a20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x00000001051c77e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x0000000105194b14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x00000001051e79c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x00000001051e7b50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x00000001051f6cf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/support/wait.py:146: TimeoutException
+
+During handling of the above exception, another exception occurred:
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="1f685d837f699becdb2512ae17eccee4")>
+shipping_id = 2
+
+    @allure.feature("E-commerce Checkout")
+    @allure.story("Different Shipping Methods")
+    @pytest.mark.parametrize("shipping_id", [1, 2, 3])
+    @measure_performance(metrics)
+    def test_different_shipping_methods(driver, shipping_id):
+        """Test checkout with different shipping methods."""
+        data_handler = DataHandler()
+        products = data_handler.load_json_data("products.json")
+        shipping_methods = data_handler.load_json_data("shipping.json")
+        user_data = data_handler.load_json_data("user.json")
+    
+        # Get the selected shipping method
+        selected_shipping = next((s for s in shipping_methods if s["id"] == shipping_id), None)
+        assert selected_shipping, f"Shipping method with ID {shipping_id} not found"
+    
+        # Log test parameters
+        logger.info(f"Testing with shipping method: {selected_shipping['name']}")
+    
+        # Execute abbreviated test flow focusing on shipping
+        home_page = HomePage(driver).open()
+    
+        # Add just one product to simplify the test
+>       home_page.add_product_to_cart(products[0]["id"])
+
+tests/test_e2e_checkout.py:403: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_e2e_checkout.py:90: in add_product_to_cart
+    self.elements_utils.scroll_to_element(product_selector)
+framework/utilities/elements_utils.py:361: in scroll_to_element
+    element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <framework.utilities.wait_utils.WaitUtils object at 0x1072a2450>
+locator = ('css selector', ".product-card[data-product-id='1']"), timeout = 10
+message = None
+
+    def wait_for_element_visible(self, locator, timeout=None, message=None):
+        """
+        Enhanced wait for an element to be visible on the page.
+        First waits for presence, then for visibility for a more robust approach.
+    
+        Args:
+            locator: Element locator tuple (By.XX, "value")
+            timeout: Custom timeout in seconds (overrides default)
+            message: Custom error message for TimeoutException
+    
+        Returns:
+            WebElement: The element once visible
+    
+        Raises:
+            TimeoutException: If element doesn't become visible within timeout
+        """
+        wait_timeout = timeout if timeout is not None else self.timeout
+        error_message = (
+            message
+            if message
+            else f"Element {locator} not visible after {wait_timeout} seconds"
+        )
+    
+        try:
+            # First, wait for the element to be present in the DOM
+            logger.debug(f"Waiting for element {locator} to be present in DOM")
+            WebDriverWait(self.driver, wait_timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+    
+            # Then, wait for it to be visible
+            logger.debug(f"Waiting for element {locator} to be visible")
+            element = WebDriverWait(self.driver, wait_timeout).until(
+                EC.visibility_of_element_located(locator)
+            )
+            logger.debug(f"Element {locator} is now visible")
+            return element
+        except TimeoutException:
+            logger.error(error_message)
+    
+            # Take a screenshot to help with debugging
+>           from framework.utilities.misc_utils import take_screenshot
+E           ImportError: cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+
+framework/utilities/wait_utils.py:213: ImportError
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:54:22,769 INFO test_e2e_checkout: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+INFO     test_e2e_checkout:test_e2e_checkout.py:261 WebDriver initialized
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:54:22,775 DEBUG performance_metrics: Started timer for test: test_different_shipping_methods
+2025-04-17 00:54:22,776 DEBUG data_handler: Initialized DataHandler with data folder: test_data
+2025-04-17 00:54:22,776 DEBUG data_handler: Loading JSON data from test_data/products.json
+2025-04-17 00:54:22,777 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:54:22,777 DEBUG data_handler: Loading JSON data from test_data/shipping.json
+2025-04-17 00:54:22,777 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:54:22,777 DEBUG data_handler: Loading JSON data from test_data/user.json
+2025-04-17 00:54:22,777 DEBUG data_handler: Successfully loaded JSON data with dict format
+2025-04-17 00:54:22,777 INFO test_e2e_checkout: Testing with shipping method: Express
+2025-04-17 00:54:23,397 DEBUG wait_utils: Waiting for element ('tag name', 'h1') to be present in DOM
+2025-04-17 00:54:23,418 DEBUG wait_utils: Waiting for element ('tag name', 'h1') to be visible
+2025-04-17 00:54:23,433 DEBUG wait_utils: Element ('tag name', 'h1') is now visible
+2025-04-17 00:54:23,433 INFO test_e2e_checkout: Opened home page
+2025-04-17 00:54:23,433 DEBUG elements_utils: Scrolling to element ('css selector', ".product-card[data-product-id='1']")
+2025-04-17 00:54:23,433 DEBUG wait_utils: Waiting for element ('css selector', ".product-card[data-product-id='1']") to be present in DOM
+2025-04-17 00:54:33,735 ERROR wait_utils: Element ('css selector', ".product-card[data-product-id='1']") not visible after 10 seconds
+2025-04-17 00:54:33,736 ERROR elements_utils: Error scrolling to element ('css selector', ".product-card[data-product-id='1']"): cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+2025-04-17 00:54:33,736 DEBUG performance_metrics: Stopped timer for test: test_different_shipping_methods, duration: 23.40s, result: False
+------------------------------ Captured log call -------------------------------
+DEBUG    performance_metrics:performance_metrics.py:115 Started timer for test: test_different_shipping_methods
+DEBUG    data_handler:data_handler.py:33 Initialized DataHandler with data folder: test_data
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/products.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/shipping.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/user.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with dict format
+INFO     test_e2e_checkout:test_e2e_checkout.py:397 Testing with shipping method: Express
+DEBUG    wait_utils:wait_utils.py:197 Waiting for element ('tag name', 'h1') to be present in DOM
+DEBUG    wait_utils:wait_utils.py:203 Waiting for element ('tag name', 'h1') to be visible
+DEBUG    wait_utils:wait_utils.py:207 Element ('tag name', 'h1') is now visible
+INFO     test_e2e_checkout:test_e2e_checkout.py:84 Opened home page
+DEBUG    elements_utils:elements_utils.py:360 Scrolling to element ('css selector', ".product-card[data-product-id='1']")
+DEBUG    wait_utils:wait_utils.py:197 Waiting for element ('css selector', ".product-card[data-product-id='1']") to be present in DOM
+ERROR    wait_utils:wait_utils.py:210 Element ('css selector', ".product-card[data-product-id='1']") not visible after 10 seconds
+ERROR    elements_utils:elements_utils.py:365 Error scrolling to element ('css selector', ".product-card[data-product-id='1']"): cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+DEBUG    performance_metrics:performance_metrics.py:150 Stopped timer for test: test_different_shipping_methods, duration: 23.40s, result: False
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:54:33,865 INFO test_e2e_checkout: WebDriver closed
+---------------------------- Captured log teardown -----------------------------
+INFO     test_e2e_checkout:test_e2e_checkout.py:264 WebDriver closed
+______________________ test_different_shipping_methods[3] ______________________
+
+self = <framework.utilities.wait_utils.WaitUtils object at 0x1073947d0>
+locator = ('css selector', ".product-card[data-product-id='1']"), timeout = 10
+message = None
+
+    def wait_for_element_visible(self, locator, timeout=None, message=None):
+        """
+        Enhanced wait for an element to be visible on the page.
+        First waits for presence, then for visibility for a more robust approach.
+    
+        Args:
+            locator: Element locator tuple (By.XX, "value")
+            timeout: Custom timeout in seconds (overrides default)
+            message: Custom error message for TimeoutException
+    
+        Returns:
+            WebElement: The element once visible
+    
+        Raises:
+            TimeoutException: If element doesn't become visible within timeout
+        """
+        wait_timeout = timeout if timeout is not None else self.timeout
+        error_message = (
+            message
+            if message
+            else f"Element {locator} not visible after {wait_timeout} seconds"
+        )
+    
+        try:
+            # First, wait for the element to be present in the DOM
+            logger.debug(f"Waiting for element {locator} to be present in DOM")
+>           WebDriverWait(self.driver, wait_timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+
+framework/utilities/wait_utils.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.support.wait.WebDriverWait (session="fd1ca58a91e317cced927e193a4a59a5")>
+method = <function presence_of_element_located.<locals>._predicate at 0x10737cae0>
+message = ''
+
+    def until(self, method: Callable[[D], Union[Literal[False], T]], message: str = "") -> T:
+        """Wait until the method returns a value that is not False.
+    
+        Calls the method provided with the driver as an argument until the
+        return value does not evaluate to ``False``.
+    
+        Parameters:
+        -----------
+        method: callable(WebDriver)
+            - A callable object that takes a WebDriver instance as an argument.
+    
+        message: str
+            - Optional message for :exc:`TimeoutException`
+    
+        Return:
+        -------
+        object: T
+            - The result of the last call to `method`
+    
+        Raises:
+        -------
+        TimeoutException
+            - If 'method' does not return a truthy value within the WebDriverWait
+            object's timeout
+    
+        Example:
+        --------
+        >>> from selenium.webdriver.common.by import By
+        >>> from selenium.webdriver.support.ui import WebDriverWait
+        >>> from selenium.webdriver.support import expected_conditions as EC
+    
+        # Wait until an element is visible on the page
+        >>> wait = WebDriverWait(driver, 10)
+        >>> element = wait.until(EC.visibility_of_element_located((By.ID, "exampleId")))
+        >>> print(element.text)
+        """
+        screen = None
+        stacktrace = None
+    
+        end_time = time.monotonic() + self._timeout
+        while True:
+            try:
+                value = method(self._driver)
+                if value:
+                    return value
+            except self._ignored_exceptions as exc:
+                screen = getattr(exc, "screen", None)
+                stacktrace = getattr(exc, "stacktrace", None)
+            if time.monotonic() > end_time:
+                break
+            time.sleep(self._poll)
+>       raise TimeoutException(message, screen, stacktrace)
+E       selenium.common.exceptions.TimeoutException: Message: 
+E       Stacktrace:
+E       0   chromedriver                        0x000000010487ee10 cxxbridge1$str$ptr + 2817040
+E       1   chromedriver                        0x00000001048770ac cxxbridge1$str$ptr + 2784940
+E       2   chromedriver                        0x00000001043be8d8 cxxbridge1$string$len + 93028
+E       3   chromedriver                        0x00000001044056a0 cxxbridge1$string$len + 383276
+E       4   chromedriver                        0x00000001044467b8 cxxbridge1$string$len + 649796
+E       5   chromedriver                        0x00000001043f9a80 cxxbridge1$string$len + 335116
+E       6   chromedriver                        0x0000000104843c98 cxxbridge1$str$ptr + 2575000
+E       7   chromedriver                        0x0000000104846f64 cxxbridge1$str$ptr + 2588004
+E       8   chromedriver                        0x0000000104823a20 cxxbridge1$str$ptr + 2443296
+E       9   chromedriver                        0x00000001048477e0 cxxbridge1$str$ptr + 2590176
+E       10  chromedriver                        0x0000000104814b14 cxxbridge1$str$ptr + 2382100
+E       11  chromedriver                        0x00000001048679c4 cxxbridge1$str$ptr + 2721732
+E       12  chromedriver                        0x0000000104867b50 cxxbridge1$str$ptr + 2722128
+E       13  chromedriver                        0x0000000104876cf8 cxxbridge1$str$ptr + 2783992
+E       14  libsystem_pthread.dylib             0x0000000191275c0c _pthread_start + 136
+E       15  libsystem_pthread.dylib             0x0000000191270b80 thread_start + 8
+
+venv/lib/python3.13/site-packages/selenium/webdriver/support/wait.py:146: TimeoutException
+
+During handling of the above exception, another exception occurred:
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="fd1ca58a91e317cced927e193a4a59a5")>
+shipping_id = 3
+
+    @allure.feature("E-commerce Checkout")
+    @allure.story("Different Shipping Methods")
+    @pytest.mark.parametrize("shipping_id", [1, 2, 3])
+    @measure_performance(metrics)
+    def test_different_shipping_methods(driver, shipping_id):
+        """Test checkout with different shipping methods."""
+        data_handler = DataHandler()
+        products = data_handler.load_json_data("products.json")
+        shipping_methods = data_handler.load_json_data("shipping.json")
+        user_data = data_handler.load_json_data("user.json")
+    
+        # Get the selected shipping method
+        selected_shipping = next((s for s in shipping_methods if s["id"] == shipping_id), None)
+        assert selected_shipping, f"Shipping method with ID {shipping_id} not found"
+    
+        # Log test parameters
+        logger.info(f"Testing with shipping method: {selected_shipping['name']}")
+    
+        # Execute abbreviated test flow focusing on shipping
+        home_page = HomePage(driver).open()
+    
+        # Add just one product to simplify the test
+>       home_page.add_product_to_cart(products[0]["id"])
+
+tests/test_e2e_checkout.py:403: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_e2e_checkout.py:90: in add_product_to_cart
+    self.elements_utils.scroll_to_element(product_selector)
+framework/utilities/elements_utils.py:361: in scroll_to_element
+    element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <framework.utilities.wait_utils.WaitUtils object at 0x1073947d0>
+locator = ('css selector', ".product-card[data-product-id='1']"), timeout = 10
+message = None
+
+    def wait_for_element_visible(self, locator, timeout=None, message=None):
+        """
+        Enhanced wait for an element to be visible on the page.
+        First waits for presence, then for visibility for a more robust approach.
+    
+        Args:
+            locator: Element locator tuple (By.XX, "value")
+            timeout: Custom timeout in seconds (overrides default)
+            message: Custom error message for TimeoutException
+    
+        Returns:
+            WebElement: The element once visible
+    
+        Raises:
+            TimeoutException: If element doesn't become visible within timeout
+        """
+        wait_timeout = timeout if timeout is not None else self.timeout
+        error_message = (
+            message
+            if message
+            else f"Element {locator} not visible after {wait_timeout} seconds"
+        )
+    
+        try:
+            # First, wait for the element to be present in the DOM
+            logger.debug(f"Waiting for element {locator} to be present in DOM")
+            WebDriverWait(self.driver, wait_timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+    
+            # Then, wait for it to be visible
+            logger.debug(f"Waiting for element {locator} to be visible")
+            element = WebDriverWait(self.driver, wait_timeout).until(
+                EC.visibility_of_element_located(locator)
+            )
+            logger.debug(f"Element {locator} is now visible")
+            return element
+        except TimeoutException:
+            logger.error(error_message)
+    
+            # Take a screenshot to help with debugging
+>           from framework.utilities.misc_utils import take_screenshot
+E           ImportError: cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+
+framework/utilities/wait_utils.py:213: ImportError
+---------------------------- Captured stderr setup -----------------------------
+2025-04-17 00:54:35,261 INFO test_e2e_checkout: WebDriver initialized
+------------------------------ Captured log setup ------------------------------
+INFO     test_e2e_checkout:test_e2e_checkout.py:261 WebDriver initialized
+----------------------------- Captured stderr call -----------------------------
+2025-04-17 00:54:35,262 DEBUG performance_metrics: Started timer for test: test_different_shipping_methods
+2025-04-17 00:54:35,263 DEBUG data_handler: Initialized DataHandler with data folder: test_data
+2025-04-17 00:54:35,263 DEBUG data_handler: Loading JSON data from test_data/products.json
+2025-04-17 00:54:35,263 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:54:35,263 DEBUG data_handler: Loading JSON data from test_data/shipping.json
+2025-04-17 00:54:35,264 DEBUG data_handler: Successfully loaded JSON data with 3 format
+2025-04-17 00:54:35,264 DEBUG data_handler: Loading JSON data from test_data/user.json
+2025-04-17 00:54:35,264 DEBUG data_handler: Successfully loaded JSON data with dict format
+2025-04-17 00:54:35,264 INFO test_e2e_checkout: Testing with shipping method: Next Day
+2025-04-17 00:54:35,977 DEBUG wait_utils: Waiting for element ('tag name', 'h1') to be present in DOM
+2025-04-17 00:54:36,020 DEBUG wait_utils: Waiting for element ('tag name', 'h1') to be visible
+2025-04-17 00:54:36,056 DEBUG wait_utils: Element ('tag name', 'h1') is now visible
+2025-04-17 00:54:36,057 INFO test_e2e_checkout: Opened home page
+2025-04-17 00:54:36,057 DEBUG elements_utils: Scrolling to element ('css selector', ".product-card[data-product-id='1']")
+2025-04-17 00:54:36,057 DEBUG wait_utils: Waiting for element ('css selector', ".product-card[data-product-id='1']") to be present in DOM
+2025-04-17 00:54:46,381 ERROR wait_utils: Element ('css selector', ".product-card[data-product-id='1']") not visible after 10 seconds
+2025-04-17 00:54:46,382 ERROR elements_utils: Error scrolling to element ('css selector', ".product-card[data-product-id='1']"): cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+2025-04-17 00:54:46,383 DEBUG performance_metrics: Stopped timer for test: test_different_shipping_methods, duration: 36.05s, result: False
+------------------------------ Captured log call -------------------------------
+DEBUG    performance_metrics:performance_metrics.py:115 Started timer for test: test_different_shipping_methods
+DEBUG    data_handler:data_handler.py:33 Initialized DataHandler with data folder: test_data
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/products.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/shipping.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with 3 format
+DEBUG    data_handler:data_handler.py:51 Loading JSON data from test_data/user.json
+DEBUG    data_handler:data_handler.py:54 Successfully loaded JSON data with dict format
+INFO     test_e2e_checkout:test_e2e_checkout.py:397 Testing with shipping method: Next Day
+DEBUG    wait_utils:wait_utils.py:197 Waiting for element ('tag name', 'h1') to be present in DOM
+DEBUG    wait_utils:wait_utils.py:203 Waiting for element ('tag name', 'h1') to be visible
+DEBUG    wait_utils:wait_utils.py:207 Element ('tag name', 'h1') is now visible
+INFO     test_e2e_checkout:test_e2e_checkout.py:84 Opened home page
+DEBUG    elements_utils:elements_utils.py:360 Scrolling to element ('css selector', ".product-card[data-product-id='1']")
+DEBUG    wait_utils:wait_utils.py:197 Waiting for element ('css selector', ".product-card[data-product-id='1']") to be present in DOM
+ERROR    wait_utils:wait_utils.py:210 Element ('css selector', ".product-card[data-product-id='1']") not visible after 10 seconds
+ERROR    elements_utils:elements_utils.py:365 Error scrolling to element ('css selector', ".product-card[data-product-id='1']"): cannot import name 'take_screenshot' from 'framework.utilities.misc_utils' (/Users/UELKERD/Projects/test-automation-framework/framework/utilities/misc_utils.py)
+DEBUG    performance_metrics:performance_metrics.py:150 Stopped timer for test: test_different_shipping_methods, duration: 36.05s, result: False
+--------------------------- Captured stderr teardown ---------------------------
+2025-04-17 00:54:46,528 INFO test_e2e_checkout: WebDriver closed
+2025-04-17 00:54:46,529 INFO performance_metrics: Finalized metrics: 2 tests, total duration: 81.87s
+2025-04-17 00:54:46,530 INFO performance_metrics: Saved metrics to: metrics/performance_history.json
+2025-04-17 00:54:46,530 INFO performance_metrics: Comparison with history: -16.34% difference from previous average
+2025-04-17 00:54:46,530 INFO performance_metrics: Generated performance report: metrics/performance_report.json
+2025-04-17 00:54:46,530 INFO test_e2e_checkout: Test execution completed. Performance report generated.
+2025-04-17 00:54:46,531 INFO performance_metrics: Comparison with history: -16.34% difference from previous average
+2025-04-17 00:54:46,531 INFO test_e2e_checkout: Performance improvement: -16.34% compared to previous runs
+---------------------------- Captured log teardown -----------------------------
+INFO     test_e2e_checkout:test_e2e_checkout.py:264 WebDriver closed
+INFO     performance_metrics:performance_metrics.py:189 Finalized metrics: 2 tests, total duration: 81.87s
+INFO     performance_metrics:performance_metrics.py:222 Saved metrics to: metrics/performance_history.json
+INFO     performance_metrics:performance_metrics.py:297 Comparison with history: -16.34% difference from previous average
+INFO     performance_metrics:performance_metrics.py:347 Generated performance report: metrics/performance_report.json
+INFO     test_e2e_checkout:test_e2e_checkout.py:431 Test execution completed. Performance report generated.
+INFO     performance_metrics:performance_metrics.py:297 Comparison with history: -16.34% difference from previous average
+INFO     test_e2e_checkout:test_e2e_checkout.py:437 Performance improvement: -16.34% compared to previous runs
+=========================== short test summary info ============================
+FAILED tests/test_data_driven.py::test_login_parameterized[user_data0] - sele...
+FAILED tests/test_data_driven.py::test_login_parameterized[user_data1] - sele...
+FAILED tests/test_data_driven.py::test_login_parameterized[user_data2] - sele...
+FAILED tests/test_data_driven.py::test_login_with_fixture - selenium.common.e...
+FAILED tests/test_data_driven.py::test_login_with_generated_data - selenium.c...
+FAILED tests/test_e2e_checkout.py::test_complete_checkout_flow - ImportError:...
+FAILED tests/test_e2e_checkout.py::test_different_shipping_methods[1] - Impor...
+FAILED tests/test_e2e_checkout.py::test_different_shipping_methods[2] - Impor...
+FAILED tests/test_e2e_checkout.py::test_different_shipping_methods[3] - Impor...
+==================== 9 failed, 3 passed in 86.05s (0:01:26) ====================

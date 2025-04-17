@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Standard",
+    "price": 5.99,
+    "days": "3-5"
+  },
+  {
+    "id": 2,
+    "name": "Express",
+    "price": 15.99,
+    "days": "1-2"
+  },
+  {
+    "id": 3,
+    "name": "Next Day",
+    "price": 29.99,
+    "days": "1"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "first_name": "Test",
+  "last_name": "User",
+  "email": "testuser@example.com",
+  "address": "123 Test Street",
+  "city": "Test City",
+  "state": "TS",
+  "zip": "12345",
+  "country": "Test Country",
+  "card_number": "4111111111111111",
+  "card_expiry": "12/25",
+  "card_cvv": "123"
+}

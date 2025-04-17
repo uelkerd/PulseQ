@@ -4,11 +4,12 @@ import os
 import tempfile
 
 import pytest
-from pulseq.page_objects.login_page import LoginPage
-from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+from pulseq.page_objects.login_page import LoginPage
+from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 
 
 @pytest.fixture(scope="function")
@@ -94,6 +95,4 @@ def test_valid_login(driver, mock_html):
     WebDriverWait(driver, 3).until(EC.title_contains("Dashboard"))
 
     # Check that we're on the dashboard page
-    assert (
-        "dashboard" in driver.current_url.lower()
-    ), "User did not navigate to dashboard upon login"
+    assert "dashboard" in driver.current_url.lower(), "User did not navigate to dashboard upon login"
