@@ -134,8 +134,7 @@ class CartPage:
             By.CSS_SELECTOR,
             f".cart-item[data-product-id='{product_id}'] .item-quantity",
         )
-        self.elements_utils.send_keys(
-            quantity_input, str(quantity), clear_first=True)
+        self.elements_utils.send_keys(quantity_input, str(quantity), clear_first=True)
 
         self.elements_utils.click_element(self.update_cart_button)
 
@@ -145,16 +144,14 @@ class CartPage:
             f".cart-item[data-product-id='{product_id}'] .item-total",
         )
         self.wait_utils.wait_for_element_visible(updated_price_locator)
-        logger.info(
-            f"Updated quantity for product ID {product_id} to {quantity}")
+        logger.info(f"Updated quantity for product ID {product_id} to {quantity}")
         return self
 
     def get_cart_total(self):
         """Get the cart total price."""
         total_text = self.elements_utils.get_text(self.cart_total)
         # Extract numeric value from text (e.g., "$1,234.56" -> 1234.56)
-        total = float(
-            "".join(c for c in total_text if c.isdigit() or c == "."))
+        total = float("".join(c for c in total_text if c.isdigit() or c == "."))
         logger.info(f"Cart total: {total}")
         return total
 
@@ -230,10 +227,8 @@ class CheckoutPage:
 
     def fill_payment_information(self, user_data):
         """Fill the payment information form."""
-        self.elements_utils.send_keys(
-            self.card_number, user_data["card_number"])
-        self.elements_utils.send_keys(
-            self.card_expiry, user_data["card_expiry"])
+        self.elements_utils.send_keys(self.card_number, user_data["card_number"])
+        self.elements_utils.send_keys(self.card_expiry, user_data["card_expiry"])
         self.elements_utils.send_keys(self.card_cvv, user_data["card_cvv"])
         logger.info("Filled payment information form")
         return self
@@ -249,8 +244,7 @@ class CheckoutPage:
         """Get the order total from the summary."""
         total_text = self.elements_utils.get_text(self.order_total)
         # Extract numeric value from text
-        total = float(
-            "".join(c for c in total_text if c.isdigit() or c == "."))
+        total = float("".join(c for c in total_text if c.isdigit() or c == "."))
         logger.info(f"Order total: {total}")
         return total
 
@@ -333,8 +327,7 @@ def test_complete_checkout_flow(driver, config):
                 home_page.add_product_to_cart(product["id"])
 
             # Take a screenshot for the report
-            screenshot_path = MiscUtils.take_screenshot(
-                driver, "products_added.png")
+            screenshot_path = MiscUtils.take_screenshot(driver, "products_added.png")
             allure.attach.file(
                 screenshot_path,
                 name="Products Added",
@@ -347,19 +340,17 @@ def test_complete_checkout_flow(driver, config):
 
             # Update quantities for each product
             for product in products:
-                cart_page.update_product_quantity(
-                    product["id"], product["quantity"])
+                cart_page.update_product_quantity(product["id"], product["quantity"])
 
             # Verify cart total
             expected_total = sum(p["price"] * p["quantity"] for p in products)
             actual_total = cart_page.get_cart_total()
 
-            assert abs(actual_total - expected_total) < 0.01, (
-                f"Cart total {actual_total} does not match expected {expected_total}"
-            )
+            assert (
+                abs(actual_total - expected_total) < 0.01
+            ), f"Cart total {actual_total} does not match expected {expected_total}"
 
-            screenshot_path = MiscUtils.take_screenshot(
-                driver, "cart_updated.png")
+            screenshot_path = MiscUtils.take_screenshot(driver, "cart_updated.png")
             allure.attach.file(
                 screenshot_path,
                 name="Cart Updated",
@@ -371,8 +362,7 @@ def test_complete_checkout_flow(driver, config):
             checkout_page = cart_page.proceed_to_checkout()
             checkout_page.fill_shipping_information(user_data)
 
-            screenshot_path = MiscUtils.take_screenshot(
-                driver, "shipping_info.png")
+            screenshot_path = MiscUtils.take_screenshot(driver, "shipping_info.png")
             allure.attach.file(
                 screenshot_path,
                 name="Shipping Information",
@@ -388,8 +378,7 @@ def test_complete_checkout_flow(driver, config):
             )
             checkout_page.select_shipping_method(shipping_id)
 
-            screenshot_path = MiscUtils.take_screenshot(
-                driver, "shipping_method.png")
+            screenshot_path = MiscUtils.take_screenshot(driver, "shipping_method.png")
             allure.attach.file(
                 screenshot_path,
                 name="Shipping Method Selected",
@@ -407,12 +396,11 @@ def test_complete_checkout_flow(driver, config):
             )
             actual_total = checkout_page.get_order_total()
 
-            assert abs(actual_total - expected_total) < 0.01, (
-                f"Order total {actual_total} does not match expected {expected_total}"
-            )
+            assert (
+                abs(actual_total - expected_total) < 0.01
+            ), f"Order total {actual_total} does not match expected {expected_total}"
 
-            screenshot_path = MiscUtils.take_screenshot(
-                driver, "payment_info.png")
+            screenshot_path = MiscUtils.take_screenshot(driver, "payment_info.png")
             allure.attach.file(
                 screenshot_path,
                 name="Payment Information",
@@ -423,9 +411,9 @@ def test_complete_checkout_flow(driver, config):
 
         # Step 6: Verify order confirmation
         with allure.step("Verify order confirmation"):
-            assert confirmation_page.is_confirmation_displayed(), (
-                "Order confirmation message not displayed"
-            )
+            assert (
+                confirmation_page.is_confirmation_displayed()
+            ), "Order confirmation message not displayed"
 
             order_number = confirmation_page.get_order_number()
             assert order_number, "Order number should be displayed"
@@ -502,12 +490,11 @@ def test_different_shipping_methods(driver, shipping_id):
     expected_total = product_total + selected_shipping["price"]
     actual_total = checkout_page.get_order_total()
 
-    assert abs(actual_total - expected_total) < 0.01, (
-        f"Order total with {selected_shipping['name']} shipping does not match expected total"
-    )
+    assert (
+        abs(actual_total - expected_total) < 0.01
+    ), f"Order total with {selected_shipping['name']} shipping does not match expected total"
 
-    logger.info(
-        f"Successfully verified shipping method: {selected_shipping['name']}")
+    logger.info(f"Successfully verified shipping method: {selected_shipping['name']}")
 
 
 # When all tests complete, save the metrics

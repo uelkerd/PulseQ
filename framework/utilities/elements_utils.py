@@ -85,8 +85,7 @@ class ElementsUtils:
 
         try:
             logger.debug(f"Sending text '{text}' to element {locator}")
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
 
             if clear_first:
                 element.clear()
@@ -112,8 +111,7 @@ class ElementsUtils:
 
         try:
             logger.debug(f"Getting text from element {locator}")
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
             text = element.text
             logger.debug(f"Got text '{text}' from element {locator}")
             return text
@@ -136,17 +134,13 @@ class ElementsUtils:
         wait_timeout = timeout if timeout is not None else self.timeout
 
         try:
-            logger.debug(
-                f"Getting attribute '{attribute}' from element {locator}")
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
+            logger.debug(f"Getting attribute '{attribute}' from element {locator}")
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
             value = element.get_attribute(attribute)
-            logger.debug(
-                f"Got attribute value '{value}' from element {locator}")
+            logger.debug(f"Got attribute value '{value}' from element {locator}")
             return value
         except Exception as e:
-            logger.error(
-                f"Error getting attribute from element {locator}: {e}")
+            logger.error(f"Error getting attribute from element {locator}: {e}")
             raise
 
     def select_dropdown_by_text(self, locator, text, timeout=None):
@@ -165,8 +159,7 @@ class ElementsUtils:
 
         try:
             logger.debug(f"Selecting option '{text}' from dropdown {locator}")
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
             select = Select(element)
             select.select_by_visible_text(text)
             logger.debug(f"Selected option '{text}' from dropdown {locator}")
@@ -192,8 +185,7 @@ class ElementsUtils:
             logger.debug(
                 f"Selecting option with value '{value}' from dropdown {locator}"
             )
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
             select = Select(element)
             select.select_by_value(value)
             logger.debug(
@@ -218,14 +210,11 @@ class ElementsUtils:
         wait_timeout = timeout if timeout is not None else self.timeout
 
         try:
-            logger.debug(
-                f"Selecting option at index {index} from dropdown {locator}")
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
+            logger.debug(f"Selecting option at index {index} from dropdown {locator}")
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
             select = Select(element)
             select.select_by_index(index)
-            logger.debug(
-                f"Selected option at index {index} from dropdown {locator}")
+            logger.debug(f"Selected option at index {index} from dropdown {locator}")
         except Exception as e:
             logger.error(f"Error selecting from dropdown {locator}: {e}")
             raise
@@ -245,8 +234,7 @@ class ElementsUtils:
 
         try:
             logger.debug(f"Hovering over element {locator}")
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
             actions = ActionChains(self.driver)
             actions.move_to_element(element).perform()
             logger.debug(f"Hovered over element {locator}")
@@ -302,8 +290,7 @@ class ElementsUtils:
 
         try:
             logger.debug(f"Pressing key {key} on element {locator}")
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
             element.send_keys(key)
             logger.debug(f"Pressed key {key} on element {locator}")
         except Exception as e:
@@ -352,8 +339,7 @@ class ElementsUtils:
             logger.debug(f"Element {locator} does not exist in DOM")
             return False
         except Exception as e:
-            logger.error(
-                f"Error checking if element {locator} is displayed: {e}")
+            logger.error(f"Error checking if element {locator} is displayed: {e}")
             return False
 
     def scroll_to_element(self, locator, timeout=None):
@@ -371,10 +357,8 @@ class ElementsUtils:
 
         try:
             logger.debug(f"Scrolling to element {locator}")
-            element = self.wait_utils.wait_for_element_visible(
-                locator, wait_timeout)
-            self.driver.execute_script(
-                "arguments[0].scrollIntoView(true);", element)
+            element = self.wait_utils.wait_for_element_visible(locator, wait_timeout)
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
             logger.debug(f"Scrolled to element {locator}")
         except Exception as e:
             logger.error(f"Error scrolling to element {locator}: {e}")

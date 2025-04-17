@@ -10,8 +10,7 @@ def generate_allure_report():
     """
     try:
         subprocess.run(
-            ["allure", "generate", "allure-results",
-                "-o", "allure-report", "--clean"],
+            ["allure", "generate", "allure-results", "-o", "allure-report", "--clean"],
             check=True,
         )
         print("Allure report generated successfully.")

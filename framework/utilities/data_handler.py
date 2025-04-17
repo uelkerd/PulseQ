@@ -30,8 +30,7 @@ class DataHandler:
         self.data_folder = data_folder
         # Create the data folder if it doesn't exist
         Path(data_folder).mkdir(parents=True, exist_ok=True)
-        logger.debug(
-            f"Initialized DataHandler with data folder: {data_folder}")
+        logger.debug(f"Initialized DataHandler with data folder: {data_folder}")
 
     def load_json_data(self, file_name):
         """
@@ -150,8 +149,7 @@ class DataHandler:
             fieldnames = data[0].keys() if data else []
 
             with open(file_path, "w", newline="") as f:
-                writer = csv.DictWriter(
-                    f, fieldnames=fieldnames, delimiter=delimiter)
+                writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=delimiter)
                 writer.writeheader()
                 writer.writerows(data)
 

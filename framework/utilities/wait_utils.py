@@ -221,8 +221,7 @@ class WaitUtils:
             try:
                 page_source = self.driver.page_source
                 short_source = (
-                    page_source[:500] +
-                    "..." if len(page_source) > 500 else page_source
+                    page_source[:500] + "..." if len(page_source) > 500 else page_source
                 )
                 logger.error(f"Page source excerpt: {short_source}")
             except:
@@ -326,8 +325,7 @@ if __name__ == "__main__":
     try:
         driver.get("https://www.example.com")
         # Wait for page title element to be visible
-        title_element = wait_utils.wait_for_element_visible(
-            (By.TAG_NAME, "h1"))
+        title_element = wait_utils.wait_for_element_visible((By.TAG_NAME, "h1"))
         print(f"Page title: {title_element.text}")
     finally:
         driver.quit()
