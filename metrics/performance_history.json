@@ -338,5 +338,4195 @@
         "total_test_time": 47.15652298927307
       }
     }
+  },
+  {
+    "timestamp": "2025-04-17 17:07:55",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744902547.01562,
+        "end_time": 1744902550.153513,
+        "duration": 3.137892961502075,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 68.46875,
+          "memory_percent": 0.41790008544921875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 83.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 68.25,
+          "memory_percent": 0.41656494140625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 35.6,
+          "total_memory_percent": 83.6
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744902550.257202,
+        "end_time": 1744902553.5070138,
+        "duration": 3.249811887741089,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.59375,
+          "memory_percent": 0.42476654052734375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 27.7,
+          "total_memory_percent": 83.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 45.953125,
+          "memory_percent": 0.28076171875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 47.1,
+          "total_memory_percent": 83.4
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744902553.6389298,
+        "end_time": 1744902559.544328,
+        "duration": 5.90539813041687,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 66.953125,
+          "memory_percent": 0.4086494445800781,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 33.0,
+          "total_memory_percent": 83.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 42.71875,
+          "memory_percent": 0.2610206604003906,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 47.1,
+          "total_memory_percent": 83.8
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744902562.4030778,
+        "end_time": 1744902568.3485901,
+        "duration": 5.945512294769287,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 77.28125,
+          "memory_percent": 0.47168731689453125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 66.1,
+          "total_memory_percent": 83.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 40.015625,
+          "memory_percent": 0.2445220947265625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 36.6,
+          "total_memory_percent": 83.5
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902475.944604,
+      "total_duration": 92.63381814956665,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902568.578422,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 64.484375,
+        "memory_percent": 0.3935813903808594,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 42.6,
+        "total_memory_percent": 82.9
+      },
+      "statistics": {
+        "min_duration": 3.137892961502075,
+        "max_duration": 5.945512294769287,
+        "avg_duration": 4.55965381860733,
+        "median_duration": 4.5776050090789795,
+        "total_test_time": 18.23861527442932
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:07:55",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744902590.247946,
+        "end_time": 1744902591.039348,
+        "duration": 0.7914018630981445,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 52.703125,
+          "memory_percent": 0.32196044921875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 53.8,
+          "total_memory_percent": 83.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 53.484375,
+          "memory_percent": 0.3264427185058594,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 67.3,
+          "total_memory_percent": 83.4
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744902595.555868,
+        "end_time": 1744902600.355573,
+        "duration": 4.7997050285339355,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.390625,
+          "memory_percent": 0.3441810607910156,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 42.4,
+          "total_memory_percent": 82.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.765625,
+          "memory_percent": 0.3525733947753906,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 62.8,
+          "total_memory_percent": 83.5
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902475.955696,
+      "total_duration": 124.51261973381042,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902600.4683158,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 59.078125,
+        "memory_percent": 0.3605842590332031,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 65.2,
+        "total_memory_percent": 82.8
+      },
+      "statistics": {
+        "min_duration": 0.7914018630981445,
+        "max_duration": 4.7997050285339355,
+        "avg_duration": 2.79555344581604,
+        "median_duration": 2.79555344581604,
+        "total_test_time": 5.59110689163208
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:09:43",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744902643.4857101,
+        "end_time": 1744902646.6271172,
+        "duration": 3.141407012939453,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 68.484375,
+          "memory_percent": 0.4179954528808594,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 50.0,
+          "total_memory_percent": 79.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 68.515625,
+          "memory_percent": 0.4181861877441406,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 52.6,
+          "total_memory_percent": 79.2
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744902646.731683,
+        "end_time": 1744902652.9248471,
+        "duration": 6.193164110183716,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.90625,
+          "memory_percent": 0.42667388916015625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 56.8,
+          "total_memory_percent": 79.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.28125,
+          "memory_percent": 0.42285919189453125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 39.4,
+          "total_memory_percent": 79.9
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744902653.039259,
+        "end_time": 1744902656.178946,
+        "duration": 3.1396870613098145,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.140625,
+          "memory_percent": 0.4342079162597656,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 46.7,
+          "total_memory_percent": 80.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.046875,
+          "memory_percent": 0.4336357116699219,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 31.7,
+          "total_memory_percent": 79.7
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744902658.335257,
+        "end_time": 1744902661.467585,
+        "duration": 3.1323280334472656,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 82.390625,
+          "memory_percent": 0.5028724670410156,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 51.0,
+          "total_memory_percent": 80.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 82.5,
+          "memory_percent": 0.5035400390625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 22.2,
+          "total_memory_percent": 80.8
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902583.86319,
+      "total_duration": 77.81278109550476,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902661.675971,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 83.796875,
+        "memory_percent": 0.5114555358886719,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 37.7,
+        "total_memory_percent": 80.3
+      },
+      "statistics": {
+        "min_duration": 3.1323280334472656,
+        "max_duration": 6.193164110183716,
+        "avg_duration": 3.9016465544700623,
+        "median_duration": 3.140547037124634,
+        "total_test_time": 15.606586217880249
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:09:43",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744902697.6808488,
+        "end_time": 1744902698.964119,
+        "duration": 1.2832701206207275,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.046875,
+          "memory_percent": 0.34847259521484375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 91.7,
+          "total_memory_percent": 80.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.625,
+          "memory_percent": 0.351715087890625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 95.7,
+          "total_memory_percent": 80.8
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744902702.600518,
+        "end_time": 1744902714.8746612,
+        "duration": 12.27414321899414,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 58.5625,
+          "memory_percent": 0.3574371337890625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 98.7,
+          "total_memory_percent": 80.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.796875,
+          "memory_percent": 0.3651618957519531,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 100.0,
+          "total_memory_percent": 80.3
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902583.875155,
+      "total_duration": 131.37552905082703,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902715.250684,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 61.4375,
+        "memory_percent": 0.3749847412109375,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 100.0,
+        "total_memory_percent": 79.7
+      },
+      "statistics": {
+        "min_duration": 1.2832701206207275,
+        "max_duration": 12.27414321899414,
+        "avg_duration": 6.778706669807434,
+        "median_duration": 6.778706669807434,
+        "total_test_time": 13.557413339614868
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:12:47",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744902816.9986491,
+        "end_time": 1744902820.124483,
+        "duration": 3.1258339881896973,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 61.875,
+          "memory_percent": 0.377655029296875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 82.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 62.4375,
+          "memory_percent": 0.3810882568359375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 83.8,
+          "total_memory_percent": 82.0
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744902820.3150852,
+        "end_time": 1744902823.502599,
+        "duration": 3.187513828277588,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.828125,
+          "memory_percent": 0.4506111145019531,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 59.9,
+          "total_memory_percent": 82.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 68.34375,
+          "memory_percent": 0.41713714599609375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 57.4,
+          "total_memory_percent": 82.2
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744902823.7160141,
+        "end_time": 1744902826.901369,
+        "duration": 3.1853549480438232,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.765625,
+          "memory_percent": 0.4563331604003906,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 63.7,
+          "total_memory_percent": 82.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 68.265625,
+          "memory_percent": 0.4166603088378906,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 52.0,
+          "total_memory_percent": 82.7
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744902829.25119,
+        "end_time": 1744902832.4846568,
+        "duration": 3.233466863632202,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 63.234375,
+          "memory_percent": 0.3859519958496094,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 63.0,
+          "total_memory_percent": 82.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 54.5625,
+          "memory_percent": 0.3331184387207031,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 45.7,
+          "total_memory_percent": 82.4
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902767.039853,
+      "total_duration": 65.72695398330688,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902832.766807,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 69.421875,
+        "memory_percent": 0.4237174987792969,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 50.2,
+        "total_memory_percent": 81.6
+      },
+      "statistics": {
+        "min_duration": 3.1258339881896973,
+        "max_duration": 3.233466863632202,
+        "avg_duration": 3.1830424070358276,
+        "median_duration": 3.1864343881607056,
+        "total_test_time": 12.73216962814331
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:12:47",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744902848.478252,
+        "end_time": 1744902849.0866969,
+        "duration": 0.6084449291229248,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.1875,
+          "memory_percent": 0.43468475341796875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 47.2,
+          "total_memory_percent": 81.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.578125,
+          "memory_percent": 0.4368782043457031,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 45.8,
+          "total_memory_percent": 81.9
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744902851.009569,
+        "end_time": 1744902865.630534,
+        "duration": 14.620965003967285,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.171875,
+          "memory_percent": 0.3916740417480469,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 52.1,
+          "total_memory_percent": 81.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 60.125,
+          "memory_percent": 0.366973876953125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 40.9,
+          "total_memory_percent": 83.7
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902767.072245,
+      "total_duration": 98.67804908752441,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902865.750294,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 61.03125,
+        "memory_percent": 0.37250518798828125,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 47.9,
+        "total_memory_percent": 82.6
+      },
+      "statistics": {
+        "min_duration": 0.6084449291229248,
+        "max_duration": 14.620965003967285,
+        "avg_duration": 7.614704966545105,
+        "median_duration": 7.614704966545105,
+        "total_test_time": 15.22940993309021
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:14:44",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744902931.263854,
+        "end_time": 1744902937.502888,
+        "duration": 6.239033937454224,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.625,
+          "memory_percent": 0.394439697265625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 83.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 61.671875,
+          "memory_percent": 0.3764152526855469,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 94.0,
+          "total_memory_percent": 79.4
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744902937.733351,
+        "end_time": 1744902943.170749,
+        "duration": 5.4373979568481445,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.796875,
+          "memory_percent": 0.4504203796386719,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 81.2,
+          "total_memory_percent": 79.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.859375,
+          "memory_percent": 0.4508018493652344,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 72.8,
+          "total_memory_percent": 79.2
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744902943.389865,
+        "end_time": 1744902947.179796,
+        "duration": 3.789931058883667,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.171875,
+          "memory_percent": 0.4527091979980469,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 81.3,
+          "total_memory_percent": 79.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.9375,
+          "memory_percent": 0.4024505615234375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 58.8,
+          "total_memory_percent": 79.0
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744902949.152592,
+        "end_time": 1744902952.2890098,
+        "duration": 3.136417865753174,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.96875,
+          "memory_percent": 0.43926239013671875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 56.0,
+          "total_memory_percent": 80.0
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 67.71875,
+          "memory_percent": 0.41332244873046875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 39.7,
+          "total_memory_percent": 79.9
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902884.569605,
+      "total_duration": 67.94532680511475,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902952.514932,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 71.65625,
+        "memory_percent": 0.43735504150390625,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 61.2,
+        "total_memory_percent": 79.4
+      },
+      "statistics": {
+        "min_duration": 3.136417865753174,
+        "max_duration": 6.239033937454224,
+        "avg_duration": 4.650695204734802,
+        "median_duration": 4.613664507865906,
+        "total_test_time": 18.60278081893921
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:15:13",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744902960.3453922,
+        "end_time": 1744902963.490284,
+        "duration": 3.1448917388916016,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.546875,
+          "memory_percent": 0.4244804382324219,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 100.0,
+          "total_memory_percent": 79.4
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 61.5,
+          "memory_percent": 0.3754615783691406,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 72.5,
+          "total_memory_percent": 79.6
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744902963.759223,
+        "end_time": 1744902966.883714,
+        "duration": 3.124490976333618,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.328125,
+          "memory_percent": 0.4414558410644531,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 82.9,
+          "total_memory_percent": 79.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.28125,
+          "memory_percent": 0.44116973876953125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 54.7,
+          "total_memory_percent": 79.4
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744902967.00122,
+        "end_time": 1744902973.365632,
+        "duration": 6.364412069320679,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.453125,
+          "memory_percent": 0.4544258117675781,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 61.9,
+          "total_memory_percent": 79.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 67.359375,
+          "memory_percent": 0.4111289978027344,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 52.9,
+          "total_memory_percent": 80.1
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744902975.803232,
+        "end_time": 1744902978.9327118,
+        "duration": 3.1294798851013184,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.59375,
+          "memory_percent": 0.44307708740234375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 76.2,
+          "total_memory_percent": 80.4
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.625,
+          "memory_percent": 0.3640174865722656,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 61.4,
+          "total_memory_percent": 79.7
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902913.885223,
+      "total_duration": 66.29358100891113,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902980.178804,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 67.03125,
+        "memory_percent": 0.40912628173828125,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 94.9,
+        "total_memory_percent": 80.6
+      },
+      "statistics": {
+        "min_duration": 3.124490976333618,
+        "max_duration": 6.364412069320679,
+        "avg_duration": 3.940818667411804,
+        "median_duration": 3.13718581199646,
+        "total_test_time": 15.763274669647217
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:14:44",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744902980.025792,
+        "end_time": 1744902981.4105961,
+        "duration": 1.3848042488098145,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 53.875,
+          "memory_percent": 0.3292083740234375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 56.3,
+          "total_memory_percent": 80.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 49.71875,
+          "memory_percent": 0.30345916748046875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 90.7,
+          "total_memory_percent": 80.7
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744902984.518498,
+        "end_time": 1744902994.287518,
+        "duration": 9.769020080566406,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 60.078125,
+          "memory_percent": 0.3666877746582031,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 86.5,
+          "total_memory_percent": 81.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.40625,
+          "memory_percent": 0.36258697509765625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 74.1,
+          "total_memory_percent": 81.6
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902884.587158,
+      "total_duration": 109.97577810287476,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744902994.562936,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 59.84375,
+        "memory_percent": 0.36525726318359375,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 86.9,
+        "total_memory_percent": 80.7
+      },
+      "statistics": {
+        "min_duration": 1.3848042488098145,
+        "max_duration": 9.769020080566406,
+        "avg_duration": 5.57691216468811,
+        "median_duration": 5.57691216468811,
+        "total_test_time": 11.15382432937622
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:15:13",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744903015.2849789,
+        "end_time": 1744903017.639126,
+        "duration": 2.35414719581604,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.140625,
+          "memory_percent": 0.3490447998046875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 83.6,
+          "total_memory_percent": 81.4
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 51.890625,
+          "memory_percent": 0.3167152404785156,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 97.5,
+          "total_memory_percent": 83.1
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744903022.977904,
+        "end_time": 1744903033.278969,
+        "duration": 10.30106496810913,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 54.359375,
+          "memory_percent": 0.33206939697265625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 94.9,
+          "total_memory_percent": 83.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 60.328125,
+          "memory_percent": 0.3682136535644531,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 48.3,
+          "total_memory_percent": 81.4
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744902913.9073741,
+      "total_duration": 119.61218976974487,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744903033.519564,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 61.078125,
+        "memory_percent": 0.3727912902832031,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 93.2,
+        "total_memory_percent": 80.8
+      },
+      "statistics": {
+        "min_duration": 2.35414719581604,
+        "max_duration": 10.30106496810913,
+        "avg_duration": 6.3276060819625854,
+        "median_duration": 6.3276060819625854,
+        "total_test_time": 12.655212163925171
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:20:38",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744903285.976842,
+        "end_time": 1744903289.126604,
+        "duration": 3.1497621536254883,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.703125,
+          "memory_percent": 0.3949165344238281,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 80.0,
+          "total_memory_percent": 79.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.09375,
+          "memory_percent": 0.39730072021484375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 25.3,
+          "total_memory_percent": 80.1
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744903289.23386,
+        "end_time": 1744903295.003319,
+        "duration": 5.769459009170532,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.6875,
+          "memory_percent": 0.4375457763671875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 38.4,
+          "total_memory_percent": 80.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.671875,
+          "memory_percent": 0.4374504089355469,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 23.4,
+          "total_memory_percent": 81.1
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744903295.108793,
+        "end_time": 1744903298.2709298,
+        "duration": 3.1621367931365967,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.9375,
+          "memory_percent": 0.4512786865234375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 35.7,
+          "total_memory_percent": 81.0
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.53125,
+          "memory_percent": 0.44879913330078125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 28.2,
+          "total_memory_percent": 80.9
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744903301.3738308,
+        "end_time": 1744903304.537051,
+        "duration": 3.163220167160034,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.125,
+          "memory_percent": 0.3977775573730469,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 65.9,
+          "total_memory_percent": 82.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 58.765625,
+          "memory_percent": 0.3586769104003906,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 43.7,
+          "total_memory_percent": 82.3
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744903238.6035461,
+      "total_duration": 66.68352389335632,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744903305.28707,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 65.921875,
+        "memory_percent": 0.4023551940917969,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 98.2,
+        "total_memory_percent": 82.4
+      },
+      "statistics": {
+        "min_duration": 3.1497621536254883,
+        "max_duration": 5.769459009170532,
+        "avg_duration": 3.811144530773163,
+        "median_duration": 3.1626784801483154,
+        "total_test_time": 15.244578123092651
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:20:46",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744903294.666131,
+        "end_time": 1744903297.815179,
+        "duration": 3.149048089981079,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.90625,
+          "memory_percent": 0.39615631103515625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 33.3,
+          "total_memory_percent": 81.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.3125,
+          "memory_percent": 0.3986358642578125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 27.3,
+          "total_memory_percent": 81.0
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744903297.967168,
+        "end_time": 1744903301.239328,
+        "duration": 3.2721598148345947,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.671875,
+          "memory_percent": 0.4496574401855469,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 62.6,
+          "total_memory_percent": 80.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 49.578125,
+          "memory_percent": 0.302886962890625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 64.5,
+          "total_memory_percent": 82.1
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744903301.4369228,
+        "end_time": 1744903304.595111,
+        "duration": 3.1581881046295166,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.90625,
+          "memory_percent": 0.40225982666015625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 100.0,
+          "total_memory_percent": 82.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.84375,
+          "memory_percent": 0.39577484130859375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 44.7,
+          "total_memory_percent": 82.1
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744903307.704706,
+        "end_time": 1744903310.860638,
+        "duration": 3.1559319496154785,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 58.46875,
+          "memory_percent": 0.3571510314941406,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 84.9,
+          "total_memory_percent": 82.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.375,
+          "memory_percent": 0.344085693359375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 56.2,
+          "total_memory_percent": 82.9
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744903246.4792309,
+      "total_duration": 64.60645198822021,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744903311.0856829,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 69.96875,
+        "memory_percent": 0.42705535888671875,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 56.2,
+        "total_memory_percent": 82.2
+      },
+      "statistics": {
+        "min_duration": 3.149048089981079,
+        "max_duration": 3.2721598148345947,
+        "avg_duration": 3.1838319897651672,
+        "median_duration": 3.1570600271224976,
+        "total_test_time": 12.735327959060669
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:20:46",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744903340.240569,
+        "end_time": 1744903342.690799,
+        "duration": 2.4502298831939697,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 44.34375,
+          "memory_percent": 0.2709388732910156,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 77.9,
+          "total_memory_percent": 83.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 47.125,
+          "memory_percent": 0.287628173828125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 91.9,
+          "total_memory_percent": 83.3
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744903345.151844,
+        "end_time": 1744903351.847973,
+        "duration": 6.696129083633423,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 58.234375,
+          "memory_percent": 0.35572052001953125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 78.8,
+          "total_memory_percent": 83.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 60.640625,
+          "memory_percent": 0.3703117370605469,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 72.8,
+          "total_memory_percent": 82.8
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744903246.490102,
+      "total_duration": 105.66903400421143,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744903352.159136,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 62.0,
+        "memory_percent": 0.37841796875,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 98.4,
+        "total_memory_percent": 81.8
+      },
+      "statistics": {
+        "min_duration": 2.4502298831939697,
+        "max_duration": 6.696129083633423,
+        "avg_duration": 4.573179483413696,
+        "median_duration": 4.573179483413696,
+        "total_test_time": 9.146358966827393
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:20:38",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744903336.8514922,
+        "end_time": 1744903342.2465851,
+        "duration": 5.395092964172363,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 55.0625,
+          "memory_percent": 0.3363609313964844,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 73.7,
+          "total_memory_percent": 83.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 40.046875,
+          "memory_percent": 0.24471282958984375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 96.7,
+          "total_memory_percent": 84.1
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744903344.978875,
+        "end_time": 1744903356.173742,
+        "duration": 11.194867134094238,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.25,
+          "memory_percent": 0.36163330078125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 77.0,
+          "total_memory_percent": 82.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 60.703125,
+          "memory_percent": 0.3705024719238281,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 77.2,
+          "total_memory_percent": 82.0
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744903238.6176362,
+      "total_duration": 117.71088886260986,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744903356.328525,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 61.546875,
+        "memory_percent": 0.3756523132324219,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 71.0,
+        "total_memory_percent": 81.3
+      },
+      "statistics": {
+        "min_duration": 5.395092964172363,
+        "max_duration": 11.194867134094238,
+        "avg_duration": 8.2949800491333,
+        "median_duration": 8.2949800491333,
+        "total_test_time": 16.5899600982666
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:32:37",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744904004.8971531,
+        "end_time": 1744904008.172362,
+        "duration": 3.2752089500427246,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.03125,
+          "memory_percent": 0.39081573486328125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 68.4,
+          "total_memory_percent": 81.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 60.53125,
+          "memory_percent": 0.36945343017578125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 44.8,
+          "total_memory_percent": 80.7
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744904008.2863512,
+        "end_time": 1744904011.419104,
+        "duration": 3.1327528953552246,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.5625,
+          "memory_percent": 0.4367828369140625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 39.8,
+          "total_memory_percent": 80.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.515625,
+          "memory_percent": 0.3937721252441406,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 28.1,
+          "total_memory_percent": 81.1
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744904011.5316632,
+        "end_time": 1744904014.669615,
+        "duration": 3.1379518508911133,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.015625,
+          "memory_percent": 0.4395484924316406,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 51.1,
+          "total_memory_percent": 81.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.34375,
+          "memory_percent": 0.34999847412109375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 40.4,
+          "total_memory_percent": 82.4
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744904020.438123,
+        "end_time": 1744904023.6198559,
+        "duration": 3.1817328929901123,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 38.953125,
+          "memory_percent": 0.23813247680664062,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 77.0,
+          "total_memory_percent": 84.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 41.59375,
+          "memory_percent": 0.25386810302734375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 60.2,
+          "total_memory_percent": 82.1
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744903957.541235,
+      "total_duration": 66.30116391181946,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744904023.842399,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 58.390625,
+        "memory_percent": 0.3563880920410156,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 51.7,
+        "total_memory_percent": 81.8
+      },
+      "statistics": {
+        "min_duration": 3.1327528953552246,
+        "max_duration": 3.2752089500427246,
+        "avg_duration": 3.1819116473197937,
+        "median_duration": 3.159842371940613,
+        "total_test_time": 12.727646589279175
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:32:42",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744904010.730405,
+        "end_time": 1744904013.879103,
+        "duration": 3.148697853088379,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.125,
+          "memory_percent": 0.391387939453125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 28.6,
+          "total_memory_percent": 80.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 58.65625,
+          "memory_percent": 0.35800933837890625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 38.6,
+          "total_memory_percent": 82.8
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744904013.9984791,
+        "end_time": 1744904017.15808,
+        "duration": 3.1596009731292725,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.28125,
+          "memory_percent": 0.43506622314453125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 43.2,
+          "total_memory_percent": 82.4
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 50.90625,
+          "memory_percent": 0.31108856201171875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 61.9,
+          "total_memory_percent": 84.5
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744904017.72882,
+        "end_time": 1744904020.8732421,
+        "duration": 3.1444220542907715,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.734375,
+          "memory_percent": 0.4012107849121094,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 88.7,
+          "total_memory_percent": 84.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 49.5625,
+          "memory_percent": 0.3025054931640625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 81.4,
+          "total_memory_percent": 84.2
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744904022.8900402,
+        "end_time": 1744904026.199065,
+        "duration": 3.3090248107910156,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.0625,
+          "memory_percent": 0.3482818603515625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 69.1,
+          "total_memory_percent": 82.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 39.4375,
+          "memory_percent": 0.2407073974609375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 57.5,
+          "total_memory_percent": 83.6
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744903962.97826,
+      "total_duration": 70.00453186035156,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744904032.982792,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 32.375,
+        "memory_percent": 0.1979827880859375,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 83.9,
+        "total_memory_percent": 81.0
+      },
+      "statistics": {
+        "min_duration": 3.1444220542907715,
+        "max_duration": 3.3090248107910156,
+        "avg_duration": 3.1904364228248596,
+        "median_duration": 3.1541494131088257,
+        "total_test_time": 12.761745691299438
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:32:37",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744904062.5484831,
+        "end_time": 1744904071.7409558,
+        "duration": 9.192472696304321,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 32.875,
+          "memory_percent": 0.20093917846679688,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 83.5,
+          "total_memory_percent": 83.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 29.453125,
+          "memory_percent": 0.1800537109375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 98.9,
+          "total_memory_percent": 82.9
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744904076.046019,
+        "end_time": 1744904089.859312,
+        "duration": 13.813292980194092,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 33.34375,
+          "memory_percent": 0.20380020141601562,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 95.3,
+          "total_memory_percent": 83.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 48.015625,
+          "memory_percent": 0.2930641174316406,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 80.5,
+          "total_memory_percent": 82.6
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744903957.557311,
+      "total_duration": 132.43016695976257,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744904089.987478,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 48.390625,
+        "memory_percent": 0.2953529357910156,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 70.3,
+        "total_memory_percent": 80.5
+      },
+      "statistics": {
+        "min_duration": 9.192472696304321,
+        "max_duration": 13.813292980194092,
+        "avg_duration": 11.502882838249207,
+        "median_duration": 11.502882838249207,
+        "total_test_time": 23.005765676498413
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:32:42",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744904072.235887,
+        "end_time": 1744904078.0362618,
+        "duration": 5.800374746322632,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 45.234375,
+          "memory_percent": 0.2764701843261719,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 88.3,
+          "total_memory_percent": 82.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 28.90625,
+          "memory_percent": 0.17681121826171875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 94.4,
+          "total_memory_percent": 83.1
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744904082.1582232,
+        "end_time": 1744904095.216245,
+        "duration": 13.058021783828735,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 44.953125,
+          "memory_percent": 0.2743721008300781,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 95.0,
+          "total_memory_percent": 82.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 46.171875,
+          "memory_percent": 0.2818107604980469,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 79.9,
+          "total_memory_percent": 83.6
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744903962.9873421,
+      "total_duration": 132.38581895828247,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744904095.373161,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 47.671875,
+        "memory_percent": 0.2909660339355469,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 71.8,
+        "total_memory_percent": 83.0
+      },
+      "statistics": {
+        "min_duration": 5.800374746322632,
+        "max_duration": 13.058021783828735,
+        "avg_duration": 9.429198265075684,
+        "median_duration": 9.429198265075684,
+        "total_test_time": 18.858396530151367
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:40:11",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744904452.336672,
+        "end_time": 1744904455.497445,
+        "duration": 3.1607730388641357,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.625,
+          "memory_percent": 0.424957275390625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 57.1,
+          "total_memory_percent": 82.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 61.921875,
+          "memory_percent": 0.3779411315917969,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 37.1,
+          "total_memory_percent": 82.8
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744904455.6030312,
+        "end_time": 1744904461.699616,
+        "duration": 6.096584796905518,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.484375,
+          "memory_percent": 0.4424095153808594,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 27.6,
+          "total_memory_percent": 82.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.125,
+          "memory_percent": 0.440216064453125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 22.2,
+          "total_memory_percent": 80.9
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744904461.802776,
+        "end_time": 1744904467.960423,
+        "duration": 6.157646894454956,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.546875,
+          "memory_percent": 0.4549980163574219,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 26.5,
+          "total_memory_percent": 81.0
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.015625,
+          "memory_percent": 0.4273414611816406,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 22.6,
+          "total_memory_percent": 81.0
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744904469.928403,
+        "end_time": 1744904475.736166,
+        "duration": 5.80776309967041,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.796875,
+          "memory_percent": 0.4321098327636719,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 51.6,
+          "total_memory_percent": 81.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.390625,
+          "memory_percent": 0.4296302795410156,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 26.7,
+          "total_memory_percent": 81.2
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744904411.956137,
+      "total_duration": 63.98949098587036,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744904475.945628,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 71.921875,
+        "memory_percent": 0.4389762878417969,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 47.3,
+        "total_memory_percent": 80.7
+      },
+      "statistics": {
+        "min_duration": 3.1607730388641357,
+        "max_duration": 6.157646894454956,
+        "avg_duration": 5.305691957473755,
+        "median_duration": 5.952173948287964,
+        "total_test_time": 21.22276782989502
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:40:20",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744904465.6008892,
+        "end_time": 1744904468.736845,
+        "duration": 3.135955810546875,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.59375,
+          "memory_percent": 0.42476654052734375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 80.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.1875,
+          "memory_percent": 0.3978729248046875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 27.0,
+          "total_memory_percent": 81.3
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744904468.836222,
+        "end_time": 1744904471.975759,
+        "duration": 3.1395370960235596,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.671875,
+          "memory_percent": 0.4435539245605469,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 47.6,
+          "total_memory_percent": 81.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.734375,
+          "memory_percent": 0.4012107849121094,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 40.2,
+          "total_memory_percent": 81.8
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744904472.079437,
+        "end_time": 1744904475.2168891,
+        "duration": 3.1374521255493164,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.75,
+          "memory_percent": 0.44403076171875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 35.7,
+          "total_memory_percent": 81.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.75,
+          "memory_percent": 0.44403076171875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 24.9,
+          "total_memory_percent": 81.3
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744904478.57439,
+        "end_time": 1744904481.7253718,
+        "duration": 3.150981903076172,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.46875,
+          "memory_percent": 0.3449440002441406,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 74.0,
+          "total_memory_percent": 81.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 50.875,
+          "memory_percent": 0.310516357421875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 38.5,
+          "total_memory_percent": 81.4
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744904420.6019452,
+      "total_duration": 61.34060287475586,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744904481.942548,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 68.875,
+        "memory_percent": 0.420379638671875,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 0.0,
+        "total_memory_percent": 80.3
+      },
+      "statistics": {
+        "min_duration": 3.135955810546875,
+        "max_duration": 3.150981903076172,
+        "avg_duration": 3.1409817337989807,
+        "median_duration": 3.138494610786438,
+        "total_test_time": 12.563926935195923
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:40:20",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744904498.992257,
+        "end_time": 1744904501.052107,
+        "duration": 2.059849977493286,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.84375,
+          "memory_percent": 0.3655433654785156,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 58.6,
+          "total_memory_percent": 81.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.875,
+          "memory_percent": 0.365447998046875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 48.2,
+          "total_memory_percent": 82.4
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744904502.699786,
+        "end_time": 1744904515.162391,
+        "duration": 12.462604999542236,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 60.15625,
+          "memory_percent": 0.36716461181640625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 54.6,
+          "total_memory_percent": 82.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 51.9375,
+          "memory_percent": 0.3170013427734375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 68.0,
+          "total_memory_percent": 82.5
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744904420.612416,
+      "total_duration": 94.67482399940491,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744904515.28724,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 57.5625,
+        "memory_percent": 0.3513336181640625,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 76.5,
+        "total_memory_percent": 80.6
+      },
+      "statistics": {
+        "min_duration": 2.059849977493286,
+        "max_duration": 12.462604999542236,
+        "avg_duration": 7.261227488517761,
+        "median_duration": 7.261227488517761,
+        "total_test_time": 14.522454977035522
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:40:11",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744904504.477229,
+        "end_time": 1744904507.611872,
+        "duration": 3.1346428394317627,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.734375,
+          "memory_percent": 0.35266876220703125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 58.5,
+          "total_memory_percent": 82.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 43.875,
+          "memory_percent": 0.267791748046875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 72.4,
+          "total_memory_percent": 83.6
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744904509.581044,
+        "end_time": 1744904518.1054468,
+        "duration": 8.524402856826782,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.34375,
+          "memory_percent": 0.34999847412109375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 64.6,
+          "total_memory_percent": 82.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 61.5,
+          "memory_percent": 0.3753662109375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 50.1,
+          "total_memory_percent": 82.0
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744904411.966332,
+      "total_duration": 106.259357213974,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744904518.2256892,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 62.234375,
+        "memory_percent": 0.3798484802246094,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 60.8,
+        "total_memory_percent": 81.2
+      },
+      "statistics": {
+        "min_duration": 3.1346428394317627,
+        "max_duration": 8.524402856826782,
+        "avg_duration": 5.8295228481292725,
+        "median_duration": 5.8295228481292725,
+        "total_test_time": 11.659045696258545
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:46:03",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744904802.351889,
+        "end_time": 1744904805.495727,
+        "duration": 3.1438381671905518,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.453125,
+          "memory_percent": 0.4300117492675781,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 81.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.078125,
+          "memory_percent": 0.4277229309082031,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 23.6,
+          "total_memory_percent": 82.5
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744904805.7914,
+        "end_time": 1744904808.923102,
+        "duration": 3.131701946258545,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.03125,
+          "memory_percent": 0.42133331298828125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 74.1,
+          "total_memory_percent": 83.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.609375,
+          "memory_percent": 0.3943443298339844,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 27.6,
+          "total_memory_percent": 82.6
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744904809.026332,
+        "end_time": 1744904812.17235,
+        "duration": 3.1460180282592773,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.078125,
+          "memory_percent": 0.4338264465332031,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 27.5,
+          "total_memory_percent": 82.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 63.5,
+          "memory_percent": 0.3876686096191406,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 39.8,
+          "total_memory_percent": 82.6
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744904814.302169,
+        "end_time": 1744904817.4475148,
+        "duration": 3.145345687866211,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.796875,
+          "memory_percent": 0.3954887390136719,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 52.5,
+          "total_memory_percent": 83.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 63.25,
+          "memory_percent": 0.38604736328125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 35.4,
+          "total_memory_percent": 83.0
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744904763.4620469,
+      "total_duration": 54.19088006019592,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744904817.652927,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 71.015625,
+        "memory_percent": 0.4334449768066406,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 40.6,
+        "total_memory_percent": 82.5
+      },
+      "statistics": {
+        "min_duration": 3.131701946258545,
+        "max_duration": 3.1460180282592773,
+        "avg_duration": 3.1417259573936462,
+        "median_duration": 3.1445919275283813,
+        "total_test_time": 12.566903829574585
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:46:03",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744904833.22139,
+        "end_time": 1744904835.186294,
+        "duration": 1.9649040699005127,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.78125,
+          "memory_percent": 0.4444122314453125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 45.7,
+          "total_memory_percent": 82.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 67.71875,
+          "memory_percent": 0.41332244873046875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 40.6,
+          "total_memory_percent": 82.3
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744904837.019132,
+        "end_time": 1744904845.575333,
+        "duration": 8.556201219558716,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 67.8125,
+          "memory_percent": 0.4138946533203125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 48.8,
+          "total_memory_percent": 82.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 60.53125,
+          "memory_percent": 0.36945343017578125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 50.7,
+          "total_memory_percent": 83.1
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744904763.4715142,
+      "total_duration": 82.21826195716858,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744904845.6897762,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 61.109375,
+        "memory_percent": 0.3729820251464844,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 53.9,
+        "total_memory_percent": 82.3
+      },
+      "statistics": {
+        "min_duration": 1.9649040699005127,
+        "max_duration": 8.556201219558716,
+        "avg_duration": 5.260552644729614,
+        "median_duration": 5.260552644729614,
+        "total_test_time": 10.521105289459229
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:49:39",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744905035.7010481,
+        "end_time": 1744905045.492259,
+        "duration": 9.791210889816284,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.015625,
+          "memory_percent": 0.3479957580566406,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 82.4
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.125,
+          "memory_percent": 0.348663330078125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 26.6,
+          "total_memory_percent": 80.0
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744905045.7242692,
+        "end_time": 1744905051.881705,
+        "duration": 6.157435894012451,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.1875,
+          "memory_percent": 0.4528045654296875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 61.5,
+          "total_memory_percent": 80.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.3125,
+          "memory_percent": 0.3986358642578125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 33.1,
+          "total_memory_percent": 80.4
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744905052.005415,
+        "end_time": 1744905055.474305,
+        "duration": 3.4688899517059326,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 75.484375,
+          "memory_percent": 0.4607200622558594,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 36.0,
+          "total_memory_percent": 80.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.90625,
+          "memory_percent": 0.42667388916015625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 33.3,
+          "total_memory_percent": 80.2
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744905059.965097,
+        "end_time": 1744905066.425041,
+        "duration": 6.459944009780884,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.359375,
+          "memory_percent": 0.4416465759277344,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 41.1,
+          "total_memory_percent": 80.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.25,
+          "memory_percent": 0.42266845703125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 32.5,
+          "total_memory_percent": 80.9
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744904979.523971,
+      "total_duration": 87.14942693710327,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744905066.673398,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 72.375,
+        "memory_percent": 0.441741943359375,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 41.3,
+        "total_memory_percent": 80.3
+      },
+      "statistics": {
+        "min_duration": 3.4688899517059326,
+        "max_duration": 9.791210889816284,
+        "avg_duration": 6.469370186328888,
+        "median_duration": 6.3086899518966675,
+        "total_test_time": 25.87748074531555
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:49:39",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744905090.725311,
+        "end_time": 1744905092.848244,
+        "duration": 2.1229329109191895,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.265625,
+          "memory_percent": 0.3619194030761719,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 62.2,
+          "total_memory_percent": 82.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 58.8125,
+          "memory_percent": 0.3589630126953125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 53.1,
+          "total_memory_percent": 82.4
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744905094.571778,
+        "end_time": 1744905102.732065,
+        "duration": 8.160286903381348,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.375,
+          "memory_percent": 0.362396240234375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 58.5,
+          "total_memory_percent": 82.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 61.65625,
+          "memory_percent": 0.37631988525390625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 53.6,
+          "total_memory_percent": 82.0
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744904979.550346,
+      "total_duration": 123.29905104637146,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744905102.849397,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 62.78125,
+        "memory_percent": 0.38318634033203125,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 53.7,
+        "total_memory_percent": 81.1
+      },
+      "statistics": {
+        "min_duration": 2.1229329109191895,
+        "max_duration": 8.160286903381348,
+        "avg_duration": 5.1416099071502686,
+        "median_duration": 5.1416099071502686,
+        "total_test_time": 10.283219814300537
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:51:16",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744905114.394051,
+        "end_time": 1744905120.8468502,
+        "duration": 6.452799081802368,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.453125,
+          "memory_percent": 0.3445625305175781,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 83.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 51.09375,
+          "memory_percent": 0.3119468688964844,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 45.8,
+          "total_memory_percent": 83.5
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744905121.018389,
+        "end_time": 1744905124.493203,
+        "duration": 3.474813938140869,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.34375,
+          "memory_percent": 0.44155120849609375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 30.1,
+          "total_memory_percent": 83.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.671875,
+          "memory_percent": 0.4252433776855469,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 32.4,
+          "total_memory_percent": 82.4
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744905124.631614,
+        "end_time": 1744905130.929536,
+        "duration": 6.297922134399414,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.578125,
+          "memory_percent": 0.4490852355957031,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 43.6,
+          "total_memory_percent": 82.4
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.28125,
+          "memory_percent": 0.44727325439453125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 22.2,
+          "total_memory_percent": 83.0
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744905133.1932511,
+        "end_time": 1744905136.7133608,
+        "duration": 3.5201096534729004,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.4375,
+          "memory_percent": 0.3508567810058594,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 65.7,
+          "total_memory_percent": 83.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 55.71875,
+          "memory_percent": 0.34008026123046875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 51.2,
+          "total_memory_percent": 83.4
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905076.391066,
+      "total_duration": 60.69519400596619,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744905137.08626,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 69.765625,
+        "memory_percent": 0.4258155822753906,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 91.6,
+        "total_memory_percent": 83.0
+      },
+      "statistics": {
+        "min_duration": 3.474813938140869,
+        "max_duration": 6.452799081802368,
+        "avg_duration": 4.936411201953888,
+        "median_duration": 4.909015893936157,
+        "total_test_time": 19.74564480781555
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:51:16",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744905158.112514,
+        "end_time": 1744905160.091645,
+        "duration": 1.9791309833526611,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.4375,
+          "memory_percent": 0.4302024841308594,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 46.8,
+          "total_memory_percent": 83.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.6875,
+          "memory_percent": 0.4314422607421875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 50.9,
+          "total_memory_percent": 80.7
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744905161.840248,
+        "end_time": 1744905170.029235,
+        "duration": 8.188986778259277,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 71.234375,
+          "memory_percent": 0.4347801208496094,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 46.5,
+          "total_memory_percent": 80.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 63.109375,
+          "memory_percent": 0.3851890563964844,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 50.6,
+          "total_memory_percent": 81.5
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905076.4030058,
+      "total_duration": 93.747385263443,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744905170.150391,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 63.984375,
+        "memory_percent": 0.3905296325683594,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 46.3,
+        "total_memory_percent": 80.7
+      },
+      "statistics": {
+        "min_duration": 1.9791309833526611,
+        "max_duration": 8.188986778259277,
+        "avg_duration": 5.084058880805969,
+        "median_duration": 5.084058880805969,
+        "total_test_time": 10.168117761611938
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:53:54",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744905272.33349,
+        "end_time": 1744905278.746263,
+        "duration": 6.412773132324219,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.34375,
+          "memory_percent": 0.34999847412109375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 100.0,
+          "total_memory_percent": 82.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.203125,
+          "memory_percent": 0.3491401672363281,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 25.1,
+          "total_memory_percent": 81.9
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744905278.9060009,
+        "end_time": 1744905285.1421928,
+        "duration": 6.236191987991333,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.578125,
+          "memory_percent": 0.4551887512207031,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 37.1,
+          "total_memory_percent": 81.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 64.53125,
+          "memory_percent": 0.39386749267578125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 27.4,
+          "total_memory_percent": 82.8
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744905285.2638872,
+        "end_time": 1744905291.5239182,
+        "duration": 6.26003098487854,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.296875,
+          "memory_percent": 0.4534721374511719,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 43.4,
+          "total_memory_percent": 82.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 68.734375,
+          "memory_percent": 0.41961669921875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 28.2,
+          "total_memory_percent": 82.8
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744905295.281024,
+        "end_time": 1744905304.736692,
+        "duration": 9.455667972564697,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 43.453125,
+          "memory_percent": 0.2655029296875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 76.0,
+          "total_memory_percent": 83.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 51.96875,
+          "memory_percent": 0.31719207763671875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 31.6,
+          "total_memory_percent": 82.3
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905234.224674,
+      "total_duration": 70.75031089782715,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744905304.974985,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 69.203125,
+        "memory_percent": 0.4223823547363281,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 38.3,
+        "total_memory_percent": 81.7
+      },
+      "statistics": {
+        "min_duration": 6.236191987991333,
+        "max_duration": 9.455667972564697,
+        "avg_duration": 7.091166019439697,
+        "median_duration": 6.336402058601379,
+        "total_test_time": 28.36466407775879
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 17:53:54",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744905322.0207338,
+        "end_time": 1744905324.2700438,
+        "duration": 2.24931001663208,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.875,
+          "memory_percent": 0.3535270690917969,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 52.0,
+          "total_memory_percent": 82.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 58.1875,
+          "memory_percent": 0.3551483154296875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 56.6,
+          "total_memory_percent": 82.9
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744905328.067167,
+        "end_time": 1744905370.945206,
+        "duration": 42.87803888320923,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 46.6875,
+          "memory_percent": 0.2852439880371094,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 48.6,
+          "total_memory_percent": 83.4
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 42.046875,
+          "memory_percent": 0.2570152282714844,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 97.5,
+          "total_memory_percent": 82.9
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905234.2343569,
+      "total_duration": 137.50485730171204,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744905371.7392142,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 54.921875,
+        "memory_percent": 0.3352165222167969,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 97.8,
+        "total_memory_percent": 82.8
+      },
+      "statistics": {
+        "min_duration": 2.24931001663208,
+        "max_duration": 42.87803888320923,
+        "avg_duration": 22.563674449920654,
+        "median_duration": 22.563674449920654,
+        "total_test_time": 45.12734889984131
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 18:02:01",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744905754.572976,
+        "end_time": 1744905761.075816,
+        "duration": 6.502839803695679,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.890625,
+          "memory_percent": 0.3472328186035156,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 82.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 55.046875,
+          "memory_percent": 0.3360748291015625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 28.2,
+          "total_memory_percent": 83.5
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744905761.234689,
+        "end_time": 1744905764.867266,
+        "duration": 3.6325769424438477,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.390625,
+          "memory_percent": 0.4540443420410156,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 33.3,
+          "total_memory_percent": 83.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.5,
+          "memory_percent": 0.4547119140625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 21.3,
+          "total_memory_percent": 80.2
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744905764.984321,
+        "end_time": 1744905775.7629702,
+        "duration": 10.778649091720581,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 76.484375,
+          "memory_percent": 0.4668235778808594,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 39.8,
+          "total_memory_percent": 80.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.703125,
+          "memory_percent": 0.34618377685546875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 30.5,
+          "total_memory_percent": 81.0
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744905778.0150871,
+        "end_time": 1744905781.564255,
+        "duration": 3.5491678714752197,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.21875,
+          "memory_percent": 0.42858123779296875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 43.9,
+          "total_memory_percent": 81.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.078125,
+          "memory_percent": 0.4277229309082031,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 25.3,
+          "total_memory_percent": 81.1
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905721.227744,
+      "total_duration": 60.60050296783447,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744905781.828247,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 72.0,
+        "memory_percent": 0.439453125,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 53.4,
+        "total_memory_percent": 81.1
+      },
+      "statistics": {
+        "min_duration": 3.5491678714752197,
+        "max_duration": 10.778649091720581,
+        "avg_duration": 6.115808427333832,
+        "median_duration": 5.067708373069763,
+        "total_test_time": 24.463233709335327
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 18:02:04",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744905761.9840178,
+        "end_time": 1744905765.636842,
+        "duration": 3.6528241634368896,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.28125,
+          "memory_percent": 0.34351348876953125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 80.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.375,
+          "memory_percent": 0.344085693359375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 17.2,
+          "total_memory_percent": 82.1
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744905765.824349,
+        "end_time": 1744905769.647975,
+        "duration": 3.8236260414123535,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.3125,
+          "memory_percent": 0.4535675048828125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 81.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 53.21875,
+          "memory_percent": 0.3251075744628906,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 41.2,
+          "total_memory_percent": 81.5
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744905769.7698371,
+        "end_time": 1744905782.9715111,
+        "duration": 13.201673984527588,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.578125,
+          "memory_percent": 0.4246711730957031,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 34.7,
+          "total_memory_percent": 81.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 62.640625,
+          "memory_percent": 0.3823280334472656,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 27.6,
+          "total_memory_percent": 80.6
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744905785.0652,
+        "end_time": 1744905792.6039271,
+        "duration": 7.538727045059204,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 70.234375,
+          "memory_percent": 0.4286766052246094,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 61.5,
+          "total_memory_percent": 81.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 43.84375,
+          "memory_percent": 0.2678871154785156,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 61.5,
+          "total_memory_percent": 82.5
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905724.859767,
+      "total_duration": 68.00023818016052,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744905792.8600051,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 68.375,
+        "memory_percent": 0.417327880859375,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 66.7,
+        "total_memory_percent": 82.5
+      },
+      "statistics": {
+        "min_duration": 3.6528241634368896,
+        "max_duration": 13.201673984527588,
+        "avg_duration": 7.054212808609009,
+        "median_duration": 5.681176543235779,
+        "total_test_time": 28.216851234436035
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 18:02:01",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744905812.150795,
+        "end_time": 1744905815.070396,
+        "duration": 2.9196009635925293,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 54.390625,
+          "memory_percent": 0.3322601318359375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 69.1,
+          "total_memory_percent": 83.5
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 55.546875,
+          "memory_percent": 0.3390312194824219,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 74.2,
+          "total_memory_percent": 83.2
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744905817.37609,
+        "end_time": 1744905828.5902982,
+        "duration": 11.214208126068115,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.625,
+          "memory_percent": 0.351715087890625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 68.6,
+          "total_memory_percent": 83.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.234375,
+          "memory_percent": 0.34351348876953125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 67.5,
+          "total_memory_percent": 82.9
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905721.238775,
+      "total_duration": 107.4801869392395,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744905828.718962,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 60.046875,
+        "memory_percent": 0.3664970397949219,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 70.0,
+        "total_memory_percent": 81.6
+      },
+      "statistics": {
+        "min_duration": 2.9196009635925293,
+        "max_duration": 11.214208126068115,
+        "avg_duration": 7.066904544830322,
+        "median_duration": 7.066904544830322,
+        "total_test_time": 14.133809089660645
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 18:04:56",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744905936.416337,
+        "end_time": 1744905946.966079,
+        "duration": 10.549741983413696,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 55.65625,
+          "memory_percent": 0.33969879150390625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 0.0,
+          "total_memory_percent": 83.0
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 43.78125,
+          "memory_percent": 0.2675056457519531,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 88.8,
+          "total_memory_percent": 82.9
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744905947.391694,
+        "end_time": 1744905950.892896,
+        "duration": 3.501201868057251,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.21875,
+          "memory_percent": 0.44689178466796875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 96.5,
+          "total_memory_percent": 83.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 69.5625,
+          "memory_percent": 0.4245758056640625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 84.9,
+          "total_memory_percent": 82.1
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744905951.153551,
+        "end_time": 1744905954.752618,
+        "duration": 3.599066972732544,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 73.875,
+          "memory_percent": 0.450897216796875,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 96.2,
+          "total_memory_percent": 82.4
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 72.9375,
+          "memory_percent": 0.4451751708984375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 83.3,
+          "total_memory_percent": 81.9
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744905958.2124412,
+        "end_time": 1744905961.8018508,
+        "duration": 3.589409589767456,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 55.203125,
+          "memory_percent": 0.3373146057128906,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 91.8,
+          "total_memory_percent": 83.0
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 50.796875,
+          "memory_percent": 0.3100395202636719,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 93.5,
+          "total_memory_percent": 82.7
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905896.271563,
+      "total_duration": 67.01048588752747,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744905963.282049,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 68.0,
+        "memory_percent": 0.4150390625,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 99.6,
+        "total_memory_percent": 82.3
+      },
+      "statistics": {
+        "min_duration": 3.501201868057251,
+        "max_duration": 10.549741983413696,
+        "avg_duration": 5.309855103492737,
+        "median_duration": 3.59423828125,
+        "total_test_time": 21.239420413970947
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 18:05:24",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744905953.945738,
+        "end_time": 1744905957.498355,
+        "duration": 3.552616834640503,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.8125,
+          "memory_percent": 0.3467559814453125,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 100.0,
+          "total_memory_percent": 81.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.828125,
+          "memory_percent": 0.3468513488769531,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 86.4,
+          "total_memory_percent": 81.6
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744905958.426507,
+        "end_time": 1744905965.145825,
+        "duration": 6.71931791305542,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.75,
+          "memory_percent": 0.45623779296875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 100.0,
+          "total_memory_percent": 83.1
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 44.578125,
+          "memory_percent": 0.272369384765625,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 94.4,
+          "total_memory_percent": 82.0
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744905967.2659378,
+        "end_time": 1744905971.671805,
+        "duration": 4.405867099761963,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 62.515625,
+          "memory_percent": 0.3815650939941406,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 98.9,
+          "total_memory_percent": 83.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 44.59375,
+          "memory_percent": 0.2724647521972656,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 97.0,
+          "total_memory_percent": 83.5
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744905975.008266,
+        "end_time": 1744905978.989981,
+        "duration": 3.981714963912964,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 68.734375,
+          "memory_percent": 0.4195213317871094,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 93.6,
+          "total_memory_percent": 82.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 44.25,
+          "memory_percent": 0.2703666687011719,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 99.7,
+          "total_memory_percent": 82.4
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905924.604583,
+      "total_duration": 55.54563903808594,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744905980.150222,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 68.796875,
+        "memory_percent": 0.4199028015136719,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 99.4,
+        "total_memory_percent": 82.4
+      },
+      "statistics": {
+        "min_duration": 3.552616834640503,
+        "max_duration": 6.71931791305542,
+        "avg_duration": 4.664879202842712,
+        "median_duration": 4.193791031837463,
+        "total_test_time": 18.65951681137085
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 18:04:56",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744906000.2983449,
+        "end_time": 1744906007.864692,
+        "duration": 7.566347122192383,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 55.15625,
+          "memory_percent": 0.3369331359863281,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 97.1,
+          "total_memory_percent": 82.6
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 40.515625,
+          "memory_percent": 0.2475738525390625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 99.0,
+          "total_memory_percent": 82.4
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744906010.6892061,
+        "end_time": 1744906032.2376692,
+        "duration": 21.548463106155396,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.4375,
+          "memory_percent": 0.3505706787109375,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 94.1,
+          "total_memory_percent": 82.0
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 42.515625,
+          "memory_percent": 0.2597808837890625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 95.8,
+          "total_memory_percent": 83.4
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905896.2827468,
+      "total_duration": 136.15007615089417,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744906032.432823,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 54.84375,
+        "memory_percent": 0.33473968505859375,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 86.8,
+        "total_memory_percent": 81.9
+      },
+      "statistics": {
+        "min_duration": 7.566347122192383,
+        "max_duration": 21.548463106155396,
+        "avg_duration": 14.55740511417389,
+        "median_duration": 14.55740511417389,
+        "total_test_time": 29.11481022834778
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 18:05:24",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_complete_checkout_flow": {
+        "start_time": 1744906018.571038,
+        "end_time": 1744906025.188052,
+        "duration": 6.617013931274414,
+        "result": true,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 57.578125,
+          "memory_percent": 0.3516197204589844,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 96.8,
+          "total_memory_percent": 82.9
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 41.3125,
+          "memory_percent": 0.25234222412109375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 99.7,
+          "total_memory_percent": 82.3
+        }
+      },
+      "test_different_shipping_methods": {
+        "start_time": 1744906027.9990551,
+        "end_time": 1744906045.202967,
+        "duration": 17.203911781311035,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 56.9375,
+          "memory_percent": 0.3475189208984375,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 95.1,
+          "total_memory_percent": 82.0
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 59.859375,
+          "memory_percent": 0.365447998046875,
+          "thread_count": 2,
+          "open_files": 19,
+          "total_cpu_percent": 85.8,
+          "total_memory_percent": 82.3
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744905924.640099,
+      "total_duration": 120.6912899017334,
+      "tests_executed": 4,
+      "tests_passed": 1,
+      "tests_failed": 3,
+      "end_time": 1744906045.331389,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 61.34375,
+        "memory_percent": 0.37441253662109375,
+        "thread_count": 2,
+        "open_files": 19,
+        "total_cpu_percent": 55.6,
+        "total_memory_percent": 81.4
+      },
+      "statistics": {
+        "min_duration": 6.617013931274414,
+        "max_duration": 17.203911781311035,
+        "avg_duration": 11.910462856292725,
+        "median_duration": 11.910462856292725,
+        "total_test_time": 23.82092571258545
+      }
+    }
+  },
+  {
+    "timestamp": "2025-04-17 18:07:43",
+    "system_info": {
+      "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
+      "python_version": "3.13.1",
+      "processor": "arm",
+      "cpu_count": 8,
+      "memory_total": 16.0,
+      "hostname": "MB-FVFHN41GQ05N"
+    },
+    "tests": {
+      "test_api_get_users": {
+        "start_time": 1744906103.841994,
+        "end_time": 1744906107.320632,
+        "duration": 3.478637933731079,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 54.796875,
+          "memory_percent": 0.3344535827636719,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 33.3,
+          "total_memory_percent": 80.2
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 55.28125,
+          "memory_percent": 0.33740997314453125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 27.7,
+          "total_memory_percent": 80.6
+        }
+      },
+      "test_api_create_user": {
+        "start_time": 1744906107.484521,
+        "end_time": 1744906111.02016,
+        "duration": 3.5356390476226807,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.53125,
+          "memory_percent": 0.45490264892578125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 63.8,
+          "total_memory_percent": 80.8
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 74.171875,
+          "memory_percent": 0.4527091979980469,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 27.2,
+          "total_memory_percent": 80.7
+        }
+      },
+      "test_api_update_user": {
+        "start_time": 1744906111.136658,
+        "end_time": 1744906117.6549098,
+        "duration": 6.518251895904541,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 75.984375,
+          "memory_percent": 0.4637718200683594,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 24.0,
+          "total_memory_percent": 80.7
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 65.703125,
+          "memory_percent": 0.4010200500488281,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 61.3,
+          "total_memory_percent": 80.2
+        }
+      },
+      "test_api_ui_integration": {
+        "start_time": 1744906121.591742,
+        "end_time": 1744906128.996344,
+        "duration": 7.40460205078125,
+        "result": false,
+        "resource_usage_start": {
+          "cpu_percent": 0.0,
+          "memory_usage": 58.21875,
+          "memory_percent": 0.35572052001953125,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 95.3,
+          "total_memory_percent": 81.3
+        },
+        "resource_usage_end": {
+          "cpu_percent": 0.0,
+          "memory_usage": 44.109375,
+          "memory_percent": 0.26950836181640625,
+          "thread_count": 2,
+          "open_files": 16,
+          "total_cpu_percent": 97.3,
+          "total_memory_percent": 83.5
+        }
+      }
+    },
+    "execution_summary": {
+      "start_time": 1744906063.54974,
+      "total_duration": 66.6589617729187,
+      "tests_executed": 4,
+      "tests_passed": 0,
+      "tests_failed": 4,
+      "end_time": 1744906130.2087018,
+      "final_resource_usage": {
+        "cpu_percent": 0.0,
+        "memory_usage": 66.109375,
+        "memory_percent": 0.4034996032714844,
+        "thread_count": 2,
+        "open_files": 16,
+        "total_cpu_percent": 99.3,
+        "total_memory_percent": 83.1
+      },
+      "statistics": {
+        "min_duration": 3.478637933731079,
+        "max_duration": 7.40460205078125,
+        "avg_duration": 5.234282732009888,
+        "median_duration": 5.026945471763611,
+        "total_test_time": 20.93713092803955
+      }
+    }
   }
 ]

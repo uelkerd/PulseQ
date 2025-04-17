@@ -193,7 +193,8 @@ class CheckoutPage:
         """Fill out the shipping information form."""
         for field, locator in self.shipping_form.items():
             if field in user_data:
-                self.elements_utils.fill_input(locator, user_data[field])
+                element = self.driver.find_element(*locator)
+                self.elements_utils.fill_input(element, user_data[field])
         self.elements_utils.click_element(self.continue_shipping_button)
         self.wait_utils.wait_for_element_visible(self.shipping_methods[1])
         logger.info("Filled shipping information")
@@ -213,7 +214,8 @@ class CheckoutPage:
         """Fill out the payment information form."""
         for field, locator in self.payment_form.items():
             if field in payment_data:
-                self.elements_utils.fill_input(locator, payment_data[field])
+                element = self.driver.find_element(*locator)
+                self.elements_utils.fill_input(element, payment_data[field])
         logger.info("Filled payment information")
 
     def get_order_total(self):
@@ -512,12 +514,15 @@ def mock_ecommerce_site():
     with open(confirmation_path, "w") as f:
         f.write(confirmation_content)
 
-    # Return the base URL
-    yield "file://" + temp_dir + "/"
+    # Return the base URL for the mock site
+    base_url = "file://" + temp_dir + "/"
+    yield base_url
 
     # Clean up
-    for file in ["index.html", "cart.html", "checkout.html", "confirmation.html"]:
-        os.remove(os.path.join(temp_dir, file))
+    os.remove(home_path)
+    os.remove(cart_path)
+    os.remove(checkout_path)
+    os.remove(confirmation_path)
     os.rmdir(temp_dir)
 
 

@@ -58,7 +58,7 @@ CREATE_USER_SCHEMA = {
 @pytest.fixture
 def api_client():
     """Initialize the API client with base URL."""
-    client = APIClient(BASE_URL)
+    client = APIClient(BASE_URL, verify_ssl=False)
     logger.info(f"Initialized API client for {BASE_URL}")
     return client
 

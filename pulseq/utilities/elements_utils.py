@@ -342,6 +342,28 @@ class ElementsUtils:
             logger.error(f"Error checking if element {locator} is displayed: {e}")
             return False
 
+    def fill_input(self, element, text, clear_first=True):
+        """
+        Fill an input element with text.
+
+        Args:
+            element: WebElement to fill
+            text: Text to input
+            clear_first: Whether to clear the field first
+
+        Returns:
+            None
+        """
+        try:
+            logger.debug(f"Filling input with text '{text}'")
+            if clear_first:
+                element.clear()
+            element.send_keys(text)
+            logger.debug("Filled input successfully")
+        except Exception as e:
+            logger.error(f"Error filling input: {e}")
+            raise
+
     def scroll_to_element(self, locator, timeout=None):
         """
         Scroll the page to bring an element into view.

@@ -1,0 +1,47 @@
+{
+  "baseUrl": "https://reqres.in/api",
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/users",
+      "description": "List users",
+      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users?page=1 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+    },
+    {
+      "method": "GET",
+      "path": "/users/2",
+      "description": "Get single user",
+      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users/2 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+    },
+    {
+      "method": "POST",
+      "path": "/users",
+      "description": "Create user",
+      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+    },
+    {
+      "method": "PUT",
+      "path": "/users/2",
+      "description": "Update user",
+      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users/2 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+    },
+    {
+      "method": "DELETE",
+      "path": "/users/2",
+      "description": "Delete user",
+      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users/2 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+    },
+    {
+      "method": "POST",
+      "path": "/register",
+      "description": "Register user",
+      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/register (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+    },
+    {
+      "method": "POST",
+      "path": "/login",
+      "description": "Login user",
+      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/login (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+    }
+  ]
+}

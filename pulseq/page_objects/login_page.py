@@ -2,7 +2,6 @@
 from selenium.webdriver.common.by import By
 
 from pulseq.utilities.logger import setup_logger
-from pulseq.utilities.misc_utils import MiscUtils
 from pulseq.utilities.retry import retry
 from pulseq.utilities.web_utils import WebUtils
 

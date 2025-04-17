@@ -81,10 +81,10 @@ def driver():
     quit_driver(driver)
 
 
-def test_valid_login(driver):
+def test_valid_login(driver, mock_html):
     """Test successful login with valid credentials."""
     # Launch the web app
-    driver.get("http://example.com/login")
+    driver.get(mock_html)
 
     # Use the page object to perform actions
     login_page = LoginPage(driver)

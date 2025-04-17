@@ -22,7 +22,7 @@ class APIClient:
     - Response validation
     """
 
-    def __init__(self, base_url, headers=None, timeout=30, verify_ssl=True):
+    def __init__(self, base_url, headers=None, timeout=30, verify_ssl=True, max_retries=3):
         """
         Initialize the API client.
 
@@ -31,13 +31,24 @@ class APIClient:
             headers: Default headers to include in all requests
             timeout: Default request timeout in seconds
             verify_ssl: Whether to verify SSL certificates
+            max_retries: Maximum number of retries for failed requests
         """
         self.base_url = base_url.rstrip("/")
         self.headers = headers or {}
         self.timeout = timeout
         self.verify_ssl = verify_ssl
+        self.max_retries = max_retries
         self.session = requests.Session()
         self.session.headers.update(self.headers)
+
+        # Configure retry adapter
+        retry_adapter = requests.adapters.HTTPAdapter(
+            max_retries=max_retries,
+            pool_connections=10,
+            pool_maxsize=10
+        )
+        self.session.mount("http://", retry_adapter)
+        self.session.mount("https://", retry_adapter)
 
         logger.debug(f"Initialized API client with base URL: {self.base_url}")
 
@@ -165,34 +176,73 @@ class APIClient:
             logger.error(f"Request failed: {e}")
             raise
 
-    def get(self, endpoint, params=None, **kwargs):
+    @retry(max_attempts=3, delay=1, backoff=2)
+    def get(self, endpoint, params=None, headers=None, timeout=None):
         """
-        Make a GET request.
+        Send a GET request.
 
         Args:
-            endpoint: API endpoint
+            endpoint: API endpoint path
             params: Query parameters
-            **kwargs: Additional request parameters
+            headers: Additional headers
+            timeout: Request timeout in seconds
 
         Returns:
-            requests.Response: Response object
+            Response object
         """
-        return self.request("GET", endpoint, params=params, **kwargs)
+        url = self._build_url(endpoint)
+        headers = headers or {}
+        timeout = timeout or self.timeout
 
-    def post(self, endpoint, data=None, json=None, **kwargs):
+        self._log_request("GET", url, params=params, headers=headers)
+        try:
+            response = self.session.get(
+                url,
+                params=params,
+                headers=headers,
+                timeout=timeout,
+                verify=self.verify_ssl
+            )
+            self._log_response(response)
+            return response
+        except requests.exceptions.RequestException as e:
+            logger.error(f"GET request failed: {e}")
+            raise
+
+    @retry(max_attempts=3, delay=1, backoff=2)
+    def post(self, endpoint, json=None, data=None, headers=None, timeout=None):
         """
-        Make a POST request.
+        Send a POST request.
 
         Args:
-            endpoint: API endpoint
-            data: Form data
-            json: JSON data
-            **kwargs: Additional request parameters
+            endpoint: API endpoint path
+            json: JSON data to send
+            data: Form data to send
+            headers: Additional headers
+            timeout: Request timeout in seconds
 
         Returns:
-            requests.Response: Response object
+            Response object
         """
-        return self.request("POST", endpoint, data=data, json=json, **kwargs)
+        url = self._build_url(endpoint)
+        headers = headers or {}
+        timeout = timeout or self.timeout
+
+        self._log_request("POST", url, json=json, data=data, headers=headers)
+        try:
+            response = self.session.post(
+                url,
+                json=json,
+                data=data,
+                headers=headers,
+                timeout=timeout,
+                verify=self.verify_ssl
+            )
+            self._log_response(response)
+            return response
+        except requests.exceptions.RequestException as e:
+            logger.error(f"POST request failed: {e}")
+            raise
 
     def put(self, endpoint, data=None, json=None, **kwargs):
         """
