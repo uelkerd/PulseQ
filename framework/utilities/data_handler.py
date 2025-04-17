@@ -161,8 +161,9 @@ class DataHandler:
             logger.error(f"Error saving CSV data to {file_path}: {e}")
             raise
 
+    @staticmethod
     def generate_random_string(
-        self, length=10, include_digits=True, include_special=False
+        length=10, include_digits=True, include_special=False
     ):
         """
         Generate a random string.
@@ -202,7 +203,8 @@ class DataHandler:
         logger.debug(f"Generated random email: {email}")
         return email
 
-    def generate_random_phone(self, format="+1-###-###-####"):
+    @staticmethod
+    def generate_random_phone(format="+1-###-###-####"):
         """
         Generate a random phone number.
 
@@ -222,8 +224,9 @@ class DataHandler:
         logger.debug(f"Generated random phone: {phone}")
         return phone
 
+    @staticmethod
     def generate_random_date(
-        self, start_date=None, end_date=None, date_format="%Y-%m-%d"
+        start_date=None, end_date=None, date_format="%Y-%m-%d"
     ):
         """
         Generate a random date between start_date and end_date.

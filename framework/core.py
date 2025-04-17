@@ -38,7 +38,8 @@ class FrameworkCore:
         # Ensure required directories exist
         self._ensure_directories()
 
-    def _ensure_directories(self):
+    @staticmethod
+    def _ensure_directories():
         """Create required directories if they don't exist."""
         directories = ["screenshots", "logs", "allure-results", "test_data"]
 
@@ -98,7 +99,8 @@ class FrameworkCore:
 
         return exit_code
 
-    def generate_report(self):
+    @staticmethod
+    def generate_report():
         """Generate test execution report."""
         logger.info("Generating Allure report")
         try:
@@ -130,7 +132,8 @@ class FrameworkCore:
         logger.info(f"Collected metrics: {metrics}")
         return metrics
 
-    def _parse_test_results(self):
+    @staticmethod
+    def _parse_test_results():
         """
         Parse test results from Allure results.
 
