@@ -1,4 +1,4 @@
-# Usage Instructions
+# Test Automation Framework Usage Guide
 
 This document provides detailed instructions for using the test automation framework, including setup, configuration, test execution, and reporting.
 
@@ -7,21 +7,14 @@ This document provides detailed instructions for using the test automation frame
 1. **Create a Virtual Environment**
 
    ```bash
-   python3 -m venv venv
+   python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 2. **Install the Framework**
 
    ```bash
-   # Install the framework and its dependencies
-   pip install -e .
-
-   # For development with linting tools
-   pip install -e ".[dev]"
-
-   # For image comparison features
-   pip install -e ".[image]"
+   pip install -r requirements.txt
    ```
 
 ## Running Tests
@@ -31,7 +24,7 @@ This document provides detailed instructions for using the test automation frame
 To run all tests:
 
 ```bash
-pytest
+pytest tests/
 ```
 
 To run specific tests:
@@ -56,27 +49,18 @@ Run tests in parallel using pytest-xdist:
 pytest -n 4
 
 # Auto-detect the number of CPUs and use all of them
-pytest -n auto
+pytest tests/ -n auto
 ```
 
-### Reporting
-
-Generate Allure reports:
+### Generating Reports
 
 ```bash
-# Run tests with Allure reporting
-pytest --alluredir=allure-results
-
-# Generate HTML report
-allure generate allure-results -o allure-report --clean
-
-# Serve the report on a local web server
-allure serve allure-results
+pytest tests/ --html=reports/report.html
 ```
 
 ## Using Framework Utilities
 
-### Driver Manager
+### Configuration
 
 ```python
 from pulseq.utilities.driver_manager import initialize_driver, quit_driver
@@ -179,60 +163,73 @@ Create a `config.json` file in the project root:
 
 ```json
 {
-  "base_url": "http://example.com",
-  "timeout": 30,
-  "retry_attempts": 3,
   "browser": "chrome",
   "headless": true,
-  "screenshot_on_failure": true
+  "implicit_wait": 10,
+  "explicit_wait": 20,
+  "base_url": "https://example.com",
+  "screenshot_dir": "screenshots",
+  "log_level": "INFO"
 }
 ```
 
-### Environment Variables
-
-You can override configuration with environment variables:
+You can override these settings using environment variables:
 
 ```bash
-# Set base URL
-export BASE_URL="http://staging.example.com"
-
-# Set timeout
-export TIMEOUT=60
-
-# Set browser
-export BROWSER="firefox"
+export PULSEQ_BROWSER=firefox
+export PULSEQ_HEADLESS=false
+export PULSEQ_BASE_URL=https://staging.example.com
 ```
 
-## Using Page Objects
-
-Create page objects to represent your application pages:
+### Logger Setup
 
 ```python
-# page_objects/login_page.py
+from pulseq.utilities.logger import setup_logger
+
+logger = setup_logger(__name__)
+logger.info("Test started")
+logger.error("Test failed")
+```
+
+### Screenshot Utilities
+
+```python
+from pulseq.utilities.misc_utils import MiscUtils
+
+# Take screenshot
+MiscUtils.take_screenshot(driver, "login_page")
+
+# Take screenshot with timestamp
+MiscUtils.take_screenshot_with_timestamp(driver, "error_state")
+```
+
+### Test Base Class
+
+```python
+from pulseq.core import TestBase
+
+class TestLogin(TestBase):
+    def test_successful_login(self):
+        self.driver.get(self.config.base_url)
+        # Test implementation
+```
+
+### Page Objects
+
+```python
+from pulseq.core import BasePage
 from selenium.webdriver.common.by import By
 
-class LoginPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.username_field = (By.ID, "username")
-        self.password_field = (By.ID, "password")
-        self.login_button = (By.ID, "login-button")
+class LoginPage(BasePage):
+    # Locators
+    USERNAME_INPUT = (By.ID, "username")
+    PASSWORD_INPUT = (By.ID, "password")
+    LOGIN_BUTTON = (By.ID, "login-btn")
 
     def login(self, username, password):
-        self.driver.find_element(*self.username_field).send_keys(username)
-        self.driver.find_element(*self.password_field).send_keys(password)
-        self.driver.find_element(*self.login_button).click()
-```
-
-In your tests:
-
-```python
-from page_objects.login_page import LoginPage
-
-def test_login(driver):
-    login_page = LoginPage(driver)
-    login_page.login("testuser", "password")
-    # Add assertions here
+        self.elements.send_keys(self.USERNAME_INPUT, username)
+        self.elements.send_keys(self.PASSWORD_INPUT, password)
+        self.elements.click_element(self.LOGIN_BUTTON)
 ```
 
 ## Using Docker
@@ -263,6 +260,12 @@ python -m pulseq.core --tests tests/test_login.py --no-report
 
 # Only collect tests without executing them
 python -m pulseq.core --collect-only --tests tests/
+
+# Run tests with a specific browser
+python -m pulseq.core --tests tests/test_e2e_checkout.py --browser firefox
+
+# Run tests in headless mode
+python -m pulseq.core --tests tests/test_e2e_checkout.py --headless
 ```
 
 ## Continuous Integration

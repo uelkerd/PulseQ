@@ -217,30 +217,65 @@ class PerformanceMetrics:
             if "end_time" not in self.current_metrics["execution_summary"]:
                 self.finalize_metrics()
 
-            # Load existing history if available
+            # Check if history file exists and read it
             history = []
             if os.path.exists(self.metrics_file):
-                with open(self.metrics_file, "r") as f:
-                    try:
+                try:
+                    with open(self.metrics_file, "r") as f:
                         history = json.load(f)
-                    except json.JSONDecodeError:
-                        logger.warning(
-                            f"Invalid JSON in metrics file: {self.metrics_file}, starting new history"
-                        )
-                        history = []
+                except json.JSONDecodeError:
+                    logger.warning(
+                        f"Could not decode JSON from {self.metrics_file}, starting fresh"
+                    )
+                    history = []
 
-            # Append current metrics and save
+            # Append current metrics
             history.append(self.current_metrics)
 
+            # Write updated history
             with open(self.metrics_file, "w") as f:
                 json.dump(history, f, indent=2)
 
-            logger.info(f"Saved metrics to: {self.metrics_file}")
+            logger.info(f"Saved metrics to {self.metrics_file}")
             return True
-
         except Exception as e:
             logger.error(f"Error saving metrics: {e}")
             return False
+
+    def get_average_execution_time(self):
+        """
+        Get the average execution time for all tests.
+
+        Returns:
+            float: Average execution time in seconds, or 0 if no tests
+        """
+        durations = [
+            test_data["duration"]
+            for test_data in self.current_metrics["tests"].values()
+            if test_data["duration"] is not None
+        ]
+
+        if durations:
+            return statistics.mean(durations)
+        return 0.0
+
+    def get_test_count(self):
+        """
+        Get the number of tests executed.
+
+        Returns:
+            int: Number of tests
+        """
+        return len(self.current_metrics["tests"])
+
+    def get_metrics_by_test(self):
+        """
+        Get metrics organized by test name.
+
+        Returns:
+            dict: Test metrics keyed by test name
+        """
+        return self.current_metrics["tests"]
 
     def compare_with_history(self, limit=5):
         """
@@ -331,7 +366,6 @@ class PerformanceMetrics:
             )
 
             return result
-
         except Exception as e:
             logger.error(f"Error comparing with history: {e}")
             return {"error": str(e)}

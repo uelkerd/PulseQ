@@ -1,4 +1,4 @@
-# framework/utilities/retry.py
+# pulseq/utilities/retry.py
 import functools
 import time
 

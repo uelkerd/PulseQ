@@ -1,9 +1,13 @@
-# framework/utilities/driver_manager.py
+# pulseq/utilities/driver_manager.py
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+
+from pulseq.utilities.logger import setup_logger
+
+logger = setup_logger("driver_manager")
 
 
 def initialize_driver(headless=True):

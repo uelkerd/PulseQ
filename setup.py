@@ -51,7 +51,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-           "pulseq=pulseq.core:main",
+            "pulseq=pulseq.core:main",
         ],
     },
 )

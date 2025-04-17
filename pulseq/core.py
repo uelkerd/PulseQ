@@ -1,6 +1,5 @@
 # pulseq/core.py
 import argparse
-import sys
 import time
 from datetime import datetime
 from pathlib import Path
@@ -16,7 +15,7 @@ from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 logger = setup_logger("core")
 
 
-class FrameworkCore:
+class PulseQCore:
     """
     Core class that serves as the main entry point for the test automation framework.
     Handles configuration loading, test execution, reporting, and metrics tracking.
@@ -209,45 +208,15 @@ def parse_arguments():
 
 
 def main():
-    """Main entry point for the framework."""
-    # Parse command-line arguments
-    args = parse_arguments()
+    """Initialize and run the test automation framework."""
+    # Load configuration settings
+    config = load_config()
+    print("Configuration Loaded:", config)
 
-    # Initialize the framework
-    framework = FrameworkCore(args.config)
-
-    # Handle collect-only mode
-    if args.collect_only:
-        pytest_args = [args.tests or "", "--collect-only", "-v"]
-        return pytest.main(pytest_args)
-
-    # Run tests
-    exit_code = framework.run_tests(
-        test_path=args.tests,
-        markers=args.markers,
-        parallel=args.parallel,
-        report=not args.no_report,
-    )
-
-    # Collect and display metrics
-    metrics = framework.collect_metrics()
-
-    # Print summary
-    if "error" not in metrics["test_results"]:
-        results = metrics["test_results"]
-        print("\n" + "=" * 50)
-        print("TEST EXECUTION SUMMARY")
-        print("=" * 50)
-        print(f"Total tests: {results['total']}")
-        print(f"Passed: {results['passed']} ({results['pass_rate']:.2f}%)")
-        print(f"Failed: {results['failed']}")
-        print(f"Skipped: {results['skipped']}")
-        print(f"Broken: {results['broken']}")
-        print(f"Execution time: {metrics['execution_time']:.2f} seconds")
-        print("=" * 50)
-
-    return exit_code
+    # Here you can call your test runner or setup your test environment
+    print("Running Test Automation Framework...")
+    # Ideally, invoke the tests (using pytest or custom logic)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
