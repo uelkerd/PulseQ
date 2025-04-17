@@ -78,10 +78,14 @@ def test_api_create_user(api_client):
 
         # Validate response contains expected data
         response_data = response.json()
-        assert response_data["name"] == USER_DATA["name"], "Name should match input data"
+        assert (
+            response_data["name"] == USER_DATA["name"]
+        ), "Name should match input data"
         assert response_data["job"] == USER_DATA["job"], "Job should match input data"
         assert "id" in response_data, "Response should contain an ID"
-        assert "createdAt" in response_data, "Response should contain creation timestamp"
+        assert (
+            "createdAt" in response_data
+        ), "Response should contain creation timestamp"
 
         # Validate response against JSON schema
         try:
@@ -142,7 +146,9 @@ def test_api_ui_integration(api_client, driver):
         elements_utils = ElementsUtils(driver)
 
         # Wait for page to load with increased timeout
-        wait_utils.wait_for_element_visible((By.CSS_SELECTOR, ".user-details"), timeout=20)
+        wait_utils.wait_for_element_visible(
+            (By.CSS_SELECTOR, ".user-details"), timeout=20
+        )
 
         # Verify user details are displayed correctly
         user_name = elements_utils.get_text((By.CSS_SELECTOR, ".user-name"))

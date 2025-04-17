@@ -220,6 +220,8 @@ def test_user_list_performance(driver, metrics):
     logger.info(f"User list performance metrics: {summary}")
 
     # Assert performance thresholds with more lenient values
-    assert summary["avg_execution_time"] < 5.0, "Page interaction time exceeded threshold"
+    assert (
+        summary["avg_execution_time"] < 5.0
+    ), "Page interaction time exceeded threshold"
     assert summary["avg_memory_usage"] < 125.0, "Memory usage exceeded threshold"
     assert summary["avg_cpu_usage"] < 60.0, "CPU usage exceeded threshold"

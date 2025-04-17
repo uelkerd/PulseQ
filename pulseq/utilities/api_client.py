@@ -22,7 +22,9 @@ class APIClient:
     - Response validation
     """
 
-    def __init__(self, base_url, headers=None, timeout=30, verify_ssl=True, max_retries=3):
+    def __init__(
+        self, base_url, headers=None, timeout=30, verify_ssl=True, max_retries=3
+    ):
         """
         Initialize the API client.
 
@@ -43,9 +45,7 @@ class APIClient:
 
         # Configure retry adapter
         retry_adapter = requests.adapters.HTTPAdapter(
-            max_retries=max_retries,
-            pool_connections=10,
-            pool_maxsize=10
+            max_retries=max_retries, pool_connections=10, pool_maxsize=10
         )
         self.session.mount("http://", retry_adapter)
         self.session.mount("https://", retry_adapter)
@@ -201,7 +201,7 @@ class APIClient:
                 params=params,
                 headers=headers,
                 timeout=timeout,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
             )
             self._log_response(response)
             return response
@@ -236,7 +236,7 @@ class APIClient:
                 data=data,
                 headers=headers,
                 timeout=timeout,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
             )
             self._log_response(response)
             return response
