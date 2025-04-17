@@ -7,6 +7,7 @@ import tempfile
 import allure
 import pytest
 from selenium.webdriver.common.by import By
+
 from pulseq.utilities.data_handler import DataHandler
 from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 from pulseq.utilities.elements_utils import ElementsUtils
