@@ -1,5 +1,4 @@
 # tests/test_retry.py
-import pytest
 from framework.utilities.retry import retry
 
 attempts_log = []

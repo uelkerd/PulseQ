@@ -6,7 +6,6 @@ import os
 import random
 import string
 import datetime
-import logging
 from pathlib import Path
 from framework.utilities.logger import setup_logger
 

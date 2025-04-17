@@ -6,7 +6,6 @@ import random
 import string
 import re
 import base64
-import logging
 import platform
 import subprocess
 from datetime import datetime

@@ -2,7 +2,6 @@
 
 import requests
 import json
-import logging
 import time
 from framework.utilities.logger import setup_logger
 from framework.utilities.retry import retry

@@ -2,12 +2,10 @@
 
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import (
     ElementNotInteractableException,
     NoSuchElementException,
 )
-import logging
 from framework.utilities.logger import setup_logger
 from framework.utilities.wait_utils import WaitUtils
 
