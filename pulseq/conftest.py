@@ -1,4 +1,4 @@
-# framework/conftest.py
+# pulseq/conftest.py
 import pytest
 
 from pulseq.utilities.mock_server import MockServer
