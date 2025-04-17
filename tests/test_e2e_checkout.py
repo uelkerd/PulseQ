@@ -10,6 +10,7 @@ import pytest
 from selenium.webdriver.common.by import By
 
 from pulseq.config import load_config
+from pulseq.page_objects.login_page import LoginPage
 from pulseq.utilities.data_handler import DataHandler
 from pulseq.utilities.driver_manager import initialize_driver, quit_driver
 from pulseq.utilities.elements_utils import ElementsUtils
@@ -17,7 +18,6 @@ from pulseq.utilities.logger import setup_logger
 from pulseq.utilities.misc_utils import MiscUtils
 from pulseq.utilities.performance_metrics import PerformanceMetrics, measure_performance
 from pulseq.utilities.wait_utils import WaitUtils
-from pulseq.page_objects.login_page import LoginPage
 
 # Set up logger
 logger = setup_logger("test_e2e_checkout")
@@ -98,10 +98,10 @@ class HomePage:
 
         # First wait for the element to be present before scrolling
         self.wait_utils.wait_for_element_visible(product_selector)
-        
+
         # Now scroll to the element
         self.elements_utils.scroll_to_element(product_selector)
-        
+
         # Find the add to cart button within this product card
         add_button = self.driver.find_element(*product_selector).find_element(
             By.CSS_SELECTOR, ".add-to-cart-btn"
@@ -239,7 +239,7 @@ class ConfirmationPage:
     def __init__(self, driver):
         self.driver = driver
         self.elements_utils = ElementsUtils(driver)
-        
+
         # Locators
         self.confirmation_message = (By.CLASS_NAME, "confirmation-message")
         self.order_number = (By.ID, "order-number")
@@ -540,7 +540,7 @@ def test_complete_checkout_flow(driver, mock_ecommerce_site, config):
 
     # Step 1: Navigate to home page and add products
     home_page = HomePage(driver).open(mock_ecommerce_site)
-    
+
     # Add each product to cart
     for product in products:
         home_page.add_product_to_cart(product["id"])
