@@ -39,7 +39,7 @@ Update user
 ### Error
 
 ```
-HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users/2 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))
+Failed to connect to https://reqres.in/api/users/2. Please check your network connection and the server status.
 ```
 
 ## DELETE /users/2
@@ -49,7 +49,7 @@ Delete user
 ### Error
 
 ```
-HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users/2 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))
+Failed to connect to https://reqres.in/api/users/2. Please check your network connection and the server status.
 ```
 
 ## POST /register

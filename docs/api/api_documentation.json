@@ -23,13 +23,13 @@
       "method": "PUT",
       "path": "/users/2",
       "description": "Update user",
-      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users/2 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+      "error": "Failed to connect to https://reqres.in/api/users/2. Please check your network connection and the server status."
     },
     {
       "method": "DELETE",
       "path": "/users/2",
       "description": "Delete user",
-      "error": "HTTPSConnectionPool(host='reqres.in', port=443): Max retries exceeded with url: /api/users/2 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1018)')))"
+      "error": "Failed to connect to https://reqres.in/api/users/2. Please check your network connection and the server status."
     },
     {
       "method": "POST",

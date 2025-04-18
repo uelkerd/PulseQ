@@ -41,11 +41,12 @@ class APIClient:
         self.session = requests.Session()
         self.session.headers.update(self.headers)
 
-        # Configure retry adapter
+        # Configure retry adapter with more sophisticated retry logic
         retry_adapter = requests.adapters.HTTPAdapter(
             max_retries=max_retries,
             pool_connections=10,
-            pool_maxsize=10
+            pool_maxsize=10,
+            pool_block=True
         )
         self.session.mount("http://", retry_adapter)
         self.session.mount("https://", retry_adapter)
@@ -138,6 +139,56 @@ class APIClient:
         except Exception as e:
             logger.warning(f"Failed to log response body: {e}")
 
+    def _handle_request_exception(self, e, method, url, **kwargs):
+        """
+        Handle request exceptions with detailed logging and error context.
+
+        Args:
+            e: Exception object
+            method: HTTP method
+            url: Request URL
+            **kwargs: Request parameters
+
+        Raises:
+            requests.exceptions.RequestException: Enhanced error with context
+        """
+        error_context = {
+            "method": method,
+            "url": url,
+            "headers": kwargs.get("headers", {}),
+            "params": kwargs.get("params"),
+            "data": kwargs.get("data"),
+            "timeout": kwargs.get("timeout", self.timeout)
+        }
+
+        if isinstance(e, requests.exceptions.ConnectionError):
+            logger.error(f"Connection error: {str(e)}")
+            logger.error(f"Request context: {error_context}")
+            raise requests.exceptions.RequestException(
+                f"Failed to connect to {url}. Please check your network connection and the server status."
+            ) from e
+
+        elif isinstance(e, requests.exceptions.Timeout):
+            logger.error(f"Request timeout: {str(e)}")
+            logger.error(f"Request context: {error_context}")
+            raise requests.exceptions.RequestException(
+                f"Request to {url} timed out after {self.timeout} seconds."
+            ) from e
+
+        elif isinstance(e, requests.exceptions.HTTPError):
+            logger.error(f"HTTP error: {str(e)}")
+            logger.error(f"Request context: {error_context}")
+            raise requests.exceptions.RequestException(
+                f"HTTP error occurred: {str(e)}"
+            ) from e
+
+        else:
+            logger.error(f"Unexpected error: {str(e)}")
+            logger.error(f"Request context: {error_context}")
+            raise requests.exceptions.RequestException(
+                f"An unexpected error occurred: {str(e)}"
+            ) from e
+
     @retry(max_attempts=3, delay=1, backoff=2)
     def request(self, method, endpoint, **kwargs):
         """
@@ -169,12 +220,22 @@ class APIClient:
         try:
             response = self.session.request(method, url, **kwargs)
             self._log_response(response)
-            response.raise_for_status()
+
+            # Validate response status code
+            if not response.ok:
+                error_msg = f"Request failed with status {response.status_code}"
+                try:
+                    error_data = response.json()
+                    error_msg += f": {error_data}"
+                except ValueError:
+                    error_msg += f": {response.text}"
+                logger.error(error_msg)
+                response.raise_for_status()
+
             return response
 
         except requests.exceptions.RequestException as e:
-            logger.error(f"Request failed: {e}")
-            raise
+            self._handle_request_exception(e, method, url, **kwargs)
 
     @retry(max_attempts=3, delay=1, backoff=2)
     def get(self, endpoint, params=None, headers=None, timeout=None):
@@ -329,72 +390,48 @@ class APIClient:
             logger.error(f"Authentication failed: {e}")
             raise
 
-    @staticmethod
-    def validate_status_code(response, expected_codes):
+    def validate_status_code(self, response, expected_code):
         """
-        Validate response status code.
+        Validate response status code with detailed error message.
 
         Args:
             response: Response object
-            expected_codes: Expected status code(s)
-
-        Returns:
-            bool: True if status code matches expected
+            expected_code: Expected status code
 
         Raises:
-            ValueError: If status code doesn't match expected
+            requests.exceptions.HTTPError: If status code doesn't match
         """
-        if isinstance(expected_codes, int):
-            expected_codes = [expected_codes]
-
-        if response.status_code not in expected_codes:
+        if response.status_code != expected_code:
             error_msg = (
-                f"Expected status code(s) {expected_codes}, "
-                f"got {response.status_code}"
+                f"Expected status code {expected_code}, "
+                f"but got {response.status_code}"
             )
+            try:
+                error_data = response.json()
+                error_msg += f": {error_data}"
+            except ValueError:
+                error_msg += f": {response.text}"
             logger.error(error_msg)
-            raise ValueError(error_msg)
+            raise requests.exceptions.HTTPError(error_msg)
 
-        return True
-
-    @staticmethod
-    def validate_json_schema(response, schema):
+    def validate_json_schema(self, response, schema):
         """
-        Validate response against JSON schema.
+        Validate response against JSON schema with detailed error messages.
 
         Args:
             response: Response object
-            schema: JSON schema
-
-        Returns:
-            bool: True if validation successful
+            schema: JSON schema to validate against
 
         Raises:
-            ValueError: If validation fails
-            json.JSONDecodeError: If response is not valid JSON
+            jsonschema.exceptions.ValidationError: If validation fails
         """
         try:
-            from jsonschema import ValidationError, validate
+            from jsonschema import validate
+            response_data = response.json()
+            validate(instance=response_data, schema=schema)
         except ImportError:
-            error_msg = (
-                "JSON schema validation requires jsonschema package. "
-                "Install with: pip install jsonschema"
-            )
-            logger.error(error_msg)
-            raise ImportError(error_msg)
-
-        try:
-            data = response.json()
-            validate(instance=data, schema=schema)
-            logger.debug("JSON schema validation successful")
-            return True
-
-        except ValidationError as e:
-            error_msg = f"JSON schema validation failed: {e}"
-            logger.error(error_msg)
-            raise ValueError(error_msg)
-
-        except json.JSONDecodeError as e:
-            error_msg = f"Invalid JSON response: {e}"
-            logger.error(error_msg)
+            logger.warning("jsonschema package not installed, skipping schema validation")
+            raise
+        except Exception as e:
+            logger.error(f"Schema validation failed: {str(e)}")
             raise

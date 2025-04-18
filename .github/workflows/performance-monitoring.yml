@@ -1,0 +1,120 @@
+name: Performance Monitoring
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 */6 * * *" # Run every 6 hours
+
+jobs:
+  performance-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run performance tests
+        run: |
+          pytest tests/test_performance.py --performance-threshold=2.0
+
+      - name: Generate performance report
+        run: |
+          python -c "
+          from pulseq.utilities.performance_analyzer import PerformanceAnalyzer
+          analyzer = PerformanceAnalyzer()
+          analyzer.generate_report()
+          "
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v2
+        with:
+          name: performance-results
+          path: |
+            test_results/performance_report.html
+            test_results/trends/
+            test_results/metrics/
+
+      - name: Check for regressions
+        run: |
+          python -c "
+          from pulseq.utilities.performance_analyzer import PerformanceAnalyzer
+          analyzer = PerformanceAnalyzer()
+          regressions = analyzer.detect_regressions(threshold=2.0)
+          if regressions:
+              print('Performance regressions detected:')
+              for reg in regressions:
+                  print(f'{reg[\"test_name\"]} - {reg[\"metric_name\"]}: {reg[\"current_value\"]:.2f} vs {reg[\"historical_mean\"]:.2f}')
+              exit(1)
+          "
+
+      - name: Update performance baseline
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          cp test_results/metrics/performance_history.json .github/performance-baseline.json
+
+      - name: Commit baseline update
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .github/performance-baseline.json
+          git commit -m "Update performance baseline" || echo "No changes to commit"
+          git push
+
+  alert-on-regression:
+    needs: performance-tests
+    if: failure()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          custom_payload: |
+            {
+              "text": "Performance regression detected in latest tests! Check the artifacts for details.",
+              "attachments": [{
+                "color": "danger",
+                "fields": [{
+                  "title": "Repository",
+                  "value": "${{ github.repository }}",
+                  "short": true
+                }, {
+                  "title": "Workflow",
+                  "value": "${{ github.workflow }}",
+                  "short": true
+                }]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Create GitHub issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Performance Regression Detected',
+              body: `Performance regression detected in the latest test run.
+              
+              - Workflow: ${context.workflow}
+              - Run: ${context.runId}
+              - Commit: ${context.sha}
+              
+              Please check the workflow artifacts for detailed metrics and reports.`
+            });

@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-04-17 18:08:50",
+  "timestamp": "2025-04-18 08:57:22",
   "current_metrics": {
-    "timestamp": "2025-04-17 18:07:43",
+    "timestamp": "2025-04-18 08:56:47",
     "system_info": {
       "platform": "macOS-15.4-arm64-arm-64bit-Mach-O",
       "python_version": "3.13.1",
@@ -10,168 +10,39 @@
       "memory_total": 16.0,
       "hostname": "MB-FVFHN41GQ05N"
     },
-    "tests": {
-      "test_api_get_users": {
-        "start_time": 1744906103.841994,
-        "end_time": 1744906107.320632,
-        "duration": 3.478637933731079,
-        "result": false,
-        "resource_usage_start": {
-          "cpu_percent": 0.0,
-          "memory_usage": 54.796875,
-          "memory_percent": 0.3344535827636719,
-          "thread_count": 2,
-          "open_files": 16,
-          "total_cpu_percent": 33.3,
-          "total_memory_percent": 80.2
-        },
-        "resource_usage_end": {
-          "cpu_percent": 0.0,
-          "memory_usage": 55.28125,
-          "memory_percent": 0.33740997314453125,
-          "thread_count": 2,
-          "open_files": 16,
-          "total_cpu_percent": 27.7,
-          "total_memory_percent": 80.6
-        }
-      },
-      "test_api_create_user": {
-        "start_time": 1744906107.484521,
-        "end_time": 1744906111.02016,
-        "duration": 3.5356390476226807,
-        "result": false,
-        "resource_usage_start": {
-          "cpu_percent": 0.0,
-          "memory_usage": 74.53125,
-          "memory_percent": 0.45490264892578125,
-          "thread_count": 2,
-          "open_files": 16,
-          "total_cpu_percent": 63.8,
-          "total_memory_percent": 80.8
-        },
-        "resource_usage_end": {
-          "cpu_percent": 0.0,
-          "memory_usage": 74.171875,
-          "memory_percent": 0.4527091979980469,
-          "thread_count": 2,
-          "open_files": 16,
-          "total_cpu_percent": 27.2,
-          "total_memory_percent": 80.7
-        }
-      },
-      "test_api_update_user": {
-        "start_time": 1744906111.136658,
-        "end_time": 1744906117.6549098,
-        "duration": 6.518251895904541,
-        "result": false,
-        "resource_usage_start": {
-          "cpu_percent": 0.0,
-          "memory_usage": 75.984375,
-          "memory_percent": 0.4637718200683594,
-          "thread_count": 2,
-          "open_files": 16,
-          "total_cpu_percent": 24.0,
-          "total_memory_percent": 80.7
-        },
-        "resource_usage_end": {
-          "cpu_percent": 0.0,
-          "memory_usage": 65.703125,
-          "memory_percent": 0.4010200500488281,
-          "thread_count": 2,
-          "open_files": 16,
-          "total_cpu_percent": 61.3,
-          "total_memory_percent": 80.2
-        }
-      },
-      "test_api_ui_integration": {
-        "start_time": 1744906121.591742,
-        "end_time": 1744906128.996344,
-        "duration": 7.40460205078125,
-        "result": false,
-        "resource_usage_start": {
-          "cpu_percent": 0.0,
-          "memory_usage": 58.21875,
-          "memory_percent": 0.35572052001953125,
-          "thread_count": 2,
-          "open_files": 16,
-          "total_cpu_percent": 95.3,
-          "total_memory_percent": 81.3
-        },
-        "resource_usage_end": {
-          "cpu_percent": 0.0,
-          "memory_usage": 44.109375,
-          "memory_percent": 0.26950836181640625,
-          "thread_count": 2,
-          "open_files": 16,
-          "total_cpu_percent": 97.3,
-          "total_memory_percent": 83.5
-        }
-      }
-    },
+    "tests": {},
     "execution_summary": {
-      "start_time": 1744906063.54974,
-      "total_duration": 66.6589617729187,
-      "tests_executed": 4,
+      "start_time": 1744959407.469974,
+      "total_duration": 35.34815192222595,
+      "tests_executed": 0,
       "tests_passed": 0,
-      "tests_failed": 4,
-      "end_time": 1744906130.2087018,
+      "tests_failed": 0,
+      "end_time": 1744959442.818126,
       "final_resource_usage": {
         "cpu_percent": 0.0,
-        "memory_usage": 66.109375,
-        "memory_percent": 0.4034996032714844,
+        "memory_usage": 62.25,
+        "memory_percent": 0.37994384765625,
         "thread_count": 2,
         "open_files": 16,
-        "total_cpu_percent": 99.3,
-        "total_memory_percent": 83.1
-      },
-      "statistics": {
-        "min_duration": 3.478637933731079,
-        "max_duration": 7.40460205078125,
-        "avg_duration": 5.234282732009888,
-        "median_duration": 5.026945471763611,
-        "total_test_time": 20.93713092803955
+        "total_cpu_percent": 100.0,
+        "total_memory_percent": 82.7
       }
     }
   },
   "historical_comparison": {
     "overall_improvement": {
-      "previous_avg_duration": 97.37553558349609,
-      "current_duration": 66.6589617729187,
-      "absolute_diff": 30.716573810577387,
-      "percent_diff": 31.544446586626485
+      "previous_avg_duration": 76.45076093673705,
+      "current_duration": 35.34815192222595,
+      "absolute_diff": 41.1026090145111,
+      "percent_diff": 53.76350543917212
     },
-    "test_comparisons": {
-      "test_api_get_users": {
-        "previous_avg": 7.0511794090271,
-        "current": 3.478637933731079,
-        "absolute_diff": 3.5725414752960205,
-        "percent_diff": 50.665871169330366
-      },
-      "test_api_create_user": {
-        "previous_avg": 5.1102598905563354,
-        "current": 3.5356390476226807,
-        "absolute_diff": 1.5746208429336548,
-        "percent_diff": 30.812930783491556
-      },
-      "test_api_update_user": {
-        "previous_avg": 4.002467036247253,
-        "current": 6.518251895904541,
-        "absolute_diff": -2.5157848596572876,
-        "percent_diff": -62.85585457353594
-      },
-      "test_api_ui_integration": {
-        "previous_avg": 3.78556227684021,
-        "current": 7.40460205078125,
-        "absolute_diff": -3.61903977394104,
-        "percent_diff": -95.60111574658427
-      }
-    },
+    "test_comparisons": {},
     "compared_runs": 5
   },
   "summary": {
-    "total_tests": 4,
-    "pass_rate": 0.0,
-    "total_duration": 66.6589617729187,
-    "improvement": 31.544446586626485
+    "total_tests": 0,
+    "pass_rate": 0,
+    "total_duration": 35.34815192222595,
+    "improvement": 53.76350543917212
   }
 }
