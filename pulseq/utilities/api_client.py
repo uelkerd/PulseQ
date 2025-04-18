@@ -22,7 +22,9 @@ class APIClient:
     - Response validation
     """
 
-    def __init__(self, base_url, headers=None, timeout=30, verify_ssl=True, max_retries=3):
+    def __init__(
+        self, base_url, headers=None, timeout=30, verify_ssl=True, max_retries=3
+    ):
         """
         Initialize the API client.
 
@@ -46,7 +48,7 @@ class APIClient:
             max_retries=max_retries,
             pool_connections=10,
             pool_maxsize=10,
-            pool_block=True
+            pool_block=True,
         )
         self.session.mount("http://", retry_adapter)
         self.session.mount("https://", retry_adapter)
@@ -158,7 +160,7 @@ class APIClient:
             "headers": kwargs.get("headers", {}),
             "params": kwargs.get("params"),
             "data": kwargs.get("data"),
-            "timeout": kwargs.get("timeout", self.timeout)
+            "timeout": kwargs.get("timeout", self.timeout),
         }
 
         if isinstance(e, requests.exceptions.ConnectionError):
@@ -262,7 +264,7 @@ class APIClient:
                 params=params,
                 headers=headers,
                 timeout=timeout,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
             )
             self._log_response(response)
             return response
@@ -297,7 +299,7 @@ class APIClient:
                 data=data,
                 headers=headers,
                 timeout=timeout,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
             )
             self._log_response(response)
             return response
@@ -427,10 +429,13 @@ class APIClient:
         """
         try:
             from jsonschema import validate
+
             response_data = response.json()
             validate(instance=response_data, schema=schema)
         except ImportError:
-            logger.warning("jsonschema package not installed, skipping schema validation")
+            logger.warning(
+                "jsonschema package not installed, skipping schema validation"
+            )
             raise
         except Exception as e:
             logger.error(f"Schema validation failed: {str(e)}")

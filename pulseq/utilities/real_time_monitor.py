@@ -1,15 +1,17 @@
-import os
 import json
-import time
-import psutil
-import threading
-import requests
+import os
 import subprocess
+import threading
+import time
+from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Dict, List, Any, Optional
-from flask import Flask, render_template_string, jsonify
-from dataclasses import dataclass, asdict
+from typing import Any, Dict, List, Optional
+
+import psutil
+import requests
+from flask import Flask, jsonify, render_template_string
 from selenium.webdriver.remote.webdriver import WebDriver
+
 
 @dataclass
 class BrowserMetrics:
@@ -18,13 +20,13 @@ class BrowserMetrics:
     js_heap_limit: float
     total_js_heap_size: float
     used_js_heap_size: float
-    
+
     # DOM metrics
     dom_node_count: int
     dom_element_count: int
     dom_depth: int
     dom_listeners: int
-    
+
     # Performance metrics
     fps: float
     paint_time: float
@@ -33,21 +35,22 @@ class BrowserMetrics:
     first_input_delay: float
     cumulative_layout_shift: float
     time_to_interactive: float
-    
+
     # Resource metrics
     resource_count: int
     resource_load_time: float
     cached_resources: int
-    
+
     # Script metrics
     script_execution_time: float
     parsing_time: float
     compilation_time: float
-    
+
     # Layout metrics
     layout_duration: float
     recalc_style_duration: float
     composite_duration: float
+
 
 @dataclass
 class NetworkLatency:
@@ -58,6 +61,7 @@ class NetworkLatency:
     tcp_connection_ms: float
     tls_handshake_ms: float
     ttfb_ms: float
+
 
 @dataclass
 class AlertThresholds:
@@ -72,12 +76,14 @@ class AlertThresholds:
     cls_threshold: float = 0.1
     resource_load_threshold: float = 5000.0
 
+
 @dataclass
 class AlertChannel:
     type: str  # 'slack', 'email', 'webhook', 'pagerduty', 'teams', 'telegram'
     config: Dict[str, Any]
-    severity_level: str = 'info'  # 'info', 'warning', 'error', 'critical'
+    severity_level: str = "info"  # 'info', 'warning', 'error', 'critical'
     enabled: bool = True
+
 
 @dataclass
 class AlertConfig:
@@ -86,6 +92,7 @@ class AlertConfig:
     alert_cooldown: int = 300  # seconds
     aggregation_window: int = 60  # seconds
     alert_history_size: int = 1000
+
 
 @dataclass
 class SystemMetrics:
@@ -99,6 +106,7 @@ class SystemMetrics:
     browser_metrics: Optional[BrowserMetrics] = None
     network_latency: Optional[NetworkLatency] = None
     alerts: List[str] = None
+
 
 class RealTimeMonitor:
     def __init__(self, update_interval: float = 1.0, alert_config: AlertConfig = None):
@@ -199,40 +207,35 @@ class RealTimeMonitor:
 
             return BrowserMetrics(
                 # Memory metrics
-                js_heap_size=memory_metrics['jsHeapSize'],
-                js_heap_limit=memory_metrics['jsHeapLimit'],
-                total_js_heap_size=memory_metrics['totalJsHeapSize'],
-                used_js_heap_size=memory_metrics['usedJsHeapSize'],
-                
+                js_heap_size=memory_metrics["jsHeapSize"],
+                js_heap_limit=memory_metrics["jsHeapLimit"],
+                total_js_heap_size=memory_metrics["totalJsHeapSize"],
+                used_js_heap_size=memory_metrics["usedJsHeapSize"],
                 # DOM metrics
-                dom_node_count=dom_metrics['nodeCount'],
-                dom_element_count=dom_metrics['elementCount'],
-                dom_depth=dom_metrics['domDepth'],
-                dom_listeners=dom_metrics['eventListeners'],
-                
+                dom_node_count=dom_metrics["nodeCount"],
+                dom_element_count=dom_metrics["elementCount"],
+                dom_depth=dom_metrics["domDepth"],
+                dom_listeners=dom_metrics["eventListeners"],
                 # Performance metrics
-                fps=perf_metrics['fps'],
-                paint_time=perf_metrics['paintTime'],
-                first_contentful_paint=perf_metrics['fcp'],
-                largest_contentful_paint=perf_metrics['lcp'],
-                first_input_delay=perf_metrics['fid'],
-                cumulative_layout_shift=perf_metrics['cls'],
-                time_to_interactive=perf_metrics['tti'],
-                
+                fps=perf_metrics["fps"],
+                paint_time=perf_metrics["paintTime"],
+                first_contentful_paint=perf_metrics["fcp"],
+                largest_contentful_paint=perf_metrics["lcp"],
+                first_input_delay=perf_metrics["fid"],
+                cumulative_layout_shift=perf_metrics["cls"],
+                time_to_interactive=perf_metrics["tti"],
                 # Resource metrics
-                resource_count=resource_metrics['resourceCount'],
-                resource_load_time=resource_metrics['loadTime'],
-                cached_resources=resource_metrics['cachedResources'],
-                
+                resource_count=resource_metrics["resourceCount"],
+                resource_load_time=resource_metrics["loadTime"],
+                cached_resources=resource_metrics["cachedResources"],
                 # Script metrics
-                script_execution_time=timing_metrics['scriptTime'],
-                parsing_time=timing_metrics['parsingTime'],
-                compilation_time=timing_metrics['compilationTime'],
-                
+                script_execution_time=timing_metrics["scriptTime"],
+                parsing_time=timing_metrics["parsingTime"],
+                compilation_time=timing_metrics["compilationTime"],
                 # Layout metrics
-                layout_duration=timing_metrics['layoutDuration'],
-                recalc_style_duration=timing_metrics['styleDuration'],
-                composite_duration=timing_metrics['compositeDuration']
+                layout_duration=timing_metrics["layoutDuration"],
+                recalc_style_duration=timing_metrics["styleDuration"],
+                composite_duration=timing_metrics["compositeDuration"],
             )
         except Exception as e:
             print(f"Error collecting browser metrics: {e}")
@@ -241,18 +244,21 @@ class RealTimeMonitor:
     def _collect_network_latency(self) -> NetworkLatency:
         """Collect detailed network latency metrics."""
         # Measure basic latency with ping
-        ping_output = subprocess.run(['ping', '-c', '1', 'google.com'], 
-                                   capture_output=True, text=True)
-        latency = float(ping_output.stdout.split('time=')[-1].split()[0])
+        ping_output = subprocess.run(
+            ["ping", "-c", "1", "google.com"], capture_output=True, text=True
+        )
+        latency = float(ping_output.stdout.split("time=")[-1].split()[0])
 
         # Measure packet loss
-        ping_stats = subprocess.run(['ping', '-c', '10', 'google.com'],
-                                  capture_output=True, text=True)
-        packet_loss = float(ping_stats.stdout.split('%')[0].split()[-1])
+        ping_stats = subprocess.run(
+            ["ping", "-c", "10", "google.com"], capture_output=True, text=True
+        )
+        packet_loss = float(ping_stats.stdout.split("%")[0].split()[-1])
 
         # Measure bandwidth using speedtest-cli (if available)
         try:
             import speedtest
+
             st = speedtest.Speedtest()
             bandwidth = st.download() / 1_000_000  # Convert to Mbps
         except:
@@ -261,25 +267,25 @@ class RealTimeMonitor:
         # Measure DNS and TCP metrics
         start_time = time.time()
         session = requests.Session()
-        
+
         # DNS lookup
         dns_start = time.time()
-        session.get('https://google.com')
+        session.get("https://google.com")
         dns_time = (time.time() - dns_start) * 1000
 
         # TCP connection
         tcp_start = time.time()
-        session.get('https://google.com')
+        session.get("https://google.com")
         tcp_time = (time.time() - tcp_start) * 1000
 
         # TLS handshake
         tls_start = time.time()
-        session.get('https://google.com')
+        session.get("https://google.com")
         tls_time = (time.time() - tls_start) * 1000
 
         # TTFB
         ttfb_start = time.time()
-        response = session.get('https://google.com')
+        response = session.get("https://google.com")
         ttfb = response.elapsed.total_seconds() * 1000
 
         return NetworkLatency(
@@ -289,25 +295,38 @@ class RealTimeMonitor:
             dns_lookup_ms=dns_time,
             tcp_connection_ms=tcp_time,
             tls_handshake_ms=tls_time,
-            ttfb_ms=ttfb
+            ttfb_ms=ttfb,
         )
 
     def _check_alerts(self, metrics: SystemMetrics) -> List[str]:
         """Check for metric threshold violations."""
         alerts = []
-        
+
         if metrics.cpu_percent > self.alert_config.thresholds.cpu_threshold:
             alerts.append(f"CPU usage ({metrics.cpu_percent}%) exceeded threshold")
-            
+
         if metrics.memory_percent > self.alert_config.thresholds.memory_threshold:
-            alerts.append(f"Memory usage ({metrics.memory_percent}%) exceeded threshold")
-            
-        if metrics.network_latency and metrics.network_latency.latency_ms > self.alert_config.thresholds.latency_threshold:
-            alerts.append(f"Network latency ({metrics.network_latency.latency_ms}ms) exceeded threshold")
-            
-        if metrics.disk_io['write_bytes'] > self.alert_config.thresholds.disk_io_threshold:
-            alerts.append(f"Disk write I/O ({metrics.disk_io['write_bytes']/1_000_000:.1f}MB/s) exceeded threshold")
-            
+            alerts.append(
+                f"Memory usage ({metrics.memory_percent}%) exceeded threshold"
+            )
+
+        if (
+            metrics.network_latency
+            and metrics.network_latency.latency_ms
+            > self.alert_config.thresholds.latency_threshold
+        ):
+            alerts.append(
+                f"Network latency ({metrics.network_latency.latency_ms}ms) exceeded threshold"
+            )
+
+        if (
+            metrics.disk_io["write_bytes"]
+            > self.alert_config.thresholds.disk_io_threshold
+        ):
+            alerts.append(
+                f"Disk write I/O ({metrics.disk_io['write_bytes']/1_000_000:.1f}MB/s) exceeded threshold"
+            )
+
         return alerts
 
     def _send_alerts(self, alerts: List[str]):
@@ -316,166 +335,169 @@ class RealTimeMonitor:
             return
 
         timestamp = datetime.now().isoformat()
-        
+
         for channel in self.alert_config.channels:
             if not channel.enabled:
                 continue
-            
+
             try:
-                if channel.type == 'slack':
+                if channel.type == "slack":
                     self._send_slack_alert(alerts, channel, timestamp)
-                elif channel.type == 'email':
+                elif channel.type == "email":
                     self._send_email_alert(alerts, channel, timestamp)
-                elif channel.type == 'pagerduty':
+                elif channel.type == "pagerduty":
                     self._send_pagerduty_alert(alerts, channel, timestamp)
-                elif channel.type == 'teams':
+                elif channel.type == "teams":
                     self._send_teams_alert(alerts, channel, timestamp)
-                elif channel.type == 'telegram':
+                elif channel.type == "telegram":
                     self._send_telegram_alert(alerts, channel, timestamp)
-                elif channel.type == 'webhook':
+                elif channel.type == "webhook":
                     self._send_webhook_alert(alerts, channel, timestamp)
             except Exception as e:
                 print(f"Error sending alert to {channel.type}: {e}")
 
-    def _send_slack_alert(self, alerts: List[str], channel: AlertChannel, timestamp: str):
+    def _send_slack_alert(
+        self, alerts: List[str], channel: AlertChannel, timestamp: str
+    ):
         """Send enhanced Slack alerts with metrics and visualizations."""
-        webhook_url = channel.config.get('webhook_url')
+        webhook_url = channel.config.get("webhook_url")
         if not webhook_url:
             return
 
-        blocks = [{
-            "type": "header",
-            "text": {
-                "type": "plain_text",
-                "text": "🚨 Performance Alert"
+        blocks = [
+            {
+                "type": "header",
+                "text": {"type": "plain_text", "text": "🚨 Performance Alert"},
             }
-        }]
+        ]
 
         for alert in alerts:
-            blocks.append({
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": f"*Alert:* {alert}\n*Time:* {timestamp}\n*Severity:* {channel.severity_level}"
+            blocks.append(
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": f"*Alert:* {alert}\n*Time:* {timestamp}\n*Severity:* {channel.severity_level}",
+                    },
                 }
-            })
+            )
 
         requests.post(webhook_url, json={"blocks": blocks})
 
-    def _send_email_alert(self, alerts: List[str], channel: AlertChannel, timestamp: str):
+    def _send_email_alert(
+        self, alerts: List[str], channel: AlertChannel, timestamp: str
+    ):
         """Send alert via email."""
         # Implementation depends on your email configuration
         pass
 
-    def _send_webhook_alert(self, alerts: List[str], channel: AlertChannel, timestamp: str):
+    def _send_webhook_alert(
+        self, alerts: List[str], channel: AlertChannel, timestamp: str
+    ):
         """Send alert to webhook."""
         # Implementation depends on your webhook configuration
         pass
 
-    def _send_pagerduty_alert(self, alerts: List[str], channel: AlertChannel, timestamp: str):
+    def _send_pagerduty_alert(
+        self, alerts: List[str], channel: AlertChannel, timestamp: str
+    ):
         """Send alerts to PagerDuty."""
-        api_key = channel.config.get('api_key')
-        service_id = channel.config.get('service_id')
-        
+        api_key = channel.config.get("api_key")
+        service_id = channel.config.get("service_id")
+
         if not api_key or not service_id:
             return
-        
+
         headers = {
-            'Authorization': f'Token token={api_key}',
-            'Content-Type': 'application/json'
+            "Authorization": f"Token token={api_key}",
+            "Content-Type": "application/json",
         }
-        
+
         payload = {
             "incident": {
                 "type": "incident",
                 "title": "Performance Alert",
                 "service": {"id": service_id},
-                "urgency": "high" if channel.severity_level in ['error', 'critical'] else "low",
-                "body": {
-                    "type": "incident_body",
-                    "details": "\n".join(alerts)
-                }
+                "urgency": (
+                    "high" if channel.severity_level in ["error", "critical"] else "low"
+                ),
+                "body": {"type": "incident_body", "details": "\n".join(alerts)},
             }
         }
-        
+
         requests.post(
-            'https://api.pagerduty.com/incidents',
-            headers=headers,
-            json=payload
+            "https://api.pagerduty.com/incidents", headers=headers, json=payload
         )
 
-    def _send_teams_alert(self, alerts: List[str], channel: AlertChannel, timestamp: str):
+    def _send_teams_alert(
+        self, alerts: List[str], channel: AlertChannel, timestamp: str
+    ):
         """Send alerts to Microsoft Teams."""
-        webhook_url = channel.config.get('webhook_url')
+        webhook_url = channel.config.get("webhook_url")
         if not webhook_url:
             return
-        
+
         payload = {
             "@type": "MessageCard",
             "@context": "http://schema.org/extensions",
             "themeColor": "0076D7",
             "summary": "Performance Alert",
-            "sections": [{
-                "activityTitle": "🚨 Performance Alert",
-                "activitySubtitle": timestamp,
-                "facts": [
-                    {
-                        "name": "Severity",
-                        "value": channel.severity_level
-                    }
-                ],
-                "text": "\n\n".join(alerts)
-            }]
+            "sections": [
+                {
+                    "activityTitle": "🚨 Performance Alert",
+                    "activitySubtitle": timestamp,
+                    "facts": [{"name": "Severity", "value": channel.severity_level}],
+                    "text": "\n\n".join(alerts),
+                }
+            ],
         }
-        
+
         requests.post(webhook_url, json=payload)
 
-    def _send_telegram_alert(self, alerts: List[str], channel: AlertChannel, timestamp: str):
+    def _send_telegram_alert(
+        self, alerts: List[str], channel: AlertChannel, timestamp: str
+    ):
         """Send alerts to Telegram."""
-        bot_token = channel.config.get('bot_token')
-        chat_id = channel.config.get('chat_id')
-        
+        bot_token = channel.config.get("bot_token")
+        chat_id = channel.config.get("chat_id")
+
         if not bot_token or not chat_id:
             return
-        
+
         message = f"🚨 *Performance Alert*\n\n"
         message += f"*Time:* {timestamp}\n"
         message += f"*Severity:* {channel.severity_level}\n\n"
         message += "\n".join(f"• {alert}" for alert in alerts)
-        
+
         requests.post(
-            f'https://api.telegram.org/bot{bot_token}/sendMessage',
-            json={
-                'chat_id': chat_id,
-                'text': message,
-                'parse_mode': 'Markdown'
-            }
+            f"https://api.telegram.org/bot{bot_token}/sendMessage",
+            json={"chat_id": chat_id, "text": message, "parse_mode": "Markdown"},
         )
 
     def _collect_metrics(self) -> SystemMetrics:
         """Collect current system metrics with enhanced monitoring."""
         process = psutil.Process()
-        
+
         # Get disk I/O
         disk_io = psutil.disk_io_counters()
         disk_metrics = {
-            'read_bytes': disk_io.read_bytes if disk_io else 0,
-            'write_bytes': disk_io.write_bytes if disk_io else 0
+            "read_bytes": disk_io.read_bytes if disk_io else 0,
+            "write_bytes": disk_io.write_bytes if disk_io else 0,
         }
-        
+
         # Get network I/O
         net_io = psutil.net_io_counters()
         net_metrics = {
-            'bytes_sent': net_io.bytes_sent if net_io else 0,
-            'bytes_recv': net_io.bytes_recv if net_io else 0
+            "bytes_sent": net_io.bytes_sent if net_io else 0,
+            "bytes_recv": net_io.bytes_recv if net_io else 0,
         }
-        
+
         # Collect browser metrics if available
         browser_metrics = self._collect_browser_metrics()
-        
+
         # Collect network latency metrics
         network_latency = self._collect_network_latency()
-        
+
         metrics = SystemMetrics(
             cpu_percent=psutil.cpu_percent(),
             memory_percent=psutil.virtual_memory().percent,
@@ -486,23 +508,23 @@ class RealTimeMonitor:
             timestamp=datetime.now().isoformat(),
             browser_metrics=browser_metrics,
             network_latency=network_latency,
-            alerts=[]
+            alerts=[],
         )
-        
+
         # Check for alerts
         alerts = self._check_alerts(metrics)
         if alerts:
             metrics.alerts = alerts
             self._send_alerts(alerts)
-        
+
         return metrics
 
     def _setup_flask_app(self):
         self.app = Flask(__name__)
-        
-        @self.app.route('/')
+
+        @self.app.route("/")
         def dashboard():
-            return render_template_string('''
+            return render_template_string("""
                 <!DOCTYPE html>
                 <html>
                 <head>
@@ -720,9 +742,9 @@ class RealTimeMonitor:
                     </script>
                 </body>
                 </html>
-            ''')
+            """)
 
-        @self.app.route('/metrics')
+        @self.app.route("/metrics")
         def get_metrics():
             return jsonify([asdict(m) for m in self.metrics_history])
 
@@ -731,27 +753,27 @@ class RealTimeMonitor:
         while self.running:
             metrics = self._collect_metrics()
             self.metrics_history.append(metrics)
-            
+
             # Keep only recent history
             if len(self.metrics_history) > self.max_history:
-                self.metrics_history = self.metrics_history[-self.max_history:]
-            
+                self.metrics_history = self.metrics_history[-self.max_history :]
+
             time.sleep(self.update_interval)
 
     def start(self, port: int = 5000):
         """Start the monitoring dashboard."""
         self.running = True
-        
+
         # Start metrics collection in background
         self.monitor_thread = threading.Thread(target=self._monitor_loop)
         self.monitor_thread.daemon = True
         self.monitor_thread.start()
-        
+
         # Start Flask app
         self.app.run(port=port, debug=False)
 
     def stop(self):
         """Stop the monitoring dashboard."""
         self.running = False
-        if hasattr(self, 'monitor_thread'):
-            self.monitor_thread.join(timeout=1.0) 
+        if hasattr(self, "monitor_thread"):
+            self.monitor_thread.join(timeout=1.0)
