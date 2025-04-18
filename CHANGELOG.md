@@ -36,33 +36,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial release of PulseQ framework
-- Core API testing capabilities
-- UI testing with Selenium integration
-- Basic performance monitoring
-- Simple alerting system
-- Test reporting and visualization
-- Documentation and examples
+- Initial release of PulseQ GraphQL testing framework
+- GraphQL API testing capabilities
+- Performance testing features
+- Security testing features
+- Comprehensive documentation
+- CI/CD pipeline setup
+- GitHub Actions integration
+- Alerting system
+- Custom metric visualization
+- GraphQL testing best practices guide
+- Performance testing guide
+- Security testing guide
 
-### Features
+### Changed
 
-- API testing with request/response validation
-- UI testing with Selenium WebDriver
-- Performance metrics collection
-- Basic alerting via email
-- HTML test reports
-- Configuration management
-- Logging system
+- Project renamed from "test-automation-framework" to "PulseQ"
+- Updated all configuration files to reflect new project name
+- Enhanced documentation structure
+- Improved test organization and structure
 
-## [0.1.0] - 2024-02-15
+### Fixed
+
+- Resolved merge conflicts in documentation
+- Fixed configuration file references
+- Addressed linter errors in test files
+
+## [0.9.0] - 2024-03-15
 
 ### Added
 
+- Basic GraphQL testing framework
+- Initial documentation structure
+- Basic CI/CD setup
+
+### Changed
+
 - Initial project setup
-- Basic test structure
-- Core utilities
-- Example tests
-- Basic documentation
+- Basic configuration files
+
+## [0.8.0] - 2024-03-10
+
+### Added
+
+- Project initialization
+- Basic project structure
+- Initial README
 
 [Unreleased]: https://github.com/yourusername/PulseQ/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/yourusername/PulseQ/compare/v0.1.0...v1.0.0
