@@ -7,7 +7,7 @@
 ### Phase 1: Core Framework Enhancement (Q2 2024)
 
 - [ ] Enhanced API Testing Capabilities
-  - [ ] Support for GraphQL testing
+  - [x] Support for GraphQL testing
   - [ ] WebSocket testing integration
   - [ ] Rate limiting and throttling testing
 - [ ] Advanced UI Testing Features
