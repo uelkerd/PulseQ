@@ -22,3 +22,8 @@ paths-ignore:
 query-filters:
   - exclude:
       problem.severity: warning
+
+languages:
+  - javascript
+  - python
+  - actions

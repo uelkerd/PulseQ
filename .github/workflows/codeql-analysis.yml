@@ -10,8 +10,8 @@ on:
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    name: Analyze
+    runs-on: ubuntu-latest
     permissions:
       security-events: write
       packages: read
@@ -21,18 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - language: actions
-            build-mode: none
-          - language: javascript-typescript
-            build-mode: none
-          - language: python
-            build-mode: none
-        # Add any other languages your repository uses:
-        # - language: c-cpp
-        #   build-mode: none
-        # - language: java-kotlin
-        #   build-mode: none
+        language: [actions, javascript-typescript, python]
 
     steps:
       - name: Checkout repository
@@ -49,8 +38,6 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
-          queries: security-extended,security-and-quality
           config-file: ./.github/codeql/codeql-config.yml
 
       # Only required for languages with manual build mode
@@ -65,3 +52,4 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{matrix.language}}"
+          upload: true
