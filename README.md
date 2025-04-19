@@ -1,6 +1,7 @@
 # PulseQ Test Automation Framework
 
-![CI Status](https://img.shields.io/github/actions/workflow/status/uelkerd/PulseQ/ci.yml?style=for-the-badge)
+![Enterprise CI/CD](https://img.shields.io/github/actions/workflow/status/uelkerd/PulseQ/enterprise-ci.yml?label=Enterprise%20CI%2FCD&style=for-the-badge)
+![Security Scan](https://img.shields.io/github/actions/workflow/status/uelkerd/PulseQ/security.yml?label=Security%20Scan&style=for-the-badge)
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![Code Coverage](https://img.shields.io/badge/coverage-92%25-brightgreen?style=for-the-badge)
