@@ -26,7 +26,6 @@ pillow==11.2.1
 platformdirs==4.3.7
 pluggy==1.5.0
 psutil==7.0.0
--e git+https://${GH_TOKEN}@github.com/uelkerd/PulseQ.git@88bb1d49d73e2a4dbd6b3c55d71eaeec09a724fb#egg=pulseq
 pycodestyle==2.13.0
 PySocks==1.7.1
 pytest==8.3.5
