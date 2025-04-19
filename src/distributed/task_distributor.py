@@ -1,15 +1,18 @@
-from typing import Dict, Any, List, Optional
-from dataclasses import dataclass
-from datetime import datetime
 import asyncio
 import logging
-from .worker_registry import WorkerRegistry, WorkerNode
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from .worker_registry import WorkerNode, WorkerRegistry
 
 logger = logging.getLogger(__name__)
+
 
 @dataclass
 class TestTask:
     """Represents a test task in the distributed testing system."""
+
     id: str
     type: str
     priority: int = 1
@@ -34,6 +37,7 @@ class TestTask:
     def can_retry(self) -> bool:
         """Check if the task can be retried."""
         return self.retry_count < self.max_retries
+
 
 class TaskDistributor:
     """Manages test task distribution across worker nodes."""
@@ -77,7 +81,9 @@ class TaskDistributor:
                     # No suitable worker found, put task back in queue
                     await self.task_queue.put((task.priority, task.id))
 
-    def _find_best_worker(self, task: TestTask, workers: List[WorkerNode]) -> Optional[WorkerNode]:
+    def _find_best_worker(
+        self, task: TestTask, workers: List[WorkerNode]
+    ) -> Optional[WorkerNode]:
         """Find the best worker for a given task."""
         if not workers:
             return None
@@ -153,4 +159,4 @@ class TaskDistributor:
     @property
     def completed_task_count(self) -> int:
         """Get the number of completed tasks."""
-        return len(self.completed_tasks) 
+        return len(self.completed_tasks)
