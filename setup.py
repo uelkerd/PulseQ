@@ -5,33 +5,31 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="pulseq",
-    version="1.0.0",
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="A modular test automation framework for web applications",
+    version="0.1.0",
+    author="PulseQ Team",
+    author_email="team@pulseq.io",
+    description="Load Balancer Testing Framework",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/test-automation-framework",
+    url="https://github.com/pulseq/pulseq",
     project_urls={
-        "Bug Tracker": "https://github.com/yourusername/test-automation-framework/issues",
+        "Bug Tracker": "https://github.com/pulseq/pulseq/issues",
     },
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Topic :: Software Development :: Testing",
-        "Topic :: Software Development :: Quality Assurance",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     packages=find_packages(),
     include_package_data=True,
     python_requires=">=3.8",
     install_requires=[
-        "selenium>=4.1.0",
-        "pytest>=7.0.0",
-        "allure-pytest>=2.9.0",
-        "requests>=2.27.0",
-        "python-dotenv>=0.19.0",
-        "webdriver-manager>=3.5.0",
+        "click>=8.0.0",
+        "jsonschema>=4.0.0",
     ],
     extras_require={
         "dev": [
@@ -51,7 +49,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "pulseq=pulseq.core:main",
+            "pulseq=pulseq.cli.config_cli:cli",
         ],
     },
 )

@@ -5,9 +5,9 @@ permissions:
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   workflow_dispatch:
     inputs:
       environment:
@@ -31,16 +31,17 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 black
+          pip install flake8 black bandit
           pip install -e .
       - name: Lint with flake8
         run: |
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       - name: Run Black formatting check
         run: |
-          # Run black in check mode but don't let it fail the workflow
           black --check . || echo "Black formatting issues found but continuing workflow"
-          echo "NOTE: To fix formatting issues locally, run: black ."
+      - name: Security scan with Bandit
+        run: |
+          bandit -r src/ -ll
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -54,17 +55,63 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov pytest-benchmark
           pip install -e .
       - name: Test with pytest
         run: |
-          pytest tests/test_example.py tests/test_retry.py -v
+          pytest tests/unit/ -v --cov=src --cov-report=xml
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
 
-  # Skip browser-matrix job since it requires access to actual webpages
-  # which aren't available in the CI environment
+  integration-tests:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov docker-compose
+          pip install -e .
+      - name: Start test environment
+        run: |
+          docker-compose -f docker-compose.test.yml up -d
+      - name: Run integration tests
+        run: |
+          pytest tests/integration/ -v
+      - name: Stop test environment
+        run: |
+          docker-compose -f docker-compose.test.yml down
+
+  performance-tests:
+    needs: integration-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest-benchmark locust
+          pip install -e .
+      - name: Run performance benchmarks
+        run: |
+          pytest tests/performance/ -v
+      - name: Run load tests
+        run: |
+          locust -f tests/performance/load_tests.py --headless -u 100 -r 10 -t 1m
 
   reporting:
-    needs: [unit-tests]
+    needs: [performance-tests]
     runs-on: ubuntu-latest
     if: always()
     steps:

@@ -238,6 +238,36 @@ def test_api_workflow(api_client):
     logger.info("Successfully completed multi-step API workflow")
 
 
+def test_login_success(api_client):
+    """Test successful login with valid credentials."""
+    credentials = {
+        "email": "test_user@example.com",
+        "password": "test_password_123"
+    }
+    response = api_client.post("/login", json=credentials)
+    assert response.status_code == 200
+    assert "token" in response.json()
+
+
+def test_login_failure(api_client):
+    """Test login failure with invalid credentials."""
+    credentials = {
+        "email": "test_user@example.com",
+        "password": "wrong_password"
+    }
+    response = api_client.post("/login", json=credentials)
+    assert response.status_code == 400
+    assert "error" in response.json()
+
+
+def test_login_missing_password(api_client):
+    """Test login failure with missing password."""
+    credentials = {"email": "test_user@example.com"}
+    response = api_client.post("/login", json=credentials)
+    assert response.status_code == 400
+    assert response.json()["error"] == "Missing password"
+
+
 # Teardown
 def teardown_module(module):
     """Generate performance report after all tests complete."""

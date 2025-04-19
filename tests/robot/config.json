@@ -1,0 +1,83 @@
+{
+  "load_balancer": {
+    "strategy": "least_connections",
+    "health_check_interval": 5,
+    "timeout": 30,
+    "max_retries": 3
+  },
+  "workload_patterns": {
+    "basic": {
+      "requests_per_second": 100,
+      "request_size": 1024,
+      "duration": 60
+    },
+    "resource_monitoring": {
+      "requests_per_second": 200,
+      "request_size": 2048,
+      "duration": 60
+    },
+    "node_removal": {
+      "requests_per_second": 150,
+      "request_size": 1536,
+      "duration": 60
+    },
+    "ecommerce": {
+      "requests_per_second": 500,
+      "request_size": 1024,
+      "duration": 60,
+      "peak_hours": [10, 14, 20]
+    },
+    "streaming": {
+      "requests_per_second": 1000,
+      "request_size": 4096,
+      "duration": 60,
+      "peak_hours": [19, 20, 21]
+    },
+    "iot": {
+      "requests_per_second": 2000,
+      "request_size": 512,
+      "duration": 60,
+      "device_types": ["sensor", "actuator", "gateway"]
+    },
+    "mixed": {
+      "requests_per_second": 800,
+      "request_size": 2048,
+      "duration": 60,
+      "patterns": ["ecommerce", "streaming", "iot"]
+    }
+  },
+  "edge_cases": {
+    "cpu_saturation": {
+      "cpu_usage": 0.95,
+      "duration": 30
+    },
+    "memory_pressure": {
+      "memory_usage": 0.9,
+      "duration": 30
+    },
+    "network_congestion": {
+      "network_usage": 0.85,
+      "duration": 30
+    }
+  },
+  "metrics": {
+    "collection_interval": 1,
+    "thresholds": {
+      "success_rate": 0.8,
+      "load_balance": 0.8,
+      "response_time": 1000,
+      "error_rate": 0.05
+    }
+  },
+  "reporting": {
+    "output_dir": "reports",
+    "format": "html",
+    "include_metrics": [
+      "success_rate",
+      "load_balance",
+      "response_time",
+      "error_rate",
+      "resource_utilization"
+    ]
+  }
+}

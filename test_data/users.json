@@ -1,1 +1,19 @@
-[{"username": "testuser1", "password": "password1", "expected_result": "success"}, {"username": "invaliduser", "password": "wrongpass", "expected_result": "failure"}, {"username": "testuser2", "password": "password2", "expected_result": "success"}]
+{
+  "users": [
+    {
+      "username": "test_user_1",
+      "password": "test_password_1",
+      "expected_result": "success"
+    },
+    {
+      "username": "test_user_2",
+      "password": "test_password_2",
+      "expected_result": "success"
+    },
+    {
+      "username": "invalid_user",
+      "password": "wrong_password",
+      "expected_result": "failure"
+    }
+  ]
+}
