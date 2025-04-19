@@ -1,23 +1,27 @@
-from typing import Dict, Any, Optional
+import asyncio
+import logging
 from dataclasses import dataclass
 from datetime import datetime
-import logging
-import asyncio
-from .worker_registry import WorkerRegistry
-from .task_distributor import TaskDistributor
+from typing import Any, Dict, Optional
+
 from ..cloud.manager import CloudManager
+from .task_distributor import TaskDistributor
+from .worker_registry import WorkerRegistry
 
 logger = logging.getLogger(__name__)
+
 
 @dataclass
 class ScalingMetrics:
     """Metrics used for auto-scaling decisions."""
+
     current_workers: int
     pending_tasks: int
     running_tasks: int
     avg_task_duration: float
     worker_utilization: float
     timestamp: datetime
+
 
 class AutoScaler:
     """Manages dynamic scaling of worker nodes based on workload."""
@@ -43,7 +47,7 @@ class AutoScaler:
         self.scale_down_threshold = scale_down_threshold
         self.cooldown_period = cooldown_period
         self.metrics_window = metrics_window
-        
+
         self.metrics_history: list[ScalingMetrics] = []
         self.last_scaling_time: Optional[datetime] = None
         self._scaling_lock = asyncio.Lock()
@@ -76,28 +80,29 @@ class AutoScaler:
     async def _collect_metrics(self) -> None:
         """Collect current workload metrics."""
         current_time = datetime.now()
-        
+
         # Calculate worker utilization
         active_workers = await self.worker_registry.get_available_workers()
         total_workers = self.worker_registry.worker_count
         worker_utilization = (
             (total_workers - len(active_workers)) / total_workers
-            if total_workers > 0 else 0
+            if total_workers > 0
+            else 0
         )
 
         # Calculate average task duration
         running_tasks = self.task_distributor.running_task_count
         pending_tasks = self.task_distributor.pending_task_count
-        
+
         metrics = ScalingMetrics(
             current_workers=total_workers,
             pending_tasks=pending_tasks,
             running_tasks=running_tasks,
             avg_task_duration=self._calculate_avg_task_duration(),
             worker_utilization=worker_utilization,
-            timestamp=current_time
+            timestamp=current_time,
         )
-        
+
         self.metrics_history.append(metrics)
         self._cleanup_old_metrics()
 
@@ -106,15 +111,14 @@ class AutoScaler:
         current_time = datetime.now()
         cutoff_time = current_time - timedelta(seconds=self.metrics_window)
         self.metrics_history = [
-            m for m in self.metrics_history
-            if m.timestamp >= cutoff_time
+            m for m in self.metrics_history if m.timestamp >= cutoff_time
         ]
 
     def _calculate_avg_task_duration(self) -> float:
         """Calculate average task duration from recent metrics."""
         if not self.metrics_history:
             return 0.0
-        
+
         recent_metrics = self.metrics_history[-5:]  # Last 5 minutes
         total_duration = sum(m.avg_task_duration for m in recent_metrics)
         return total_duration / len(recent_metrics)
@@ -125,7 +129,7 @@ class AutoScaler:
             return
 
         current_metrics = self.metrics_history[-1]
-        
+
         # Check if we're in cooldown period
         if self.last_scaling_time:
             time_since_last_scale = (
@@ -142,7 +146,7 @@ class AutoScaler:
                 and current_metrics.current_workers < self.max_workers
             ):
                 await self._scale_up()
-            
+
             # Scale down if utilization is low
             elif (
                 current_metrics.worker_utilization < self.scale_down_threshold
@@ -156,17 +160,16 @@ class AutoScaler:
             current_workers = self.worker_registry.worker_count
             new_workers = min(
                 self.max_workers - current_workers,
-                max(1, int(current_workers * 0.5))  # Scale up by 50% or 1
+                max(1, int(current_workers * 0.5)),  # Scale up by 50% or 1
             )
-            
+
             if new_workers > 0:
                 logger.info(f"Scaling up by {new_workers} workers")
                 await self.cloud_manager.scale_environment(
-                    "test-environment",
-                    current_workers + new_workers
+                    "test-environment", current_workers + new_workers
                 )
                 self.last_scaling_time = datetime.now()
-                
+
         except Exception as e:
             logger.error(f"Error scaling up: {str(e)}")
 
@@ -176,17 +179,16 @@ class AutoScaler:
             current_workers = self.worker_registry.worker_count
             workers_to_remove = min(
                 current_workers - self.min_workers,
-                max(1, int(current_workers * 0.25))  # Scale down by 25% or 1
+                max(1, int(current_workers * 0.25)),  # Scale down by 25% or 1
             )
-            
+
             if workers_to_remove > 0:
                 logger.info(f"Scaling down by {workers_to_remove} workers")
                 await self.cloud_manager.scale_environment(
-                    "test-environment",
-                    current_workers - workers_to_remove
+                    "test-environment", current_workers - workers_to_remove
                 )
                 self.last_scaling_time = datetime.now()
-                
+
         except Exception as e:
             logger.error(f"Error scaling down: {str(e)}")
 
@@ -194,7 +196,7 @@ class AutoScaler:
         """Get current scaling metrics for monitoring."""
         if not self.metrics_history:
             return {}
-            
+
         current_metrics = self.metrics_history[-1]
         return {
             "current_workers": current_metrics.current_workers,
@@ -202,7 +204,9 @@ class AutoScaler:
             "running_tasks": current_metrics.running_tasks,
             "worker_utilization": current_metrics.worker_utilization,
             "avg_task_duration": current_metrics.avg_task_duration,
-            "last_scaling_time": self.last_scaling_time.isoformat() if self.last_scaling_time else None,
+            "last_scaling_time": (
+                self.last_scaling_time.isoformat() if self.last_scaling_time else None
+            ),
             "metrics_window": self.metrics_window,
-            "cooldown_period": self.cooldown_period
-        } 
+            "cooldown_period": self.cooldown_period,
+        }

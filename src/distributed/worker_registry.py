@@ -1,14 +1,16 @@
-from typing import Dict, Any, Optional
+import asyncio
+import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-import logging
-import asyncio
+from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
+
 
 @dataclass
 class WorkerNode:
     """Represents a worker node in the distributed testing system."""
+
     id: str
     host: str
     port: int
@@ -30,11 +32,14 @@ class WorkerNode:
     def is_available(self) -> bool:
         """Check if the node is available for new tasks."""
         return (
-            self.status == "idle" and
-            self.current_load < self.max_load and
-            (self.last_heartbeat is None or
-             datetime.now() - self.last_heartbeat < timedelta(seconds=30))
+            self.status == "idle"
+            and self.current_load < self.max_load
+            and (
+                self.last_heartbeat is None
+                or datetime.now() - self.last_heartbeat < timedelta(seconds=30)
+            )
         )
+
 
 class WorkerRegistry:
     """Manages worker nodes in the distributed testing system."""
@@ -65,10 +70,7 @@ class WorkerRegistry:
 
     async def get_available_workers(self) -> list:
         """Get list of available worker nodes."""
-        return [
-            worker for worker in self._workers.values()
-            if worker.is_available()
-        ]
+        return [worker for worker in self._workers.values() if worker.is_available()]
 
     async def get_worker(self, worker_id: str) -> Optional[WorkerNode]:
         """Get a worker node by ID."""
@@ -91,15 +93,17 @@ class WorkerRegistry:
             try:
                 current_time = datetime.now()
                 inactive_workers = [
-                    worker_id for worker_id, worker in self._workers.items()
-                    if worker.last_heartbeat and
-                    current_time - worker.last_heartbeat > timedelta(seconds=self._heartbeat_interval * 2)
+                    worker_id
+                    for worker_id, worker in self._workers.items()
+                    if worker.last_heartbeat
+                    and current_time - worker.last_heartbeat
+                    > timedelta(seconds=self._heartbeat_interval * 2)
                 ]
-                
+
                 for worker_id in inactive_workers:
                     await self.unregister_worker(worker_id)
                     logger.warning(f"Removed inactive worker {worker_id}")
-                
+
                 await asyncio.sleep(self._heartbeat_interval)
             except asyncio.CancelledError:
                 break
@@ -115,4 +119,4 @@ class WorkerRegistry:
     @property
     def active_worker_count(self) -> int:
         """Get the number of active workers."""
-        return len([w for w in self._workers.values() if w.status != "offline"]) 
+        return len([w for w in self._workers.values() if w.status != "offline"])
