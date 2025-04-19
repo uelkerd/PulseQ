@@ -1,32 +1,38 @@
 """
 Specialized compliance packages for different industries.
 """
-from typing import Dict, Any, List
+
 from datetime import datetime, timedelta
+from typing import Any, Dict, List
+
+from .billing import BillingModel, ContractType
 from .compliance import ComplianceFramework, ComplianceRequirement, ComplianceStatus
-from .billing import ContractType, BillingModel
+
 
 class CompliancePackage:
     """Base class for compliance packages."""
-    
-    def __init__(self, name: str, description: str, frameworks: List[ComplianceFramework]):
+
+    def __init__(
+        self, name: str, description: str, frameworks: List[ComplianceFramework]
+    ):
         self.name = name
         self.description = description
         self.frameworks = frameworks
         self.requirements: List[ComplianceRequirement] = []
-        
+
     def get_package_details(self) -> Dict[str, Any]:
         """Get package details."""
         return {
             "name": self.name,
             "description": self.description,
             "frameworks": [f.value for f in self.frameworks],
-            "requirements": len(self.requirements)
+            "requirements": len(self.requirements),
         }
+
 
 class MilitaryCompliancePackage(CompliancePackage):
     """Military-grade compliance package."""
-    
+
     def __init__(self):
         super().__init__(
             name="Military-Grade Security",
@@ -38,11 +44,11 @@ class MilitaryCompliancePackage(CompliancePackage):
                 ComplianceFramework.DEFENSE_INDUSTRY,
                 ComplianceFramework.CYBER_RANGE,
                 ComplianceFramework.CRITICAL_INFRA,
-                ComplianceFramework.QUANTUM_SAFE
-            ]
+                ComplianceFramework.QUANTUM_SAFE,
+            ],
         )
         self._initialize_requirements()
-        
+
     def _initialize_requirements(self):
         """Initialize military-specific requirements."""
         self.requirements = [
@@ -56,12 +62,16 @@ class MilitaryCompliancePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="monthly",
                 validation_method="hybrid",
-                evidence_requirements=["security_plan", "risk_assessment", "incident_response_plan"],
+                evidence_requirements=[
+                    "security_plan",
+                    "risk_assessment",
+                    "incident_response_plan",
+                ],
                 exceptions_allowed=False,
                 emergency_procedures={
                     "incident_response": "immediate_notification",
-                    "data_breach": "isolate_and_contain"
-                }
+                    "data_breach": "isolate_and_contain",
+                },
             ),
             ComplianceRequirement(
                 id="MIL-002",
@@ -73,8 +83,12 @@ class MilitaryCompliancePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="quarterly",
                 validation_method="manual",
-                evidence_requirements=["export_licenses", "training_records", "access_logs"],
-                exceptions_allowed=False
+                evidence_requirements=[
+                    "export_licenses",
+                    "training_records",
+                    "access_logs",
+                ],
+                exceptions_allowed=False,
             ),
             ComplianceRequirement(
                 id="MIL-003",
@@ -86,13 +100,18 @@ class MilitaryCompliancePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="annually",
                 validation_method="automated",
-                evidence_requirements=["crypto_implementation", "key_management", "algorithm_certification"]
-            )
+                evidence_requirements=[
+                    "crypto_implementation",
+                    "key_management",
+                    "algorithm_certification",
+                ],
+            ),
         ]
+
 
 class SpaceCompliancePackage(CompliancePackage):
     """Space industry compliance package."""
-    
+
     def __init__(self):
         super().__init__(
             name="Space Industry Security",
@@ -102,11 +121,11 @@ class SpaceCompliancePackage(CompliancePackage):
                 ComplianceFramework.SPACE_TRAFFIC,
                 ComplianceFramework.QUANTUM_SAFE,
                 ComplianceFramework.INTERNATIONAL_TRADE,
-                ComplianceFramework.CRITICAL_INFRA
-            ]
+                ComplianceFramework.CRITICAL_INFRA,
+            ],
         )
         self._initialize_requirements()
-        
+
     def _initialize_requirements(self):
         """Initialize space-specific requirements."""
         self.requirements = [
@@ -120,12 +139,16 @@ class SpaceCompliancePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="monthly",
                 validation_method="hybrid",
-                evidence_requirements=["system_architecture", "security_controls", "testing_results"],
+                evidence_requirements=[
+                    "system_architecture",
+                    "security_controls",
+                    "testing_results",
+                ],
                 exceptions_allowed=False,
                 emergency_procedures={
                     "system_compromise": "emergency_shutdown",
-                    "data_breach": "isolate_and_report"
-                }
+                    "data_breach": "isolate_and_report",
+                },
             ),
             ComplianceRequirement(
                 id="SPC-002",
@@ -137,13 +160,18 @@ class SpaceCompliancePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="daily",
                 validation_method="automated",
-                evidence_requirements=["traffic_data", "collision_avoidance", "coordination_records"]
-            )
+                evidence_requirements=[
+                    "traffic_data",
+                    "collision_avoidance",
+                    "coordination_records",
+                ],
+            ),
         ]
+
 
 class QuantumComputingPackage(CompliancePackage):
     """Quantum computing compliance package."""
-    
+
     def __init__(self):
         super().__init__(
             name="Quantum Computing Security",
@@ -152,11 +180,11 @@ class QuantumComputingPackage(CompliancePackage):
                 ComplianceFramework.QUANTUM_COMPUTING,
                 ComplianceFramework.QUANTUM_SAFE,
                 ComplianceFramework.RESEARCH_ETHICS,
-                ComplianceFramework.INTERNATIONAL_TRADE
-            ]
+                ComplianceFramework.INTERNATIONAL_TRADE,
+            ],
         )
         self._initialize_requirements()
-        
+
     def _initialize_requirements(self):
         """Initialize quantum computing-specific requirements."""
         self.requirements = [
@@ -170,12 +198,16 @@ class QuantumComputingPackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="weekly",
                 validation_method="hybrid",
-                evidence_requirements=["system_configuration", "security_measures", "testing_protocols"],
+                evidence_requirements=[
+                    "system_configuration",
+                    "security_measures",
+                    "testing_protocols",
+                ],
                 exceptions_allowed=False,
                 emergency_procedures={
                     "system_compromise": "immediate_isolation",
-                    "data_breach": "quantum_state_preservation"
-                }
+                    "data_breach": "quantum_state_preservation",
+                },
             ),
             ComplianceRequirement(
                 id="QC-002",
@@ -187,13 +219,18 @@ class QuantumComputingPackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="quarterly",
                 validation_method="manual",
-                evidence_requirements=["ethics_review", "research_protocols", "publication_guidelines"]
-            )
+                evidence_requirements=[
+                    "ethics_review",
+                    "research_protocols",
+                    "publication_guidelines",
+                ],
+            ),
         ]
+
 
 class AIEthicsPackage(CompliancePackage):
     """AI ethics compliance package."""
-    
+
     def __init__(self):
         super().__init__(
             name="AI Ethics Compliance",
@@ -202,11 +239,11 @@ class AIEthicsPackage(CompliancePackage):
                 ComplianceFramework.AI_ETHICS,
                 ComplianceFramework.RESEARCH_ETHICS,
                 ComplianceFramework.GDPR,
-                ComplianceFramework.QUANTUM_SAFE
-            ]
+                ComplianceFramework.QUANTUM_SAFE,
+            ],
         )
         self._initialize_requirements()
-        
+
     def _initialize_requirements(self):
         """Initialize AI ethics-specific requirements."""
         self.requirements = [
@@ -220,12 +257,16 @@ class AIEthicsPackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="monthly",
                 validation_method="hybrid",
-                evidence_requirements=["ethics_assessment", "bias_mitigation", "transparency_documentation"],
+                evidence_requirements=[
+                    "ethics_assessment",
+                    "bias_mitigation",
+                    "transparency_documentation",
+                ],
                 exceptions_allowed=False,
                 emergency_procedures={
                     "ethical_breach": "system_override",
-                    "bias_detection": "immediate_correction"
-                }
+                    "bias_detection": "immediate_correction",
+                },
             ),
             ComplianceRequirement(
                 id="AI-002",
@@ -237,13 +278,18 @@ class AIEthicsPackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="quarterly",
                 validation_method="automated",
-                evidence_requirements=["privacy_impact_assessment", "data_processing_records", "consent_management"]
-            )
+                evidence_requirements=[
+                    "privacy_impact_assessment",
+                    "data_processing_records",
+                    "consent_management",
+                ],
+            ),
         ]
+
 
 class DefenseIndustryPackage(CompliancePackage):
     """Defense industry compliance package."""
-    
+
     def __init__(self):
         super().__init__(
             name="Defense Industry Security",
@@ -254,11 +300,11 @@ class DefenseIndustryPackage(CompliancePackage):
                 ComplianceFramework.EAR,
                 ComplianceFramework.CYBER_RANGE,
                 ComplianceFramework.CRITICAL_INFRA,
-                ComplianceFramework.QUANTUM_SAFE
-            ]
+                ComplianceFramework.QUANTUM_SAFE,
+            ],
         )
         self._initialize_requirements()
-        
+
     def _initialize_requirements(self):
         """Initialize defense industry-specific requirements."""
         self.requirements = [
@@ -272,12 +318,16 @@ class DefenseIndustryPackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="monthly",
                 validation_method="hybrid",
-                evidence_requirements=["security_plan", "risk_assessment", "incident_response_plan"],
+                evidence_requirements=[
+                    "security_plan",
+                    "risk_assessment",
+                    "incident_response_plan",
+                ],
                 exceptions_allowed=False,
                 emergency_procedures={
                     "incident_response": "immediate_notification",
-                    "data_breach": "isolate_and_contain"
-                }
+                    "data_breach": "isolate_and_contain",
+                },
             ),
             ComplianceRequirement(
                 id="DEF-002",
@@ -289,14 +339,19 @@ class DefenseIndustryPackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="quarterly",
                 validation_method="manual",
-                evidence_requirements=["export_licenses", "training_records", "access_logs"],
-                exceptions_allowed=False
-            )
+                evidence_requirements=[
+                    "export_licenses",
+                    "training_records",
+                    "access_logs",
+                ],
+                exceptions_allowed=False,
+            ),
         ]
+
 
 class ResearchEthicsPackage(CompliancePackage):
     """Research ethics compliance package."""
-    
+
     def __init__(self):
         super().__init__(
             name="Research Ethics Compliance",
@@ -306,11 +361,11 @@ class ResearchEthicsPackage(CompliancePackage):
                 ComplianceFramework.AI_ETHICS,
                 ComplianceFramework.GDPR,
                 ComplianceFramework.QUANTUM_SAFE,
-                ComplianceFramework.QUANTUM_COMPUTING
-            ]
+                ComplianceFramework.QUANTUM_COMPUTING,
+            ],
         )
         self._initialize_requirements()
-        
+
     def _initialize_requirements(self):
         """Initialize research ethics-specific requirements."""
         self.requirements = [
@@ -324,12 +379,16 @@ class ResearchEthicsPackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="quarterly",
                 validation_method="hybrid",
-                evidence_requirements=["ethics_approval", "research_protocols", "data_management_plan"],
+                evidence_requirements=[
+                    "ethics_approval",
+                    "research_protocols",
+                    "data_management_plan",
+                ],
                 exceptions_allowed=False,
                 emergency_procedures={
                     "ethical_breach": "immediate_reporting",
-                    "data_misuse": "investigation_and_containment"
-                }
+                    "data_misuse": "investigation_and_containment",
+                },
             ),
             ComplianceRequirement(
                 id="RES-002",
@@ -341,13 +400,18 @@ class ResearchEthicsPackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="monthly",
                 validation_method="automated",
-                evidence_requirements=["bias_assessment", "transparency_documentation", "impact_analysis"]
-            )
+                evidence_requirements=[
+                    "bias_assessment",
+                    "transparency_documentation",
+                    "impact_analysis",
+                ],
+            ),
         ]
+
 
 class InternationalTradePackage(CompliancePackage):
     """International trade compliance package."""
-    
+
     def __init__(self):
         super().__init__(
             name="International Trade Compliance",
@@ -357,11 +421,11 @@ class InternationalTradePackage(CompliancePackage):
                 ComplianceFramework.ITAR,
                 ComplianceFramework.EAR,
                 ComplianceFramework.GDPR,
-                ComplianceFramework.QUANTUM_SAFE
-            ]
+                ComplianceFramework.QUANTUM_SAFE,
+            ],
         )
         self._initialize_requirements()
-        
+
     def _initialize_requirements(self):
         """Initialize international trade-specific requirements."""
         self.requirements = [
@@ -375,12 +439,16 @@ class InternationalTradePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="monthly",
                 validation_method="hybrid",
-                evidence_requirements=["export_licenses", "trade_agreements", "compliance_records"],
+                evidence_requirements=[
+                    "export_licenses",
+                    "trade_agreements",
+                    "compliance_records",
+                ],
                 exceptions_allowed=False,
                 emergency_procedures={
                     "compliance_breach": "immediate_reporting",
-                    "export_violation": "investigation_and_containment"
-                }
+                    "export_violation": "investigation_and_containment",
+                },
             ),
             ComplianceRequirement(
                 id="IT-002",
@@ -392,13 +460,18 @@ class InternationalTradePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="quarterly",
                 validation_method="automated",
-                evidence_requirements=["data_processing_agreements", "transfer_mechanisms", "privacy_impact_assessments"]
-            )
+                evidence_requirements=[
+                    "data_processing_agreements",
+                    "transfer_mechanisms",
+                    "privacy_impact_assessments",
+                ],
+            ),
         ]
+
 
 class CriticalInfrastructurePackage(CompliancePackage):
     """Critical infrastructure compliance package."""
-    
+
     def __init__(self):
         super().__init__(
             name="Critical Infrastructure Security",
@@ -408,11 +481,11 @@ class CriticalInfrastructurePackage(CompliancePackage):
                 ComplianceFramework.CYBER_RANGE,
                 ComplianceFramework.QUANTUM_SAFE,
                 ComplianceFramework.SPACE_SECURITY,
-                ComplianceFramework.SPACE_TRAFFIC
-            ]
+                ComplianceFramework.SPACE_TRAFFIC,
+            ],
         )
         self._initialize_requirements()
-        
+
     def _initialize_requirements(self):
         """Initialize critical infrastructure-specific requirements."""
         self.requirements = [
@@ -426,12 +499,16 @@ class CriticalInfrastructurePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="daily",
                 validation_method="hybrid",
-                evidence_requirements=["security_plan", "risk_assessment", "incident_response_plan"],
+                evidence_requirements=[
+                    "security_plan",
+                    "risk_assessment",
+                    "incident_response_plan",
+                ],
                 exceptions_allowed=False,
                 emergency_procedures={
                     "system_compromise": "immediate_isolation",
-                    "service_disruption": "failover_and_recovery"
-                }
+                    "service_disruption": "failover_and_recovery",
+                },
             ),
             ComplianceRequirement(
                 id="CI-002",
@@ -443,9 +520,14 @@ class CriticalInfrastructurePackage(CompliancePackage):
                 documentation_required=True,
                 validation_frequency="weekly",
                 validation_method="automated",
-                evidence_requirements=["testing_results", "recovery_plans", "resilience_metrics"]
-            )
+                evidence_requirements=[
+                    "testing_results",
+                    "recovery_plans",
+                    "resilience_metrics",
+                ],
+            ),
         ]
+
 
 def get_compliance_package(contract_type: ContractType) -> CompliancePackage:
     """Get appropriate compliance package based on contract type."""
@@ -457,6 +539,8 @@ def get_compliance_package(contract_type: ContractType) -> CompliancePackage:
         ContractType.DEFENSE: DefenseIndustryPackage(),
         ContractType.RESEARCH: ResearchEthicsPackage(),
         ContractType.INTERNATIONAL: InternationalTradePackage(),
-        ContractType.CRITICAL_INFRA: CriticalInfrastructurePackage()
+        ContractType.CRITICAL_INFRA: CriticalInfrastructurePackage(),
     }
-    return packages.get(contract_type, CompliancePackage("Basic", "Standard compliance package", [])) 
+    return packages.get(
+        contract_type, CompliancePackage("Basic", "Standard compliance package", [])
+    )
