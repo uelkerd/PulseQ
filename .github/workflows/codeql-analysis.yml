@@ -1,4 +1,4 @@
-name: "CodeQL Advanced"
+name: "CodeQL Analysis"
 
 on:
   push:
@@ -14,42 +14,25 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       security-events: write
-      packages: read
       actions: read
       contents: read
 
     strategy:
       fail-fast: false
       matrix:
-        language: [actions, javascript-typescript, python]
+        language: [javascript, python]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Uncomment and customize if you need specific setup for your languages
-      # - name: Setup Node.js
-      #   if: matrix.language == 'javascript-typescript'
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '16'
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          config-file: ./.github/codeql/codeql-config.yml
-
-      # Only required for languages with manual build mode
-      - if: matrix.build-mode == 'manual'
-        shell: bash
-        run: |
-          # Replace with your actual build commands
-          echo 'Building code for ${{ matrix.language }}'
-          # Example: npm install && npm build
+          queries: security-and-quality
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{matrix.language}}"
-          upload: true
