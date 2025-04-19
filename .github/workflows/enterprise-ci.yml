@@ -51,6 +51,21 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Debug - Print requirements.txt
+        run: |
+          echo "Contents of requirements.txt:"
+          cat requirements.txt
+
+      - name: Debug - Print networkx version
+        run: |
+          echo "Networkx version in requirements.txt:"
+          grep networkx requirements.txt
+
+      - name: Debug - Print setup.py
+        run: |
+          echo "Contents of setup.py:"
+          cat setup.py
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
