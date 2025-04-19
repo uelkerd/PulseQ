@@ -2,11 +2,11 @@ name: "CodeQL Advanced"
 
 on:
   push:
-    branches: [ "main", "security" ]
+    branches: ["main", "security"]
   pull_request:
-    branches: [ "main", "security" ]
+    branches: ["main", "security"]
   schedule:
-    - cron: '26 4 * * 6'
+    - cron: "26 4 * * 6"
 
 jobs:
   analyze:
@@ -22,12 +22,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - language: actions
-          build-mode: none
-        - language: javascript-typescript
-          build-mode: none
-        - language: python
-          build-mode: none
+          - language: actions
+            build-mode: none
+          - language: javascript-typescript
+            build-mode: none
+          - language: python
+            build-mode: none
         # Add any other languages your repository uses:
         # - language: c-cpp
         #   build-mode: none
@@ -35,33 +35,33 @@ jobs:
         #   build-mode: none
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # Uncomment and customize if you need specific setup for your languages
-    # - name: Setup Node.js
-    #   if: matrix.language == 'javascript-typescript'
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: '16'
+      # Uncomment and customize if you need specific setup for your languages
+      # - name: Setup Node.js
+      #   if: matrix.language == 'javascript-typescript'
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '16'
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
-        # Uncomment to use extended security queries
-        queries: security-extended,security-and-quality
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          queries: security-extended,security-and-quality
+          config-file: ./.github/codeql/codeql-config.yml
 
-    # Only required for languages with manual build mode
-    - if: matrix.build-mode == 'manual'
-      shell: bash
-      run: |
-        # Replace with your actual build commands
-        echo 'Building code for ${{ matrix.language }}'
-        # Example: npm install && npm build
+      # Only required for languages with manual build mode
+      - if: matrix.build-mode == 'manual'
+        shell: bash
+        run: |
+          # Replace with your actual build commands
+          echo 'Building code for ${{ matrix.language }}'
+          # Example: npm install && npm build
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
